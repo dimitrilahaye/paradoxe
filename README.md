@@ -1,5 +1,6 @@
 # TODO
 - replay button
+- tp according to the current player direction
 - anim doors open close
 - make real tp
 - anim tp
