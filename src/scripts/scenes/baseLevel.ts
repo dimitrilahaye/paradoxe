@@ -64,8 +64,8 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	}
 
 	protected addDialog(dialogNumber: number, content): void {
-		const dialog0Position = this.tilemap.findObject('dialogs', obj => obj['properties'][0].value === dialogNumber);
-		this.dialogs.set(JSON.stringify({ x: dialog0Position.x, y: dialog0Position.y }), content);
+		const { x, y } = this.tilemap.findObject('dialogs', obj => obj['properties'][0].value === dialogNumber);
+		this.dialogs.set(JSON.stringify({ x, y }), content);
 	}
 
 	update() {
@@ -78,7 +78,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 			if (!this.isDialogLaunched) {
 				if (this.player.x > (x || 0) - 10 && this.player.x < (x || 0) + 10 &&
 				this.player.y > (y || 0) - 10 && this.player.y < (y || 0) + 10) {
-					this.startDialog(content, key);
+					this.startDialog(content);
 					this.dialogs.delete(key);
 				}
 			}
@@ -148,10 +148,10 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}
 	}
 
-	protected startDialog(content: string, key = '') {
+	protected startDialog(content: string) {
 		if (!this.isDialogLaunched) {
 			const { x, y } = this.getMiddleSceneCoordinates();
-			this.textBox = new MyTextBox(this, x, y, key);
+			this.textBox = new MyTextBox(this, x, y);
 			this.textBox.start(content);
 			this.player.pause();
 			this.isDialogLaunched = true;
@@ -188,7 +188,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	}
 
 	private listenToMyTextBoxEvents() {
-		this.events.on('MyTextBox::complete', (key) => {
+		this.events.on('MyTextBox::complete', () => {
 			this.isDialogLaunched = false;
 			this.time.delayedCall(500, () => {
 				this.player.resume();
@@ -350,7 +350,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		this.platformsLayer.setCollisionByProperty({ collides: true });
 	}
 
-	protected getMiddleSceneCoordinates(): { x: number, y: number } {
+	private getMiddleSceneCoordinates(): { x: number, y: number } {
 		const x = this.cameras.main.worldView.x + this.cameras.main.width / 2;
 		const y = this.cameras.main.worldView.y + this.cameras.main.height / 2;
 

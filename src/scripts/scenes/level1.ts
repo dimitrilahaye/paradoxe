@@ -19,14 +19,6 @@ Pour passer d'une salle à l'autre, veuillez vous diriger vers la porte de sorti
 	}
 
 	update() {
-		// delay 2000 => créer text box avec contenu en dur ici
-		// parent possède protected méthode pour créer text box
-		// https://rexrainbow.github.io/phaser3-rex-notes/docs/site/ui-textbox/#introduction
-		// https://codepen.io/rexrainbow/pen/MzGoJv
-		// https://codepen.io/rexrainbow/pen/ExZLoWL
-		// https://codepen.io/rexrainbow/pen/oNBaKOo
-
-		// => bubble: https://codepen.io/rexrainbow/pen/ExZLoWL
 		super.update();
 	}
 }

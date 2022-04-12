@@ -2,12 +2,10 @@ import TextBox from 'phaser3-rex-plugins/templates/ui/textbox/TextBox';
 
 export default class MyTextBox {
 	private textBox: TextBox;
-	private complete = false;
-	private pageComplete = false;
 	get box(): TextBox {
 		return this.textBox;
 	}
-	constructor(private scene: Phaser.Scene, private x: number, private y: number, private dialogKey: string) {}
+	constructor(private scene: Phaser.Scene, private x: number, private y: number) {}
 
 	public start (content) {
 		const COLOR_PRIMARY = 0xffffff;
@@ -68,10 +66,10 @@ export default class MyTextBox {
 				icon.y -= 30;
 				this.scene.tweens.add({
 					targets: icon,
-					y: '+=30', // '+=100'
-					ease: 'Bounce', // 'Cubic', 'Elastic', 'Bounce', 'Back'
+					y: '+=30',
+					ease: 'Bounce',
 					duration: 500,
-					repeat: 0, // -1: infinity
+					repeat: 0,
 					yoyo: false
 				});
 			});
@@ -79,11 +77,11 @@ export default class MyTextBox {
 		this.textBox.start(content, 50);
 	}
 
-	public destroy() {
+	private destroy() {
 		this.scene.input.keyboard.off('keydown-ENTER');
 		this.scene.input.keyboard.off('keydown-ESC');
 		this.textBox.destroy();
-		this.scene.events.emit('MyTextBox::complete', this.dialogKey);
+		this.scene.events.emit('MyTextBox::complete');
 	}
 	
 	private getBBcodeText (scene, wrapWidth, wrapHeight, fixedWidth, fixedHeight) {
@@ -115,15 +113,10 @@ export default class MyTextBox {
 				this.getShapes()[0]
 					.lineStyle(2, strokeColor, 1)
 					.fillStyle(fillColor, 1)
-					// top line, right arc
 					.startAt(left + radius, top).lineTo(right - radius, top).arc(right - radius, top + radius, radius, 270, 360)
-					// right line, bottom arc
 					.lineTo(right, boxBottom - radius).arc(right - radius, boxBottom - radius, radius, 0, 90)
-					// bottom indent                    
 					.lineTo(left + 60, boxBottom).lineTo(left + 50, bottom).lineTo(left + 40, boxBottom)
-					// bottom line, left arc
 					.lineTo(left + radius, boxBottom).arc(left + radius, boxBottom - radius, radius, 90, 180)
-					// left line, top arc
 					.lineTo(left, top + radius).arc(left + radius, top + radius, radius, 180, 270)
 					.close();
 	
