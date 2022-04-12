@@ -366,34 +366,3 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}
 	}
 }
-
-/*
-	TODO:
-
-	- touche entrée next page
-
-	- bouton replay
-	
-	- anim doors open close
-	
-	- make real tp
-	- anim tp
-	
-	- trouver le gun dans la salle 2
-	- switcher les armes
-	
-	- past player tween
-	- make past player able to shot us
-	- player death
-	
-	- sprites titles level
-	
-	
-	- tp effets différents suivant couleur (vert tu traverses)
-	
-	- ajouter les tp tu peux téléporter tes balles
-
-	- des gardes de failles temporelles qui utilisent des tp
-	
-	- refacto generics tp, door_tp, switcher
-*/
