@@ -11,7 +11,7 @@
 - [X] green time teleporters
 - [X] dialogs for tutorials
 - [X] add sounds fx + music
-- [-] refacto generics time teleporters, spatial teleporters, switcher, and so on
+- [ ] **WIP:** :construction: refacto generics time teleporters, spatial teleporters, switcher, and so on
 - [ ] refacto green time teleporters with new gameplay
 - [ ] add orange time teleporters
 - [ ] replay button
