@@ -24,13 +24,13 @@ const config = {
 	},
 	scene: [
 		PreloadLevel3,
-		PreloadLevel4,
 		PreloadLevel1,
-		Level4,
 		Level1,
 		PreloadLevel2,
 		Level2,
 		Level3,
+		PreloadLevel4,
+		Level4,
 	],
 	physics: {
 		default: 'arcade',

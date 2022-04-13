@@ -1,3 +1,5 @@
+import DoorEntrance from '../objects/doorEntrance';
+import DoorExit from '../objects/doorExit';
 import DoubleSwitcher from '../objects/doubleSwitcher';
 import DoubleTimeTeleporter from '../objects/doubleTimeTeleporter';
 import PastPlayer from '../objects/pastPlayer';
@@ -21,13 +23,13 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	protected lightsLayer: Phaser.Tilemaps.TilemapLayer;
 	protected start: Phaser.Types.Tilemaps.TiledObject;
 	protected end: Phaser.Types.Tilemaps.TiledObject;
-	protected doorStart: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
-	protected doorEnd: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
 	protected pastPlayersGroup: Phaser.GameObjects.Group;
 	protected music: Phaser.Sound.BaseSound;
 	
 	protected textBox?: MyTextBox;
 	protected player: Player;
+	protected doorEntrance: DoorEntrance;
+	protected doorExit: DoorExit;
 	protected spatialTeleporter1a: SpatialTeleporter;
 	protected spatialTeleporter1b: SpatialTeleporter;
 	protected simpleTimeTeleporter2a: SimpleTimeTeleporter;
@@ -172,16 +174,14 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	private listenToPastPlayersEvents() {
 		this.events.on('PastPlayer::init', () => {
 			this.time.delayedCall(200, () => {
-				this.doorEnd.setTexture('door_end_close');
-				this.sound.play('door_close');
+				this.doorExit.close();
 			});
 		}, this);
 		this.events.on('PastPlayer::isDead', () => {
 			const leftAlivePastPlayers = this.findPastPlayers((pastPlayer) => !(pastPlayer as PastPlayer).isDead);
 			if (!leftAlivePastPlayers) {
 				this.time.delayedCall(200, () => {
-					this.doorEnd.setTexture('door_end_open');
-					this.sound.play('door_open');
+					this.doorExit.open();
 				});
 			}
 		}, this);
@@ -279,10 +279,10 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	private initDoors() {
 		const { x: doorStartX, y: doorStartY } = this.tilemap.findObject('doors', obj => obj.name === 'door_start');
 		const { x: doorEndX, y: doorEndY } = this.tilemap.findObject('doors', obj => obj.name === 'door_end');
-		this.doorStart = this.physics.add.sprite(doorStartX || 0, doorStartY || 0, 'door_start');
-		this.doorEnd = this.physics.add.sprite(doorEndX || 0, doorEndY || 0, 'door_end_open');
+		this.doorEntrance = new DoorEntrance(this, doorStartX || 0, doorStartY || 0);
+		this.doorExit = new DoorExit(this, doorEndX || 0, doorEndY || 0);
 		
-		this.physics.add.collider([this.doorStart, this.doorEnd], [this.groundLayer, this.platformsLayer]);
+		this.physics.add.collider([this.doorEntrance, this.doorExit], [this.groundLayer, this.platformsLayer]);
 	}
 
 	private initSpatialTeleporters() {
