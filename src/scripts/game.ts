@@ -23,13 +23,13 @@ const config = {
 		height: DEFAULT_HEIGHT,
 	},
 	scene: [
+		PreloadLevel4,
 		PreloadLevel1,
 		PreloadLevel3,
 		Level1,
 		PreloadLevel2,
 		Level2,
 		Level3,
-		PreloadLevel4,
 		Level4,
 	],
 	physics: {
