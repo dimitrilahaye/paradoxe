@@ -48,6 +48,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 			const xDirection = this.direction === 'left' ? x - 10 : x + 10;
 			this.setPosition(xDirection, y);
 		});
+
+		this.scene.events.on('SimpleTimeTeleporter::activate', (targetCoordinates: Coordinates) => {
+			const { x, y } = targetCoordinates;
+			const xDirection = this.direction === 'left' ? x - 10 : x + 10;
+			this.setPosition(xDirection, y);
+		});
 		
 		this.anims.create({
 			key: 'walk',

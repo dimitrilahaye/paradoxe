@@ -1,8 +1,6 @@
 import { Coordinates } from '../types';
 
 export default class DoubleTimeTeleporter extends Phaser.Physics.Arcade.Sprite {
-    public nextTp = 0;
-    private tpRate = 500;
     private oppositeDoubleTimeTeleporter: DoubleTimeTeleporter;
     
     constructor(scene: Phaser.Scene, x: number, y: number) {

@@ -29,7 +29,7 @@ Je vous laisse donc essayer votre arme de service.`
 			}
 		});
 		this.events.on('BaseLevel::firstShotGun', () => {
-			if (!this.firstShotGun) {
+			if (this.firstTpTaken && !this.firstShotGun) {
 				this.time.delayedCall(1000, () => {
 
 					this.firstShotGun = true;
