@@ -11,11 +11,14 @@
 - [X] green time teleporters
 - [X] dialogs for tutorials
 - [X] add sounds fx + music
+- [X] refacto green time teleporters with new gameplay
+- [X] Fix bug: time teleporters according to the current player direction
 - [ ] **WIP:** :construction: refacto generics time teleporters, spatial teleporters, switcher, and so on
-- [ ] refacto green time teleporters with new gameplay
+- [ ] create level to present green tp game play
 - [ ] add orange time teleporters
+- [ ] create level to present orange tp game play
+- [ ] create level that mix all tp types
 - [ ] replay button
-- [ ] Fix bug: time teleporters according to the current player direction
 - [ ] past player tween
 - [ ] make past player able to shot us
 - [ ] player death
