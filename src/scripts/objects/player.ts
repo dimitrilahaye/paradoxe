@@ -1,31 +1,27 @@
 import { Coordinates } from '../types';
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
-	left: Phaser.Input.Keyboard.Key;
-	right: Phaser.Input.Keyboard.Key;
-	up: Phaser.Input.Keyboard.Key;
-	down: Phaser.Input.Keyboard.Key;
-	goLeft: boolean;
-	goRight: boolean;
-	goUp: boolean;
-	goDown: boolean;
-	speedX: number;
-	speedY: number;
-	noiseDone: boolean;
-	noiseCircle: Phaser.GameObjects.Arc;
-	enter: Phaser.Input.Keyboard.Key;
-	enterActivate: boolean;
-	shot: Phaser.Input.Keyboard.Key;
-	isShooting: boolean;
-	bullets: Phaser.Physics.Arcade.Group;
-	nextFire = 0;
-	fireRate = 500;
-	direction: 'left' | 'right';
-	nextWalkSound = 0;
-	walkSoundRate = 500;
-	isMovable = true;
-	nextActivability = 0;
-	activabilityRate = 500;
+	private bullets: Phaser.Physics.Arcade.Group;
+	private left: Phaser.Input.Keyboard.Key;
+	private right: Phaser.Input.Keyboard.Key;
+	private enter: Phaser.Input.Keyboard.Key;
+	private shot: Phaser.Input.Keyboard.Key;
+
+	private isMovable = true;
+	private goLeft: boolean;
+	private goRight: boolean;
+	private isShooting: boolean;
+	
+	private speedX = 180;
+	private nextFire = 0;
+	private fireRate = 500;
+	private nextWalkSound = 0;
+	private walkSoundRate = 500;
+	private nextActivability = 0;
+	private activabilityRate = 500;
+	
+	public enterActivate: boolean;
+	public direction: 'left' | 'right';
 
 	constructor(scene: Phaser.Scene, x: number, y: number) {
 		super(scene, x, y, 'player', 'idle-1');
@@ -35,26 +31,44 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 	}
 
 	create() {
-		this.init();
-		this.setKeyboardInputs();
+		this.initCharacs();
 
-		this.scene.events.on('SpatialTeleporter::activate', ({ x, y }) => {
-			const xDirection = this.direction === 'left' ? x - 10 : x + 10;
-			this.setPosition(xDirection, y);
-		});
+		this.initKeyboardInputs();
 
-		this.scene.events.on('DoubleTimeTeleporter::activate', (_, targetCoordinates: Coordinates) => {
-			const { x, y } = targetCoordinates;
-			const xDirection = this.direction === 'left' ? x - 10 : x + 10;
-			this.setPosition(xDirection, y);
-		});
+		this.listenToSpatialTeleporterEvents();
 
-		this.scene.events.on('SimpleTimeTeleporter::activate', (targetCoordinates: Coordinates) => {
-			const { x, y } = targetCoordinates;
-			const xDirection = this.direction === 'left' ? x - 10 : x + 10;
-			this.setPosition(xDirection, y);
-		});
+		this.listenToDoubleTimeTeleporterEvents();
+
+		this.listenToSimpleTimeTeleporterEvents();
 		
+		this.initAnimations();
+		
+		this.initBulletsGroups();
+	}
+
+	update() {
+		this.movePlayer();
+		this.checkActions();
+	}
+
+	pause() {
+		this.isMovable = false;
+	}
+
+	resume() {
+		this.isMovable = true;
+	}
+
+	private initBulletsGroups() {
+		this.bullets = this.scene.physics.add.group({
+			defaultKey: 'simple_bullet',
+			allowGravity: false,
+			immovable: true,
+			frameQuantity: 5,
+		});
+	}
+
+	private initAnimations() {
 		this.anims.create({
 			key: 'walk',
 			frames: this.scene.anims.generateFrameNames('player', { prefix: 'walk-', start: 1, end: 6 }),
@@ -86,26 +100,29 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 			frameRate: 5,
 			repeat: -1,
 		});
-		
-		this.bullets = this.scene.physics.add.group({
-			defaultKey: 'simple_bullet',
-			allowGravity: false,
-			immovable: true,
-			frameQuantity: 5,
+	}
+
+	private listenToSimpleTimeTeleporterEvents() {
+		this.scene.events.on('SimpleTimeTeleporter::activate', (targetCoordinates: Coordinates) => {
+			const { x, y } = targetCoordinates;
+			const xDirection = this.direction === 'left' ? x - 10 : x + 10;
+			this.setPosition(xDirection, y);
 		});
 	}
 
-	update() {
-		this.movePlayer();
-		this.checkActions();
+	private listenToDoubleTimeTeleporterEvents() {
+		this.scene.events.on('DoubleTimeTeleporter::activate', (_, targetCoordinates: Coordinates) => {
+			const { x, y } = targetCoordinates;
+			const xDirection = this.direction === 'left' ? x - 10 : x + 10;
+			this.setPosition(xDirection, y);
+		});
 	}
 
-	pause() {
-		this.isMovable = false;
-	}
-
-	resume() {
-		this.isMovable = true;
+	private listenToSpatialTeleporterEvents() {
+		this.scene.events.on('SpatialTeleporter::activate', ({ x, y }) => {
+			const xDirection = this.direction === 'left' ? x - 10 : x + 10;
+			this.setPosition(xDirection, y);
+		});
 	}
 
 	private checkActions() {
@@ -160,14 +177,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 		this.scene.events.emit('Player::shotBullet', ball, this.direction);
 	}
 
-	private init() {
-		this.speedX = 180;
-		this.speedY = 180;
+	private initCharacs() {
 		this.body.setSize(2);
 		this.direction = 'right';
 	}
 
-	private setKeyboardInputs() {
+	private initKeyboardInputs() {
 		this.left = this.scene.input.keyboard.addKey(
 			Phaser.Input.Keyboard.KeyCodes.LEFT
 		);

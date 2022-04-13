@@ -1,6 +1,7 @@
 import { Coordinates } from '../types';
 
 export default class DoubleTimeTeleporter extends Phaser.Physics.Arcade.Sprite {
+    private alive = true;
     private oppositeDoubleTimeTeleporter: DoubleTimeTeleporter;
     
     constructor(scene: Phaser.Scene, x: number, y: number) {
@@ -8,6 +9,7 @@ export default class DoubleTimeTeleporter extends Phaser.Physics.Arcade.Sprite {
     	scene.add.existing(this);
     	this.scene.physics.world.enable(this);
     	this.setImmovable(true);
+    	this.create();
     }
     
     public setOpposite(opposite: DoubleTimeTeleporter): void {
@@ -19,8 +21,14 @@ export default class DoubleTimeTeleporter extends Phaser.Physics.Arcade.Sprite {
     	return { x, y };
     }
     
-    // create() {
-    // }
+    create() {
+    	this.scene.events.on('DoubleSwitcher::activate', () => {
+    		if (this.alive) {
+    			this.destroy();
+    			this.alive = false;
+    		}
+    	});
+    }
 
     // update() {
     // }
