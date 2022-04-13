@@ -22,9 +22,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 	nextWalkSound = 0;
 	walkSoundRate = 500;
 	isMovable = true;
+	nextActivability = 0;
+	activabilityRate = 500;
 
-
-	constructor(scene: Phaser.Scene, x, y) {
+	constructor(scene: Phaser.Scene, x: number, y: number) {
 		super(scene, x, y, 'player', 'idle-1');
 		scene.add.existing(this);
 		this.scene.physics.world.enable(this);
@@ -34,6 +35,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 	create() {
 		this.init();
 		this.setKeyboardInputs();
+
+		this.scene.events.on('SpatialTeleporter::activate', ({ x, y }) => {
+			const xDirection = this.direction === 'left' ? x + 10 : x + 10;
+			this.setPosition(xDirection, y);
+		});
 		
 		this.anims.create({
 			key: 'walk',
@@ -91,9 +97,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 	private checkActions() {
 		if (this.isMovable) {
 			if (this.enter.isDown) {
-				this.enterActivate = true;
-			}
-			if (this.enter.isUp) {
+				if (this.scene.time.now > this.nextActivability) {
+					this.nextActivability = this.scene.time.now + this.activabilityRate;
+					this.enterActivate = true;
+				}
+			} else {
 				this.enterActivate = false;
 			}
 			if (this.shot.isDown) {
@@ -113,6 +121,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 					}
 				}
 			}
+		} else {
+			this.enterActivate = false;
+			this.isShooting = false;
 		}
 	}
 

@@ -1,5 +1,6 @@
 import PastPlayer from '../objects/pastPlayer';
 import Player from '../objects/player';
+import SpatialTeleporter from '../objects/spatialTeleporter';
 import MyTextBox from '../ui/myTextBox';
 import { SceneKey } from './index';
 
@@ -20,8 +21,6 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	protected doorTp1bPosition: Phaser.Types.Tilemaps.TiledObject;
 	protected doorStart: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
 	protected doorEnd: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
-	protected doorTp1a: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
-	protected doorTp1b: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
 	protected tp1aPosition: Phaser.Types.Tilemaps.TiledObject;
 	protected tp1bPosition: Phaser.Types.Tilemaps.TiledObject;
 	protected tp1a: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
@@ -36,8 +35,11 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	protected tp2a: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
 	protected tp2b: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
 	protected music: Phaser.Sound.BaseSound;
+	
 	protected textBox?: MyTextBox;
 	protected player: Player;
+	protected spatialTeleporter1a: SpatialTeleporter;
+	protected spatialTeleporter1b: SpatialTeleporter;
 	protected tp1aHasBeenDestroyed = false;
 	protected tp1bHasBeenDestroyed = false;
 	protected tp2aHasBeenDestroyed = false;
@@ -53,8 +55,8 @@ export default abstract class BaseLevel extends Phaser.Scene {
 
 	create() {
 		this.initMap();
-		this.addDoors();
 		this.addTps();
+		this.addDoors();
 		this.addPlayer();
 		this.initPastPlayers();
 		this.listenToPlayerEvents();
@@ -85,26 +87,18 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		});
 		
 		// tp to door 1b
-		if (this.doorTp1a) {
-			if (this.intersect(this.player, this.doorTp1a)) {
-				if (this.time.now > this.nextTp) {
-					if (this.player.enterActivate) {
-						this.nextTp = this.time.now + this.tpRate;
-						this.sound.play('door_tp');
-						this.player.setPosition(this.doorTp1b.x + 10, this.doorTp1b.y);
-					}
+		if (this.spatialTeleporter1a) {
+			if (this.intersect(this.player, this.spatialTeleporter1a)) {
+				if (this.player.enterActivate) {
+					this.spatialTeleporter1a.activate();
 				}
 			}
 		}
 		// tp to door 1a
-		if (this.doorTp1b) {
-			if (this.intersect(this.player, this.doorTp1b)) {
-				if (this.time.now > this.nextTp) {
-					if (this.player.enterActivate) {
-						this.nextTp = this.time.now + this.tpRate;
-						this.sound.play('door_tp');
-						this.player.setPosition(this.doorTp1a.x - 10, this.doorTp1a.y);
-					}
+		if (this.spatialTeleporter1b) {
+			if (this.intersect(this.player, this.spatialTeleporter1b)) {
+				if (this.player.enterActivate) {
+					this.spatialTeleporter1b.activate();
 				}
 			}
 		}
@@ -218,7 +212,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	private addPlayer() {
 		this.start = this.tilemap.findObject('doors', obj => obj.name === 'start');
 		this.end = this.tilemap.findObject('doors', obj => obj.name === 'end');
-		this.player = new Player(this, this.start.x, this.start.y);
+		this.player = new Player(this, this.start?.x || 0, this.start?.y || 0);
 		this.cameras.main.startFollow(this.player);
 		this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, this.tilemap.heightInPixels);
 		this.player.create();
@@ -280,12 +274,14 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		this.doorTp1aPosition = this.tilemap.findObject('doors', obj => obj.name === 'door_tp1a');
 		this.doorTp1bPosition = this.tilemap.findObject('doors', obj => obj.name === 'door_tp1b');
 		if (this.doorTp1aPosition && this.doorTp1bPosition) {
-			this.doorTp1a = this.physics.add.sprite(this.doorTp1aPosition?.x || 0, this.doorTp1aPosition?.y || 0, 'door_tp');
-			this.doorTp1b = this.physics.add.sprite(this.doorTp1bPosition?.x || 0, this.doorTp1bPosition?.y || 0, 'door_tp');
-			this.physics.add.collider(this.doorTp1a, this.groundLayer);
-			this.physics.add.collider(this.doorTp1b, this.groundLayer);
-			this.physics.add.collider(this.doorTp1a, this.platformsLayer);
-			this.physics.add.collider(this.doorTp1b, this.platformsLayer);
+			this.spatialTeleporter1a = new SpatialTeleporter(this, this.doorTp1aPosition?.x || 0, this.doorTp1aPosition?.y || 0);
+			this.spatialTeleporter1b = new SpatialTeleporter(this, this.doorTp1bPosition?.x || 0, this.doorTp1bPosition?.y || 0);
+			this.spatialTeleporter1a.setOpposite(this.spatialTeleporter1b);
+			this.spatialTeleporter1b.setOpposite(this.spatialTeleporter1a);
+			this.physics.add.collider(this.spatialTeleporter1a, this.groundLayer);
+			this.physics.add.collider(this.spatialTeleporter1b, this.groundLayer);
+			this.physics.add.collider(this.spatialTeleporter1a, this.platformsLayer);
+			this.physics.add.collider(this.spatialTeleporter1b, this.platformsLayer);
 		}
 	}
 
