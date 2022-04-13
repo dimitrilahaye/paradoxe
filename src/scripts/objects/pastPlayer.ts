@@ -14,6 +14,7 @@ export default class PastPlayer extends Phaser.Physics.Arcade.Sprite {
 	enter: Phaser.Input.Keyboard.Key;
 	enterActivate: boolean;
 	isDead = false;
+	isDeadEventEmitted = false;
 
 
 	constructor(scene: Phaser.Scene, x, y) {
@@ -64,9 +65,10 @@ export default class PastPlayer extends Phaser.Physics.Arcade.Sprite {
 	update() {
 		// this.movePlayer();
 		this.on('animationcomplete', () => {
-			if (this.isDead) {
+			if (this.isDead && !this.isDeadEventEmitted) {
 				this.anims.stop();
 				this.scene.events.emit('PastPlayer::isDead');
+				this.isDeadEventEmitted = true;
 			}
 		});
 	}

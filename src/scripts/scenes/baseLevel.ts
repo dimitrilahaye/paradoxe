@@ -181,9 +181,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 			if (!leftAlivePastPlayers) {
 				this.time.delayedCall(200, () => {
 					this.doorEnd.setTexture('door_end_open');
-					this.sound.play('door_open', {
-						volume: 0.1,
-					});
+					this.sound.play('door_open');
 				});
 			}
 		}, this);
