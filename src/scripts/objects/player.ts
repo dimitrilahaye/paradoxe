@@ -39,13 +39,13 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 		this.setKeyboardInputs();
 
 		this.scene.events.on('SpatialTeleporter::activate', ({ x, y }) => {
-			const xDirection = this.direction === 'left' ? x + 10 : x + 10;
+			const xDirection = this.direction === 'left' ? x - 10 : x + 10;
 			this.setPosition(xDirection, y);
 		});
 
 		this.scene.events.on('DoubleTimeTeleporter::activate', (_, targetCoordinates: Coordinates) => {
 			const { x, y } = targetCoordinates;
-			const xDirection = this.direction === 'left' ? x + 10 : x + 10;
+			const xDirection = this.direction === 'left' ? x - 10 : x + 10;
 			this.setPosition(xDirection, y);
 		});
 		
