@@ -26,21 +26,17 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	protected pastPlayersGroup: Phaser.GameObjects.Group;
 	protected music: Phaser.Sound.BaseSound;
 	
-	protected textBox?: MyTextBox;
 	protected player: Player;
 	protected doorEntrance: DoorEntrance;
 	protected doorExit: DoorExit;
 	protected spatialTeleporter1a: SpatialTeleporter;
 	protected spatialTeleporter1b: SpatialTeleporter;
 	protected simpleTimeTeleporter2a: SimpleTimeTeleporter;
-	protected simpleSwitcher: SimpleSwitcher;
 	protected doubleTimeTeleporter1a: DoubleTimeTeleporter;
 	protected doubleTimeTeleporter1b: DoubleTimeTeleporter;
+	protected simpleSwitcher: SimpleSwitcher;
 	protected doubleSwitcher: DoubleSwitcher;
-	protected tp1aHasBeenDestroyed = false;
-	protected tp1bHasBeenDestroyed = false;
-	protected nextTp = 0;
-	protected tpRate = 500;
+	protected textBox: MyTextBox;
 	protected dialogs = new Map<string, string>();
 	protected isDialogLaunched = false;
 
