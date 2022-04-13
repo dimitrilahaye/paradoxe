@@ -362,6 +362,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		if (!this.music.isPlaying) {
 			this.music.play({
 				loop: true,
+				volume: 0.1,
 			});
 		}
 	}

@@ -117,7 +117,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 	}
 
 	private shotBullet(velocity: number) {
-		this.scene.sound.play('simple_gun_shot');
+		this.scene.sound.play('simple_gun_shot', { volume: 1 });
 		
 		const shotX = this.direction === 'left' ? this.x - 12 : this.x + 12;
 		const shotGun = this.scene.add.sprite(shotX, this.y, 'simple_gun_shot');
