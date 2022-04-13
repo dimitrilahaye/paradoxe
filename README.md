@@ -29,6 +29,8 @@
   - [ ] checkbox for sound fx
   - [ ] go to credits
 - [ ] Credits scene
+- [ ] Add github page
+- [ ] Add game in itchi.io
 
 ## Best effort
 - [ ] sprites titles level
