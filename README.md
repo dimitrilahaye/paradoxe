@@ -13,8 +13,8 @@
 - [X] add sounds fx + music
 - [X] refacto green time teleporters with new gameplay
 - [X] Fix bug: time teleporters according to the current player direction
-- [ ] **WIP:** :construction: refacto generics time teleporters, spatial teleporters, switcher, and so on
-- [ ] create level to present green tp game play
+- [X] refacto generics time teleporters, spatial teleporters, switcher, and so on
+- [ ] **WIP:** :construction: create level to present green tp game play
 - [ ] add orange time teleporters
 - [ ] create level to present orange tp game play
 - [ ] create level that mix all tp types
