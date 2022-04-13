@@ -1,3 +1,4 @@
+import DoubleTimeTeleporter from '../objects/doubleTimeTeleporter';
 import PastPlayer from '../objects/pastPlayer';
 import Player from '../objects/player';
 import SpatialTeleporter from '../objects/spatialTeleporter';
@@ -23,8 +24,6 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	protected doorEnd: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
 	protected tp1aPosition: Phaser.Types.Tilemaps.TiledObject;
 	protected tp1bPosition: Phaser.Types.Tilemaps.TiledObject;
-	protected tp1a: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
-	protected tp1b: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
 	protected switcher1Position: Phaser.Types.Tilemaps.TiledObject;
 	protected switcher1: Phaser.GameObjects.Sprite;
 	protected pastPlayersGroup: Phaser.GameObjects.Group;
@@ -40,6 +39,8 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	protected player: Player;
 	protected spatialTeleporter1a: SpatialTeleporter;
 	protected spatialTeleporter1b: SpatialTeleporter;
+	protected doubleTimeTeleporter1a: DoubleTimeTeleporter;
+	protected doubleTimeTeleporter1b: DoubleTimeTeleporter;
 	protected tp1aHasBeenDestroyed = false;
 	protected tp1bHasBeenDestroyed = false;
 	protected tp2aHasBeenDestroyed = false;
@@ -122,9 +123,9 @@ export default abstract class BaseLevel extends Phaser.Scene {
 			if (!this.tp1aHasBeenDestroyed && !this.tp1bHasBeenDestroyed && this.intersect(this.player, this.switcher1)) {
 				if (this.player.enterActivate) {
 					this.sound.play('switcher');
-					this.tp1a.destroy();
+					this.doubleTimeTeleporter1a.destroy();
 					this.tp1aHasBeenDestroyed = true;
-					this.tp1b.destroy();
+					this.doubleTimeTeleporter1b.destroy();
 					this.tp1bHasBeenDestroyed = true;
 				}
 			}
@@ -175,7 +176,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	private listenToPlayerEvents() {
 		this.events.on('Player::shotBullet', (ball: Phaser.Physics.Arcade.Sprite) => {
 			this.events.emit('BaseLevel::firstShotGun');
-			this.physics.add.collider([this.groundLayer, this.tp1a, this.tp1b, this.tp2a, this.tp2b], ball, () => {
+			this.physics.add.collider([this.groundLayer, this.doubleTimeTeleporter1a, this.doubleTimeTeleporter1b, this.tp2a, this.tp2b], ball, () => {
 				ball.destroy();
 			}, undefined, this);
 		}, this);
@@ -218,25 +219,33 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		this.player.create();
 		this.physics.add.collider(this.player, this.groundLayer);
 		this.physics.add.collider(this.player, this.platformsLayer);
-		if (this.tp1a && this.tp1b) {
-			this.physics.add.collider(this.player, this.tp1a, () => {
+
+		if (this.doubleTimeTeleporter1a && this.doubleTimeTeleporter1b) {
+			this.physics.add.collider(this.player, this.doubleTimeTeleporter1a, () => {
 				this.shakeOnTpCollision();
-				this.sound.play('tp');
-				this.player.setPosition(this.tp1b.x + 10, this.tp1b.y);
-				const pastPlayer = new PastPlayer(this, this.tp1a.x - 20, this.tp1a.y);
+
+				this.doubleTimeTeleporter1a.activate();
+
+				// TODO: time teleporter add their own position as first argument
+				// then, Scene listen to this event, and create a new PastPlayer according
+				// to Player direction
+				const pastPlayer = new PastPlayer(this, this.doubleTimeTeleporter1a.x - 20, this.doubleTimeTeleporter1a.y);
 				pastPlayer.create();
 				this.pastPlayersGroup.add(pastPlayer);
 				this.events.emit('BaseLevel::firstTp');
 			}, undefined, this);
-			this.physics.add.collider(this.player, this.tp1b, () => {
+			this.physics.add.collider(this.player, this.doubleTimeTeleporter1b, () => {
 				this.shakeOnTpCollision();
-				this.sound.play('tp');
-				this.player.setPosition(this.tp1a.x - 10, this.tp1a.y);
-				const pastPlayer = new PastPlayer(this, this.tp1b.x + 20, this.tp1b.y);
+				
+				this.doubleTimeTeleporter1b.activate();
+				
+				const pastPlayer = new PastPlayer(this, this.doubleTimeTeleporter1b.x + 20, this.doubleTimeTeleporter1b.y);
 				pastPlayer.create();
 				this.pastPlayersGroup.add(pastPlayer);
 			}, undefined, this);
 		}
+
+		// TODO: refactor Simple time transporter with new gameplay
 		if (this.tp2a && this.tp2b) {
 			this.physics.add.collider(this.player, this.tp2a, () => {
 				this.shakeOnTpCollision();
@@ -278,6 +287,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 			this.spatialTeleporter1b = new SpatialTeleporter(this, this.doorTp1bPosition?.x || 0, this.doorTp1bPosition?.y || 0);
 			this.spatialTeleporter1a.setOpposite(this.spatialTeleporter1b);
 			this.spatialTeleporter1b.setOpposite(this.spatialTeleporter1a);
+
 			this.physics.add.collider(this.spatialTeleporter1a, this.groundLayer);
 			this.physics.add.collider(this.spatialTeleporter1b, this.groundLayer);
 			this.physics.add.collider(this.spatialTeleporter1a, this.platformsLayer);
@@ -286,18 +296,21 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	}
 
 	private addTps() {
+		// TODO: refacto deeply DoubleTimeTeleporter
 		this.tp1aPosition = this.tilemap.findObject('tps', obj => obj.name === 'tp1a');
 		this.tp1bPosition = this.tilemap.findObject('tps', obj => obj.name === 'tp1b');
 		if (this.tp1aPosition && this.tp1bPosition) {
-			this.tp1a = this.physics.add.sprite(this.tp1aPosition?.x || 0, this.tp1aPosition?.y || 0, 'tp_red');
-			this.tp1b = this.physics.add.sprite(this.tp1bPosition?.x || 0, this.tp1bPosition?.y || 0, 'tp_red');
-			this.tp1a.setImmovable(true);
-			this.tp1b.setImmovable(true);
-			this.physics.add.collider(this.tp1a, this.groundLayer);
-			this.physics.add.collider(this.tp1b, this.groundLayer);
-			this.physics.add.collider(this.tp1a, this.platformsLayer);
-			this.physics.add.collider(this.tp1b, this.platformsLayer);
+			this.doubleTimeTeleporter1a = new DoubleTimeTeleporter(this, this.tp1aPosition?.x || 0, this.tp1aPosition?.y || 0);
+			this.doubleTimeTeleporter1b = new DoubleTimeTeleporter(this, this.tp1bPosition?.x || 0, this.tp1bPosition?.y || 0);
+			this.doubleTimeTeleporter1a.setOpposite(this.doubleTimeTeleporter1b);
+			this.doubleTimeTeleporter1b.setOpposite(this.doubleTimeTeleporter1a);
+
+			this.physics.add.collider(this.doubleTimeTeleporter1a, this.groundLayer);
+			this.physics.add.collider(this.doubleTimeTeleporter1b, this.groundLayer);
+			this.physics.add.collider(this.doubleTimeTeleporter1a, this.platformsLayer);
+			this.physics.add.collider(this.doubleTimeTeleporter1b, this.platformsLayer);
 		}
+		// TODO: refacto SimpleTimeTeleporter
 		this.tp2aPosition = this.tilemap.findObject('tps', obj => obj.name === 'tp2a');
 		this.tp2bPosition = this.tilemap.findObject('tps', obj => obj.name === 'tp2b');
 		if (this.tp2aPosition && this.tp2bPosition) {
@@ -322,7 +335,8 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	}
 
 	private initPastPlayers() {
-		if (this.tp1a) {
+		// at least on time teleporter is enough to generate a past player group
+		if (this.doubleTimeTeleporter1a) {
 			this.pastPlayersGroup = this.add.group();
 			this.physics.add.collider(this.pastPlayersGroup, this.groundLayer);
 			this.physics.add.collider(this.pastPlayersGroup, this.platformsLayer);

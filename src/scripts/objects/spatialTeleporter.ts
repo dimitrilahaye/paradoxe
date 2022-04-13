@@ -1,3 +1,5 @@
+import { Coordinates } from '../types';
+
 export default class SpatialTeleporter extends Phaser.Physics.Arcade.Sprite {
     public nextTp = 0;
     private tpRate = 500;
@@ -12,7 +14,7 @@ export default class SpatialTeleporter extends Phaser.Physics.Arcade.Sprite {
     	this.oppositeSpatialTeleporter = opposite;
     }
 
-    private getOppositeCoordinates(): { x: number, y: number } {
+    private getOppositeCoordinates(): Coordinates {
     	const { x, y } = this.oppositeSpatialTeleporter;
     	return { x, y };
     }
