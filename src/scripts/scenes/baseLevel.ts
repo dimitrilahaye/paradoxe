@@ -3,11 +3,12 @@ import DoorEntrance from '../objects/doorEntrance';
 import DoorExit from '../objects/doorExit';
 import DoubleSwitcher from '../objects/doubleSwitcher';
 import DoubleTimeTeleporter from '../objects/doubleTimeTeleporter';
+import GreenSpatialTeleporter from '../objects/greenSpatialTeleporter';
 import PastPlayer from '../objects/pastPlayer';
 import Player from '../objects/player';
+import RedSpatialTeleporter from '../objects/redSpatialTeleporter';
 import SimpleSwitcher from '../objects/simpleSwitcher';
 import SimpleTimeTeleporter from '../objects/simpleTimeTeleporter';
-import SpatialTeleporter from '../objects/spatialTeleporter';
 import MyTextBox from '../ui/myTextBox';
 import { SceneKey } from './index';
 
@@ -31,8 +32,10 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	protected player: Player;
 	protected doorEntrance: DoorEntrance;
 	protected doorExit: DoorExit;
-	protected spatialTeleporter1a: SpatialTeleporter;
-	protected spatialTeleporter1b: SpatialTeleporter;
+	protected greenSpatialTeleporter1: GreenSpatialTeleporter;
+	protected greenSpatialTeleporter2: GreenSpatialTeleporter;
+	protected redSpatialTeleporter1: RedSpatialTeleporter;
+	protected redSpatialTeleporter2: RedSpatialTeleporter;
 	protected simpleTimeTeleporter: SimpleTimeTeleporter;
 	protected doubleTimeTeleporter1: DoubleTimeTeleporter;
 	protected doubleTimeTeleporter2: DoubleTimeTeleporter;
@@ -141,18 +144,36 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	}
 
 	private checkForSpatialTeleportersActivation() {
-		if (this.spatialTeleporter1a) {
-			if (this.intersect(this.player, this.spatialTeleporter1a)) {
+		// green ones
+		if (this.greenSpatialTeleporter1) {
+			if (this.intersect(this.player, this.greenSpatialTeleporter1)) {
 				if (this.player.enterActivate) {
-					this.spatialTeleporter1a.activate();
+					this.greenSpatialTeleporter1.activate();
 				}
 			}
 		}
 
-		if (this.spatialTeleporter1b) {
-			if (this.intersect(this.player, this.spatialTeleporter1b)) {
+		if (this.greenSpatialTeleporter2) {
+			if (this.intersect(this.player, this.greenSpatialTeleporter2)) {
 				if (this.player.enterActivate) {
-					this.spatialTeleporter1b.activate();
+					this.greenSpatialTeleporter2.activate();
+				}
+			}
+		}
+
+		// red ones
+		if (this.redSpatialTeleporter1) {
+			if (this.intersect(this.player, this.redSpatialTeleporter1)) {
+				if (this.player.enterActivate) {
+					this.redSpatialTeleporter1.activate();
+				}
+			}
+		}
+
+		if (this.redSpatialTeleporter2) {
+			if (this.intersect(this.player, this.redSpatialTeleporter2)) {
+				if (this.player.enterActivate) {
+					this.redSpatialTeleporter2.activate();
 				}
 			}
 		}
@@ -303,15 +324,25 @@ export default abstract class BaseLevel extends Phaser.Scene {
 
 	// TODO: add red ones
 	private initSpatialTeleporters() {
-		const doorTp1aPosition = this.tilemap.findObject('doors', obj => obj.name === ObjectName.DOOR_TP_GREEN_1);
-		const doorTp1bPosition = this.tilemap.findObject('doors', obj => obj.name === ObjectName.DOOR_TP_GREEN_2);
-		if (doorTp1aPosition && doorTp1bPosition) {
-			this.spatialTeleporter1a = new SpatialTeleporter(this, doorTp1aPosition?.x || 0, doorTp1aPosition?.y || 0);
-			this.spatialTeleporter1b = new SpatialTeleporter(this, doorTp1bPosition?.x || 0, doorTp1bPosition?.y || 0);
-			this.spatialTeleporter1a.setOpposite(this.spatialTeleporter1b);
-			this.spatialTeleporter1b.setOpposite(this.spatialTeleporter1a);
+		const greenDoorTp1Position = this.tilemap.findObject('doors', obj => obj.name === ObjectName.DOOR_TP_GREEN_1);
+		const greenDoorTp2Position = this.tilemap.findObject('doors', obj => obj.name === ObjectName.DOOR_TP_GREEN_2);
+		if (greenDoorTp1Position && greenDoorTp2Position) {
+			this.greenSpatialTeleporter1 = new GreenSpatialTeleporter(this, greenDoorTp1Position?.x || 0, greenDoorTp1Position?.y || 0);
+			this.greenSpatialTeleporter2 = new GreenSpatialTeleporter(this, greenDoorTp2Position?.x || 0, greenDoorTp2Position?.y || 0);
+			this.greenSpatialTeleporter1.setOpposite(this.greenSpatialTeleporter2);
+			this.greenSpatialTeleporter2.setOpposite(this.greenSpatialTeleporter1);
 
-			this.physics.add.collider([this.spatialTeleporter1a, this.spatialTeleporter1b], [this.platformsLayer, this.groundLayer]);
+			this.physics.add.collider([this.greenSpatialTeleporter1, this.greenSpatialTeleporter2], [this.platformsLayer, this.groundLayer]);
+		}
+		const redDoorTp1Position = this.tilemap.findObject('doors', obj => obj.name === ObjectName.DOOR_TP_RED_1);
+		const redDoorTp2Position = this.tilemap.findObject('doors', obj => obj.name === ObjectName.DOOR_TP_RED_2);
+		if (redDoorTp1Position && redDoorTp2Position) {
+			this.redSpatialTeleporter1 = new RedSpatialTeleporter(this, redDoorTp1Position?.x || 0, redDoorTp1Position?.y || 0);
+			this.redSpatialTeleporter2 = new RedSpatialTeleporter(this, redDoorTp2Position?.x || 0, redDoorTp2Position?.y || 0);
+			this.redSpatialTeleporter1.setOpposite(this.redSpatialTeleporter2);
+			this.redSpatialTeleporter2.setOpposite(this.redSpatialTeleporter1);
+
+			this.physics.add.collider([this.redSpatialTeleporter1, this.redSpatialTeleporter2], [this.platformsLayer, this.groundLayer]);
 		}
 	}
 

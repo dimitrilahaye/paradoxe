@@ -1,12 +1,24 @@
 import { Coordinates } from '../types';
 
-export default class SpatialTeleporter extends Phaser.Physics.Arcade.Sprite {
-    public nextTp = 0;
-    private tpRate = 500;
-    private oppositeSpatialTeleporter: SpatialTeleporter;
+export default abstract class SpatialTeleporter extends Phaser.Physics.Arcade.Sprite {
+    private _nextTp = 0;
+    private _tpRate = 500;
+    protected oppositeSpatialTeleporter: SpatialTeleporter;
+
+    get nextTp(): number {
+    	return this._nextTp;
+    }
+
+    set nextTp(nextTp: number) {
+    	this._nextTp = nextTp;
+    }
+
+    get tpRate(): number {
+    	return this._tpRate;
+    }
     
-    constructor(scene: Phaser.Scene, x: number, y: number) {
-    	super(scene, x, y, 'door_tp');
+    constructor(scene: Phaser.Scene, x: number, y: number, key: string) {
+    	super(scene, x, y, key);
     	scene.add.existing(this);
     }
 
@@ -14,7 +26,7 @@ export default class SpatialTeleporter extends Phaser.Physics.Arcade.Sprite {
     	this.oppositeSpatialTeleporter = opposite;
     }
 
-    private getOppositeCoordinates(): Coordinates {
+    protected getOppositeCoordinates(): Coordinates {
     	const { x, y } = this.oppositeSpatialTeleporter;
     	return { x, y };
     }
@@ -25,11 +37,5 @@ export default class SpatialTeleporter extends Phaser.Physics.Arcade.Sprite {
     // update() {
     // }
 
-    public activate(): void {
-    	if (this.scene.time.now > this.nextTp) {
-    		this.nextTp = this.oppositeSpatialTeleporter.nextTp = this.scene.time.now + this.tpRate;
-    		this.scene.sound.play('door_tp');
-    		this.scene.events.emit('SpatialTeleporter::activate', this.getOppositeCoordinates());
-    	}
-    }
+    public abstract activate(): void;
 }

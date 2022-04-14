@@ -1,9 +1,9 @@
 import BaseLevel from './baseLevel';
 import { SceneKey } from './index';
 
-export default class Level5 extends BaseLevel {
+export default class Level6 extends BaseLevel {
 	constructor() {
-		super(SceneKey.Level5, SceneKey.PreloadLevel6, 'level5');
+		super(SceneKey.Level6, SceneKey.PreloadLevel1, 'level6');
 	}
 
 	create() {

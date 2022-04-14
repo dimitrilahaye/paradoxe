@@ -32,10 +32,13 @@ export default abstract class BasePreloadLevel extends Phaser.Scene {
 		this.load.image('door_tp_green', 'assets/img/objects/door_tp_green.png');
 		this.load.image('tp_red', 'assets/img/objects/tp_red.png');
 		this.load.image('tp_red_close', 'assets/img/objects/tp_red_close.png');
+		this.load.image('tp_orange', 'assets/img/objects/tp_orange.png');
+		this.load.image('tp_orange_close', 'assets/img/objects/tp_orange_close.png');
 		this.load.image('tp_green', 'assets/img/objects/tp_green.png');
 		this.load.image('tp_green_close', 'assets/img/objects/tp_green_close.png');
 		this.load.image('switcher_red', 'assets/img/objects/switcher_red.png');
 		this.load.image('switcher_green', 'assets/img/objects/switcher_green.png');
+		this.load.image('switcher_orange', 'assets/img/objects/switcher_orange.png');
 		
 		this.load.tilemapTiledJSON(this.tilesetKey, `assets/json/levels/${this.tilesetKey}.json`);
 		

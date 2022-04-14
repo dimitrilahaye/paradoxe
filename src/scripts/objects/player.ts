@@ -35,7 +35,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
 		this.initKeyboardInputs();
 
-		this.listenToSpatialTeleporterEvents();
+		this.listenToGreenSpatialTeleporterEvents();
+		this.listenToRedSpatialTeleporterEvents();
 
 		this.listenToDoubleTimeTeleporterEvents();
 
@@ -103,26 +104,31 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 	}
 
 	private listenToSimpleTimeTeleporterEvents() {
-		this.scene.events.on('SimpleTimeTeleporter::activate', (targetCoordinates: Coordinates) => {
-			const { x, y } = targetCoordinates;
-			const xDirection = this.direction === 'left' ? x - 10 : x + 10;
-			this.setPosition(xDirection, y);
+		this.scene.events.on('SimpleTimeTeleporter::activate', ({ x, y }: Coordinates) => {
+			this.teleportOnCoordinates({ x, y });
 		});
 	}
 
 	private listenToDoubleTimeTeleporterEvents() {
-		this.scene.events.on('DoubleTimeTeleporter::activate', (_, targetCoordinates: Coordinates) => {
-			const { x, y } = targetCoordinates;
-			const xDirection = this.direction === 'left' ? x - 10 : x + 10;
-			this.setPosition(xDirection, y);
+		this.scene.events.on('DoubleTimeTeleporter::activate', (_, { x, y }: Coordinates) => {
+			this.teleportOnCoordinates({ x, y });
 		});
 	}
 
-	private listenToSpatialTeleporterEvents() {
-		this.scene.events.on('SpatialTeleporter::activate', ({ x, y }) => {
-			const xDirection = this.direction === 'left' ? x - 10 : x + 10;
-			this.setPosition(xDirection, y);
+	private listenToGreenSpatialTeleporterEvents() {
+		this.scene.events.on('GreenSpatialTeleporter::activate', ({ x, y }: Coordinates) => {
+			this.teleportOnCoordinates({ x, y });
 		});
+	}
+	private listenToRedSpatialTeleporterEvents() {
+		this.scene.events.on('RedSpatialTeleporter::activate', ({ x, y }: Coordinates) => {
+			this.teleportOnCoordinates({ x, y });
+		});
+	}
+
+	private teleportOnCoordinates({ x, y }: Coordinates) {
+		const xDirection = this.direction === 'left' ? x - 10 : x + 10;
+		this.setPosition(xDirection, y);
 	}
 
 	private checkActions() {

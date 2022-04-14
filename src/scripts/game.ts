@@ -10,6 +10,8 @@ import PreloadLevel4 from './scenes/preloadLevel4';
 import Level4 from './scenes/level4';
 import PreloadLevel5 from './scenes/preloadLevel5';
 import Level5 from './scenes/level5';
+import PreloadLevel6 from './scenes/preloadLevel6';
+import Level6 from './scenes/level6';
 
 const DEFAULT_WIDTH = 1280;
 const DEFAULT_HEIGHT = 480;
@@ -25,18 +27,19 @@ const config = {
 		height: DEFAULT_HEIGHT,
 	},
 	scene: [
-		PreloadLevel1, // simple exit door
+		PreloadLevel6, // multi time teleporters
 		PreloadLevel4, // double time teleporters
 		PreloadLevel3, // simple time teleporter
+		PreloadLevel1, // simple exit door
 		PreloadLevel2, // spatial doors
 		PreloadLevel5, // mix simple / double teleporters
-		// TODO: level6: multi time teleporters
 		// TODO: level7: mix all teleporters
 		Level1,
 		Level2,
 		Level3,
 		Level4,
 		Level5,
+		Level6,
 	],
 	physics: {
 		default: 'arcade',
