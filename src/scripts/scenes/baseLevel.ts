@@ -79,12 +79,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		
 		this.initSimpleTimeTeleportersColliders();
 		this.initDoubleTimeTeleportersColliders();
-		this.initMultiTimeTeleporter1Colliders();
-		this.initMultiTimeTeleporter2Colliders();
-		this.initMultiTimeTeleporter3Colliders();
-		if (this.multiTimeTeleporter3) {
-			this.multiTimeTeleporter3.setToClose();
-		}
+		this.initMultiTimeTeleportersColliders();
 		
 		// TODO: refactor this part, condition is hard coded
 		this.initPastPlayers();
@@ -370,6 +365,16 @@ export default abstract class BaseLevel extends Phaser.Scene {
 			
 			this.doubleTimeTeleporter1.addCollider(ballsCollider, playerCollider1);
 			this.doubleTimeTeleporter2.addCollider(ballsCollider, playerCollider2);
+		}
+	}
+
+	private initMultiTimeTeleportersColliders() {
+		this.initMultiTimeTeleporter1Colliders();
+		this.initMultiTimeTeleporter2Colliders();
+		this.initMultiTimeTeleporter3Colliders();
+		
+		if (this.multiTimeTeleporter3) {
+			this.multiTimeTeleporter3.setToClose();
 		}
 	}
 
