@@ -15,8 +15,9 @@
 - [X] Fix bug: time teleporters according to the current player direction
 - [X] refacto generics time teleporters, spatial teleporters, switcher, and so on
 - [X] create level to present green tp game play
-- [ ] **WIP:** :construction: create sprite for closed tp and implement it
-- [ ] add orange time teleporters
+- [X] create sprite for closed tp and implement it
+- [ ] **WIP:** :construction: add orange time teleporters
+- [ ] implement red and orange tp closed sprites
 - [ ] create level to present orange tp game play
 - [ ] add system for many spatial teleporters
 - [ ] create level that mix all tp types
