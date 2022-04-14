@@ -24,6 +24,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	protected start: Phaser.Types.Tilemaps.TiledObject;
 	protected end: Phaser.Types.Tilemaps.TiledObject;
 	protected pastPlayersGroup: Phaser.GameObjects.Group;
+	protected ballGroup: Phaser.GameObjects.Group;
 	protected music: Phaser.Sound.BaseSound;
 	
 	protected player: Player;
@@ -45,6 +46,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	}
 
 	create() {
+		this.ballGroup = this.add.group();
 		this.initMap();
 		
 		// TODO: refacto deeply DoubleTimeTeleporter
@@ -187,7 +189,9 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	private listenToPlayerEvents() {
 		this.events.on('Player::shotBullet', (ball: Phaser.Physics.Arcade.Sprite) => {
 			this.events.emit('BaseLevel::firstShotGun');
-			this.physics.add.collider([this.groundLayer, this.doubleTimeTeleporter1a, this.doubleTimeTeleporter1b, this.simpleTimeTeleporter], ball, () => {
+			this.ballGroup.add(ball);
+			
+			this.physics.add.collider([this.groundLayer, this.doubleTimeTeleporter1a, this.doubleTimeTeleporter1b], ball, () => {
 				ball.destroy();
 			}, undefined, this);
 		}, this);
@@ -234,15 +238,22 @@ export default abstract class BaseLevel extends Phaser.Scene {
 
 	private initSimpleTimeTeleportersColliders() {
 		if (this.simpleTimeTeleporter) {
-			this.physics.add.collider(this.player, this.simpleTimeTeleporter, () => {
+			const playerCollider = this.physics.add.collider(this.player, this.simpleTimeTeleporter, () => {
 				this.shakeOnTpCollision();
 				this.simpleTimeTeleporter.activate();
+				this.events.emit('BaseLevel::firstTp');
 
 				const dirX = this.player.direction === 'left' ? -20 : +20;
 				const pastPlayer = new PastPlayer(this, this.simpleTimeTeleporter.x - dirX, this.simpleTimeTeleporter.y);
 				pastPlayer.create();
 				this.pastPlayersGroup.add(pastPlayer);
 			}, undefined, this);
+
+			const ballsCollider = this.physics.add.collider([this.simpleTimeTeleporter], this.ballGroup, (_, ball) => {
+				ball.destroy();
+			}, undefined, this);
+			
+			this.simpleTimeTeleporter.addCollider(ballsCollider, playerCollider);
 		}
 	}
 
@@ -256,7 +267,6 @@ export default abstract class BaseLevel extends Phaser.Scene {
 				const pastPlayer = new PastPlayer(this, this.doubleTimeTeleporter1a.x - 20, this.doubleTimeTeleporter1a.y);
 				pastPlayer.create();
 				this.pastPlayersGroup.add(pastPlayer);
-				this.events.emit('BaseLevel::firstTp');
 			}, undefined, this);
 			this.physics.add.collider(this.player, this.doubleTimeTeleporter1b, () => {
 				this.shakeOnTpCollision();

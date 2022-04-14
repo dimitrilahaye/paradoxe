@@ -14,10 +14,14 @@
 - [X] refacto green time teleporters with new gameplay
 - [X] Fix bug: time teleporters according to the current player direction
 - [X] refacto generics time teleporters, spatial teleporters, switcher, and so on
-- [ ] **WIP:** :construction: create level to present green tp game play
+- [X] create level to present green tp game play
+- [ ] **WIP:** :construction: create sprite for closed tp and implement it
 - [ ] add orange time teleporters
 - [ ] create level to present orange tp game play
+- [ ] add system for many spatial teleporters
 - [ ] create level that mix all tp types
+- [ ] rename levels by their real names
+- [ ] rename tp objects in Tiled for better clarity
 - [ ] replay button
 - [ ] past player tween
 - [ ] make past player able to shot us

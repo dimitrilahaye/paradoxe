@@ -4,10 +4,12 @@ import PreloadLevel1 from './scenes/preloadLevel1';
 import Level1 from './scenes/level1';
 import PreloadLevel2 from './scenes/preloadLevel2';
 import Level2 from './scenes/level2';
-import Level3 from './scenes/level3';
 import PreloadLevel3 from './scenes/preloadLevel3';
-import Level4 from './scenes/level4';
+import Level3 from './scenes/level3';
 import PreloadLevel4 from './scenes/preloadLevel4';
+import Level4 from './scenes/level4';
+import PreloadLevel5 from './scenes/preloadLevel5';
+import Level5 from './scenes/level5';
 
 const DEFAULT_WIDTH = 1280;
 const DEFAULT_HEIGHT = 480;
@@ -23,6 +25,8 @@ const config = {
 		height: DEFAULT_HEIGHT,
 	},
 	scene: [
+		PreloadLevel5,
+		Level5,
 		PreloadLevel4,
 		PreloadLevel1,
 		PreloadLevel3,
