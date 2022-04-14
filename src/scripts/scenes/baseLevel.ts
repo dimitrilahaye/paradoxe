@@ -268,7 +268,6 @@ export default abstract class BaseLevel extends Phaser.Scene {
 
 	private listenToMultiTimeTeleportersEvents() {
 		this.events.on('MultiTimeTeleporter::setToOpen', (num: number) => {
-			console.info('MultiTimeTeleporter::setToOpen switch case', num);
 			switch (num) {
 			case 1:
 				this.initMultiTimeTeleporter1Colliders();
@@ -280,7 +279,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 				this.initMultiTimeTeleporter3Colliders();
 				break;
 			default:
-					// nothing
+				// nothing
 			}
 		});
 	}
