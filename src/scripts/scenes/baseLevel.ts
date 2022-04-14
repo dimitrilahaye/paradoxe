@@ -79,7 +79,12 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		
 		this.initSimpleTimeTeleportersColliders();
 		this.initDoubleTimeTeleportersColliders();
-		this.initMultiTimeTeleportersColliders();
+		this.initMultiTimeTeleporter1Colliders();
+		this.initMultiTimeTeleporter2Colliders();
+		this.initMultiTimeTeleporter3Colliders();
+		if (this.multiTimeTeleporter3) {
+			this.multiTimeTeleporter3.setToClose();
+		}
 		
 		// TODO: refactor this part, condition is hard coded
 		this.initPastPlayers();
@@ -267,8 +272,21 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	}
 
 	private listenToMultiTimeTeleportersEvents() {
-		this.events.on('MultiTimeTeleporter::setToOpen', () => {
-			this.initMultiTimeTeleportersColliders();
+		this.events.on('MultiTimeTeleporter::setToOpen', (num: number) => {
+			console.info('MultiTimeTeleporter::setToOpen switch case', num);
+			switch (num) {
+			case 1:
+				this.initMultiTimeTeleporter1Colliders();
+				break;
+			case 2:
+				this.initMultiTimeTeleporter2Colliders();
+				break;
+			case 3:
+				this.initMultiTimeTeleporter3Colliders();
+				break;
+			default:
+					// nothing
+			}
 		});
 	}
 
@@ -355,9 +373,9 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}
 	}
 
-	private initMultiTimeTeleportersColliders() {
-		if (this.multiTimeTeleporter1 && this.multiTimeTeleporter2) {
-			const playerCollider1 = this.physics.add.collider(this.player, this.multiTimeTeleporter1, () => {
+	private initMultiTimeTeleporter1Colliders() {
+		if (this.multiTimeTeleporter1) {
+			const playerCollider = this.physics.add.collider(this.player, this.multiTimeTeleporter1, () => {
 				this.shakeOnTpCollision();
 
 				this.multiTimeTeleporter1.activate();
@@ -367,34 +385,54 @@ export default abstract class BaseLevel extends Phaser.Scene {
 				pastPlayer.create();
 				this.pastPlayersGroup.add(pastPlayer);
 			});
-			const playerCollider2 = this.physics.add.collider(this.player, this.multiTimeTeleporter2, () => {
+
+			const ballsCollider = this.physics.add.collider([this.multiTimeTeleporter1], this.ballGroup, (_, ball) => {
+				ball.destroy();
+			});
+			
+			this.multiTimeTeleporter1.addColliders(ballsCollider, playerCollider);
+		}
+	}
+
+	private initMultiTimeTeleporter2Colliders() {
+		if (this.multiTimeTeleporter2) {
+			const playerCollider = this.physics.add.collider(this.player, this.multiTimeTeleporter2, () => {
 				this.shakeOnTpCollision();
 
 				this.multiTimeTeleporter2.activate();
 
 				const dirX = this.player.direction === 'left' ? -20 : +20;
-				const pastPlayer = new PastPlayer(this, this.multiTimeTeleporter2.x + dirX, this.multiTimeTeleporter2.y);
+				const pastPlayer = new PastPlayer(this, this.multiTimeTeleporter2.x - dirX, this.multiTimeTeleporter2.y);
 				pastPlayer.create();
 				this.pastPlayersGroup.add(pastPlayer);
 			});
-			const playerCollider3 = this.physics.add.collider(this.player, this.multiTimeTeleporter3, () => {
+
+			const ballsCollider = this.physics.add.collider([this.multiTimeTeleporter2], this.ballGroup, (_, ball) => {
+				ball.destroy();
+			});
+			
+			this.multiTimeTeleporter2.addColliders(ballsCollider, playerCollider);
+		}
+	}
+
+	private initMultiTimeTeleporter3Colliders() {
+		if (this.multiTimeTeleporter3) {
+			const playerCollider = this.physics.add.collider(this.player, this.multiTimeTeleporter3, () => {
 				this.shakeOnTpCollision();
 
 				this.multiTimeTeleporter3.activate();
 
 				const dirX = this.player.direction === 'left' ? -20 : +20;
-				const pastPlayer = new PastPlayer(this, this.multiTimeTeleporter3.x + dirX, this.multiTimeTeleporter3.y);
+				const pastPlayer = new PastPlayer(this, this.multiTimeTeleporter3.x - dirX, this.multiTimeTeleporter3.y);
 				pastPlayer.create();
 				this.pastPlayersGroup.add(pastPlayer);
 			});
 
-			const ballsCollider = this.physics.add.collider([this.multiTimeTeleporter1, this.multiTimeTeleporter2, this.multiTimeTeleporter3], this.ballGroup, (_, ball) => {
+			const ballsCollider = this.physics.add.collider([this.multiTimeTeleporter3], this.ballGroup, (_, ball) => {
 				ball.destroy();
 			});
 			
-			this.multiTimeTeleporter1.addCollider(ballsCollider, playerCollider1);
-			this.multiTimeTeleporter2.addCollider(ballsCollider, playerCollider2);
-			this.multiTimeTeleporter3.addCollider(ballsCollider, playerCollider3);
+			this.multiTimeTeleporter3.addColliders(ballsCollider, playerCollider);
 		}
 	}
 
@@ -492,10 +530,8 @@ export default abstract class BaseLevel extends Phaser.Scene {
 			this.multiTimeTeleporter3 = new MultiTimeTeleporter(this, multiTimeTeleporter3Position?.x || 0, multiTimeTeleporter3Position?.y || 0, 3);
 			
 			this.multiTimeTeleporter1.setOpposites(this.multiTimeTeleporter2, this.multiTimeTeleporter3);
-			this.multiTimeTeleporter2.setOpposites(this.multiTimeTeleporter1, this.multiTimeTeleporter2);
-			this.multiTimeTeleporter3.setOpposites(this.multiTimeTeleporter1, this.multiTimeTeleporter3);
-			
-			this.multiTimeTeleporter3.setToClose();
+			this.multiTimeTeleporter2.setOpposites(this.multiTimeTeleporter1, this.multiTimeTeleporter3);
+			this.multiTimeTeleporter3.setOpposites(this.multiTimeTeleporter1, this.multiTimeTeleporter2);
 
 			this.physics.add.collider([this.multiTimeTeleporter1, this.multiTimeTeleporter2, this.multiTimeTeleporter3], [this.groundLayer, this.platformsLayer]);
 		}
