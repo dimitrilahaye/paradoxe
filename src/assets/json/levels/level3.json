@@ -122,24 +122,13 @@
                 {
                  "height":0,
                  "id":11,
-                 "name":"tp1a",
+                 "name":"tp_simple",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":496,
-                 "y":398
-                }, 
-                {
-                 "height":0,
-                 "id":12,
-                 "name":"tp1b",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":816,
-                 "y":398.667
+                 "x":560,
+                 "y":399.333
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -155,13 +144,13 @@
                 {
                  "height":0,
                  "id":13,
-                 "name":"switcher_1",
+                 "name":"switcher_simple",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":848,
-                 "y":398.667
+                 "x":784.5,
+                 "y":238.167
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -188,13 +177,13 @@
                 {
                  "height":0,
                  "id":2,
-                 "name":"door_tp1a",
+                 "name":"door_tp_green_1",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":608,
-                 "y":399.333
+                 "x":720.167,
+                 "y":400.666
                 }, 
                 {
                  "height":0,
@@ -215,19 +204,19 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":815,
-                 "y":235
+                 "x":1233.5,
+                 "y":394.5
                 }, 
                 {
                  "height":0,
                  "id":7,
-                 "name":"door_tp1b",
+                 "name":"door_tp_green_2",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":496,
-                 "y":237.5
+                 "x":624.5,
+                 "y":240.833
                 }, 
                 {
                  "height":0,
@@ -237,8 +226,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":811.5,
-                 "y":240.5
+                 "x":1230,
+                 "y":400
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -266,7 +255,7 @@
                  "visible":true,
                  "width":0,
                  "x":174,
-                 "y":400.666666666667
+                 "y":400.667
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -275,7 +264,7 @@
          "y":0
         }],
  "nextlayerid":17,
- "nextobjectid":15,
+ "nextobjectid":16,
  "orientation":"orthogonal",
  "renderorder":"left-down",
  "tiledversion":"1.8.4",

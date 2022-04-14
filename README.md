@@ -16,13 +16,11 @@
 - [X] refacto generics time teleporters, spatial teleporters, switcher, and so on
 - [X] create level to present green tp game play
 - [X] create sprite for closed tp and implement it
-- [ ] **WIP:** :construction: rename tp objects in Tiled for better clarity
-- [ ] add system for many spatial teleporters
-- [ ] add orange time teleporters
-- [ ] implement red and orange tp closed sprites
-- [ ] create level to present orange tp game play
+- [X] rename tp objects in Tiled for better clarity
+- [X] implement red tp closed sprite
+- [X] rename levels by their real names
+- [ ] **WIP:** :construction: create level to present orange tp game play + system for many spatial teleporters + orange tp closed sprites
 - [ ] create level that mix all tp types
-- [ ] rename levels by their real names
 - [ ] replay button
 - [ ] past player tween
 - [ ] make past player able to shot us

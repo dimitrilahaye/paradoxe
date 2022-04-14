@@ -130,6 +130,28 @@
         }, 
         {
          "draworder":"topdown",
+         "id":15,
+         "name":"tps",
+         "objects":[],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":16,
+         "name":"tp_switchers",
+         "objects":[],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":11,
          "name":"doors",
          "objects":[
@@ -147,7 +169,7 @@
                 {
                  "height":0,
                  "id":2,
-                 "name":"door_tp1a",
+                 "name":"door_tp_green_1",
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -180,7 +202,7 @@
                 {
                  "height":0,
                  "id":7,
-                 "name":"door_tp1b",
+                 "name":"door_tp_green_2",
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -250,7 +272,7 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":15,
+ "nextlayerid":17,
  "nextobjectid":13,
  "orientation":"orthogonal",
  "renderorder":"left-down",

@@ -11,4 +11,6 @@ export enum SceneKey {
   Level5 = 'Level5',
   PreloadLevel6 = 'PreloadLevel6',
   Level6 = 'Level6',
+  PreloadLevel7 = 'PreloadLevel7',
+  Level7 = 'Level7',
 }

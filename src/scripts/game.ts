@@ -25,16 +25,18 @@ const config = {
 		height: DEFAULT_HEIGHT,
 	},
 	scene: [
-		PreloadLevel5,
-		Level5,
-		PreloadLevel4,
-		PreloadLevel1,
-		PreloadLevel3,
+		PreloadLevel1, // simple exit door
+		PreloadLevel4, // double time teleporters
+		PreloadLevel3, // simple time teleporter
+		PreloadLevel2, // spatial doors
+		PreloadLevel5, // mix simple / double teleporters
+		// TODO: level6: multi time teleporters
+		// TODO: level7: mix all teleporters
 		Level1,
-		PreloadLevel2,
 		Level2,
 		Level3,
 		Level4,
+		Level5,
 	],
 	physics: {
 		default: 'arcade',

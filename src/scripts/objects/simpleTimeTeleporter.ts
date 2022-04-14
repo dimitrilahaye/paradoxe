@@ -19,9 +19,6 @@ export default class SimpleTimeTeleporter extends Phaser.Physics.Arcade.Sprite {
     		}
     	});
     }
-
-    // update() {
-    // }
 	
     public addCollider(...collider: Phaser.Physics.Arcade.Collider[]) {
     	this.collidersGroup.push(...collider);
