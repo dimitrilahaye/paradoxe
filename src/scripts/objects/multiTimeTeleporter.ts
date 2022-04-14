@@ -29,10 +29,6 @@ export default class MultiTimeTeleporter extends Phaser.Physics.Arcade.Sprite {
     	this.create();
     }
     
-    // TODO: sur les deux opposites, les deux peuvent être fermés
-    // TODO: donc si les deux sont fermés, on ouvre le 0
-    // TODO: si le 0 est fermé on prend le 1 et vis versa
-    // TODO: mettre à jour dans les 3 au fur et à mesure...
     create() {
     	this.scene.events.on('MultiSwitcher::activate', (num: number) => {
     		if (num === this.num) {
