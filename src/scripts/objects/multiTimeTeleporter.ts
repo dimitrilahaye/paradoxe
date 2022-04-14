@@ -45,6 +45,9 @@ export default class MultiTimeTeleporter extends Phaser.Physics.Arcade.Sprite {
 				
     			this.scene.events.emit('MultiTimeTeleporter::closeOpposite', oppositeToClose.num);
     			this.scene.events.emit('MultiTimeTeleporter::openOpposite', oppositeToOpen.num);
+    			if (!this.alive) {
+    				this.scene.events.emit('MultiTimeTeleporter::openOpposite', this.num);
+    			}
     		}
     	});
 
@@ -78,11 +81,9 @@ export default class MultiTimeTeleporter extends Phaser.Physics.Arcade.Sprite {
     	this.alive = false;
     	this.setTexture('tp_orange_close');
     	this.collidersGroup.filter((collider) => collider.active).forEach((collider) => collider.destroy());
-    	this.collidersGroup.length = 0;
     }
 	
     public addColliders(...collider: Phaser.Physics.Arcade.Collider[]) {
-    	this.collidersGroup.length = 0;
     	this.collidersGroup.push(...collider);
     }
     
