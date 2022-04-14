@@ -19,7 +19,7 @@
 - [X] rename tp objects in Tiled for better clarity
 - [X] implement red tp closed sprite
 - [X] rename levels by their real names
-- [X] system for many spatial teleporters + orange tp closed sprites
+- [X] system for many spatial teleporters
 - [ ] **WIP:** :construction: create level to present orange tp game play
 - [ ] create level that mix all tp types
 - [ ] replay button
