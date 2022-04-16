@@ -10,6 +10,17 @@ export default class Level3 extends BaseLevel {
 
 	create() {
 		super.create();
+
+		this.createSimpleTimeTeleporter();
+		this.createSimpleSwitcher();
+
+		this.initSimpleTimeTeleporterObjectsColliders();
+
+		this.initSimpleTimeTeleportersWorldColliders();
+
+		this.createSpatialTeleportersByColorAndNum('green', 0);
+		this.createSpatialTeleportersByColorAndNum('green', 1);
+
 		this.events.on('BaseLevel::firstTp', () => {
 			if (!this.firstTpTaken) {
 				this.firstTpTaken = true;
@@ -64,5 +75,9 @@ Faites-nous confiance, nous sommes des ingénieurs.`
 
 	update() {
 		super.update();
+
+		this.checkForSpatialTeleportersActivation();
+
+		this.checkForSimpleSwitcherActivation();
 	}
 }

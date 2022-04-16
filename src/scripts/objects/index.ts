@@ -1,6 +1,6 @@
 export enum ObjectName {
-    DOOR_START = 'door_start',
-    DOOR_END = 'door_end',
+    DOOR_START = 'start',
+    DOOR_END = 'end',
     START = 'start',
     END = 'end',
     DIALOG = 'dialog',
@@ -19,4 +19,27 @@ export enum ObjectName {
     SWITCHER_MULTI_1 = 'switcher_multi_1',
     SWITCHER_MULTI_2 = 'switcher_multi_2',
     SWITCHER_MULTI_3 = 'switcher_multi_3',
+}
+
+export enum LayerName {
+    // objects
+    DIALOGS = 'dialogs',
+    TELEPORTERS_SPATIAL = 'teleporters_spatial',
+    PLAYER = 'player',
+    DOORS = 'doors',
+    TELEPORTERS_MULTI = 'teleporters_multi',
+    SWITCHERS_MULTI = 'switchers_multi',
+    TELEPORTERS_SIMPLE = 'teleporters_simple',
+    SWITCHERS_SIMPLE = 'switchers_simple',
+    TELEPORTERS_DOUBLE = 'teleporters_double',
+    SWITCHERS_DOUBLE = 'switchers_double',
+    // tiles
+    CEILING = 'ceiling',
+    LIGHTS = 'lights',
+    PLATFORMS = 'platforms',
+    DESKS = 'desks',
+    WALL2 = 'wall2',
+    WALL = 'wall',
+    GROUND = 'ground',
+    BACKGROUND = 'background',
 }

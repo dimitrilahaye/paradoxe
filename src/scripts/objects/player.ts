@@ -35,8 +35,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
 		this.initKeyboardInputs();
 
-		this.listenToGreenSpatialTeleporterEvents();
-		this.listenToRedSpatialTeleporterEvents();
+		this.listenToSpatialTeleporterEvents();
 
 		this.listenToDoubleTimeTeleporterEvents();
 
@@ -115,13 +114,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 		});
 	}
 
-	private listenToGreenSpatialTeleporterEvents() {
-		this.scene.events.on('GreenSpatialTeleporter::activate', ({ x, y }: Coordinates) => {
-			this.teleportOnCoordinates({ x, y });
-		});
-	}
-	private listenToRedSpatialTeleporterEvents() {
-		this.scene.events.on('RedSpatialTeleporter::activate', ({ x, y }: Coordinates) => {
+	private listenToSpatialTeleporterEvents() {
+		this.scene.events.on('SpatialTeleporter::teleport', ({ x, y }: Coordinates) => {
 			this.teleportOnCoordinates({ x, y });
 		});
 	}

@@ -1,0 +1,293 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "level6.tmx",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "/home/dimitrilahaye/Documents/projets/games/paradoxe/game/paradox_tileset.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "/home/dimitrilahaye/Documents/projets/games/paradoxe/game/paradoxe.tmx": {
+            "scale": 0.33,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 640.9090909090908,
+                "y": 627.2727272727274
+            }
+        },
+        "/home/dimitrilahaye/Documents/projets/games/paradoxe/game/src/assets/json/level1.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 197,
+                "y": 378.66666666666663
+            }
+        },
+        "/home/dimitrilahaye/Documents/projets/games/paradoxe/game/src/assets/json/level1.tmx#tileset": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "/home/dimitrilahaye/Documents/projets/phaser/exo1.tmx": {
+            "scale": 0.33,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 913.6363636363637,
+                "y": 571.2121212121212
+            }
+        },
+        "/home/dimitrilahaye/Documents/projets/phaser/exo1.tmx#tilesheet": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "/home/dimitrilahaye/Documents/projets/phaser/exo2/assets/json/tilesheet.json": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "/home/dimitrilahaye/Documents/projets/phaser/exo2/assets/json/tilesheet.tmj": {
+            "scale": 0.3940776209677419,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 902.1065421756093,
+                "y": 658.4997122210144
+            }
+        },
+        "/home/dimitrilahaye/Documents/projets/phaser/exo2/assets/json/tilesheet.tmx": {
+            "scale": 1,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 1470.5,
+                "y": 218
+            }
+        },
+        "/home/dimitrilahaye/Documents/projets/phaser/exo2/assets/json/tilesheet.tmx#platformPack_tilesheet": {
+            "scaleInEditor": 1
+        },
+        "/home/dimitrilahaye/Documents/projets/phaser/exo2/assets/json/tilesheet.tmx#tileset": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "/home/dimitrilahaye/Documents/projets/phaser/exo2/assets/json/tilesheet.tmx#tilesheet": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "/home/dimitrilahaye/Documents/projets/phaser/exo3/assets/json/level1.tmx": {
+            "scale": 1,
+            "selectedLayer": 6,
+            "viewCenter": {
+                "x": 121.5,
+                "y": 173.5
+            }
+        },
+        "/home/dimitrilahaye/Documents/projets/phaser/exo3/assets/json/level1.tmx#terrain": {
+            "scaleInDock": 1
+        },
+        "/home/dimitrilahaye/Documents/projets/phaser/exo3/assets/json/level1.tmx#tilesPerso": {
+            "scaleInDock": 1
+        },
+        "/home/dimitrilahaye/Documents/projets/phaser/exo3/assets/json/level1.tmx#tileset": {
+            "scaleInDock": 1
+        },
+        "/home/dimitrilahaye/Documents/projets/phaser/exo4/assets/json/level1.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 627,
+                "y": 898
+            }
+        },
+        "/home/dimitrilahaye/Documents/projets/phaser/exo4/assets/json/level1.tmx#tileset": {
+            "scaleInDock": 1
+        },
+        "/home/dimitrilahaye/Documents/projets/phaser/perso3/src/assets/json/levels/level1.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 655,
+                "y": 492
+            }
+        },
+        "/home/dimitrilahaye/Documents/projets/phaser/perso3/src/assets/json/levels/level1.tmx#level1": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "/home/dimitrilahaye/Documents/projets/phaser/perso3/src/assets/json/levels/level2.tmx": {
+            "scale": 0.5421502976190476,
+            "selectedLayer": 5,
+            "viewCenter": {
+                "x": 613.2985658409386,
+                "y": 660.3334934467852
+            }
+        },
+        "/home/dimitrilahaye/Documents/projets/phaser/perso3/src/assets/json/levels/level2.tmx#level1": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "/home/dimitrilahaye/Downloads/CosmicLilac_Tiles.tsx": {
+            "scaleInDock": 3,
+            "scaleInEditor": 5.5
+        },
+        "/home/dimitrilahaye/snap/tiled/3981/.local/share/tiled/#level1": {
+            "scaleInDock": 1
+        },
+        "/home/dimitrilahaye/snap/tiled/3981/.local/share/tiled/#terrain": {
+            "scaleInDock": 1
+        },
+        "/home/dimitrilahaye/snap/tiled/3981/.local/share/tiled/#tileset": {
+            "scaleInDock": 1
+        },
+        "level1.tmx": {
+            "scale": 3,
+            "selectedLayer": 9,
+            "viewCenter": {
+                "x": 624,
+                "y": 239.66666666666666
+            }
+        },
+        "level1.tmx#tileset": {
+            "scaleInDock": 1,
+            "scaleInEditor": 3
+        },
+        "level2.tmx": {
+            "scale": 3,
+            "selectedLayer": 11,
+            "viewCenter": {
+                "x": 624,
+                "y": 240
+            }
+        },
+        "level2.tmx#tileset": {
+            "scaleInDock": 3,
+            "scaleInEditor": 1
+        },
+        "level3.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 9,
+            "viewCenter": {
+                "x": 624,
+                "y": 240
+            }
+        },
+        "level3.tmx#tileset": {
+            "scaleInDock": 1.5,
+            "scaleInEditor": 2
+        },
+        "level4.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 10,
+            "viewCenter": {
+                "x": 645.9999999999999,
+                "y": 328.66666666666663
+            }
+        },
+        "level4.tmx#tileset": {
+            "scaleInDock": 1.5,
+            "scaleInEditor": 1
+        },
+        "level5.tmx": {
+            "scale": 2,
+            "selectedLayer": 10,
+            "viewCenter": {
+                "x": 1037.25,
+                "y": 385.25
+            }
+        },
+        "level5.tmx#tileset": {
+            "scaleInDock": 1.5
+        },
+        "level6.tmx": {
+            "scale": 2,
+            "selectedLayer": 9,
+            "viewCenter": {
+                "x": 865.25,
+                "y": 325.75
+            }
+        },
+        "level6.tmx#tileset": {
+            "scaleInDock": 1.5
+        },
+        "level_green_and_red.tmx": {
+            "scale": 2,
+            "selectedLayer": 10,
+            "viewCenter": {
+                "x": 62.75,
+                "y": 367.25
+            }
+        },
+        "level_green_and_red.tmx#tileset": {
+            "scaleInDock": 1.5
+        },
+        "level_red.tmx": {
+            "scale": 3,
+            "selectedLayer": 9,
+            "viewCenter": {
+                "x": 613.1666666666666,
+                "y": 351.8333333333333
+            }
+        },
+        "level_red.tmx#tileset": {
+            "scaleInDock": 1.5
+        },
+        "tileset.json": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.exportedFilePath": "/home/dimitrilahaye/Documents/projets/games/paradoxe/game/src/assets/json/levels",
+    "last.externalTilesetPath": "/home/dimitrilahaye/Documents/projets/phaser/exo2/assets/json",
+    "last.imagePath": "/home/dimitrilahaye/Documents/projets/games/paradoxe/game/src/assets/img",
+    "lastUsedTilesetExportFilter": "JSON tileset files (*.tsj *.json)",
+    "map.height": 15,
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
+    "map.lastUsedFormat": "tmx",
+    "map.layerDataFormat": null,
+    "map.renderOrder": null,
+    "map.tileHeight": 32,
+    "map.tileWidth": 32,
+    "map.width": 40,
+    "openFiles": [
+        "level1.tmx",
+        "level2.tmx",
+        "level3.tmx",
+        "level5.tmx",
+        "level6.tmx",
+        "level4.tmx"
+    ],
+    "project": "paradoxe.tiled-project",
+    "property.type": "int",
+    "recentFiles": [
+        "tileset.json",
+        "level1.tmx",
+        "level2.tmx",
+        "level3.tmx",
+        "level5.tmx",
+        "level4.tmx",
+        "level6.tmx",
+        "level_red.tmx",
+        "/home/dimitrilahaye/Documents/projets/phaser/perso3/src/assets/json/levels/level2.tmx",
+        "/home/dimitrilahaye/Documents/projets/phaser/perso3/src/assets/json/levels/level1.tmx",
+        "/home/dimitrilahaye/Documents/projets/phaser/exo4/assets/json/level1.tmx",
+        "/home/dimitrilahaye/Documents/projets/games/paradoxe/game/src/assets/json/level1.tmx"
+    ],
+    "tileset.embedInMap": true,
+    "tileset.lastUsedFilter": "JSON tileset files (*.tsj *.json)",
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 32,
+        "width": 32
+    },
+    "tileset.type": 0,
+    "tileset.useTransparentColor": true
+}

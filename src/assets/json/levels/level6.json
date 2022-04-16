@@ -117,17 +117,22 @@
         {
          "draworder":"topdown",
          "id":14,
-         "name":"tps",
+         "name":"teleporters_multi",
          "objects":[
                 {
                  "height":0,
                  "id":16,
-                 "name":"tp_multi_2",
+                 "name":"multi 1",
                  "properties":[
                         {
-                         "name":"open",
+                         "name":"close",
                          "type":"bool",
-                         "value":true
+                         "value":false
+                        }, 
+                        {
+                         "name":"num",
+                         "type":"int",
+                         "value":1
                         }],
                  "rotation":0,
                  "type":"",
@@ -139,7 +144,18 @@
                 {
                  "height":0,
                  "id":18,
-                 "name":"tp_multi_1",
+                 "name":"multi 0",
+                 "properties":[
+                        {
+                         "name":"close",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"num",
+                         "type":"int",
+                         "value":0
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -150,13 +166,46 @@
                 {
                  "height":0,
                  "id":23,
-                 "name":"tp_multi_3",
+                 "name":"multi 2",
+                 "properties":[
+                        {
+                         "name":"close",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"num",
+                         "type":"int",
+                         "value":2
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
                  "x":1167.5,
                  "y":238.5
+                }, 
+                {
+                 "height":0,
+                 "id":26,
+                 "name":"multi 3",
+                 "properties":[
+                        {
+                         "name":"close",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"num",
+                         "type":"int",
+                         "value":3
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":975.5,
+                 "y":398
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -167,12 +216,18 @@
         {
          "draworder":"topdown",
          "id":15,
-         "name":"tp_switchers",
+         "name":"switchers_multi",
          "objects":[
                 {
                  "height":0,
                  "id":13,
-                 "name":"switcher_multi_2",
+                 "name":"multi 1",
+                 "properties":[
+                        {
+                         "name":"num",
+                         "type":"int",
+                         "value":1
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -183,7 +238,13 @@
                 {
                  "height":0,
                  "id":17,
-                 "name":"switcher_multi_1",
+                 "name":"multi 0",
+                 "properties":[
+                        {
+                         "name":"num",
+                         "type":"int",
+                         "value":0
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -194,7 +255,13 @@
                 {
                  "height":0,
                  "id":22,
-                 "name":"switcher_multi_3",
+                 "name":"multi 2",
+                 "properties":[
+                        {
+                         "name":"num",
+                         "type":"int",
+                         "value":2
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -215,6 +282,39 @@
          "objects":[
                 {
                  "height":0,
+                 "id":3,
+                 "name":"start",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":53.75,
+                 "y":396
+                }, 
+                {
+                 "height":0,
+                 "id":5,
+                 "name":"end",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":530.5,
+                 "y":234.5
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":18,
+         "name":"player",
+         "objects":[
+                {
+                 "height":0,
                  "id":1,
                  "name":"start",
                  "rotation":0,
@@ -226,50 +326,6 @@
                 }, 
                 {
                  "height":0,
-                 "id":2,
-                 "name":"door_tp_red_1",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":624.166666666667,
-                 "y":398.666333333333
-                }, 
-                {
-                 "height":0,
-                 "id":3,
-                 "name":"door_start",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":53.75,
-                 "y":396
-                }, 
-                {
-                 "height":0,
-                 "id":5,
-                 "name":"door_end",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":530.5,
-                 "y":234.5
-                }, 
-                {
-                 "height":0,
-                 "id":7,
-                 "name":"door_tp_red_2",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":784.5,
-                 "y":237.833333333333
-                }, 
-                {
-                 "height":0,
                  "id":8,
                  "name":"end",
                  "rotation":0,
@@ -278,28 +334,105 @@
                  "width":0,
                  "x":527,
                  "y":240
-                }, 
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":17,
+         "name":"teleporters_spatial",
+         "objects":[
                 {
                  "height":0,
-                 "id":20,
-                 "name":"door_tp_green_1",
+                 "id":25,
+                 "name":"green 0",
+                 "properties":[
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"green"
+                        }, 
+                        {
+                         "name":"num",
+                         "type":"int",
+                         "value":0
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":14,
-                 "y":239
+                 "x":15,
+                 "y":240.5
                 }, 
                 {
                  "height":0,
                  "id":21,
-                 "name":"door_tp_green_2",
+                 "name":"green 1",
+                 "properties":[
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"green"
+                        }, 
+                        {
+                         "name":"num",
+                         "type":"int",
+                         "value":1
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
                  "x":1263,
                  "y":238
+                }, 
+                {
+                 "height":0,
+                 "id":2,
+                 "name":"red 0",
+                 "properties":[
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"red"
+                        }, 
+                        {
+                         "name":"num",
+                         "type":"int",
+                         "value":0
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":624.167,
+                 "y":398.666
+                }, 
+                {
+                 "height":0,
+                 "id":7,
+                 "name":"red 1",
+                 "properties":[
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"red"
+                        }, 
+                        {
+                         "name":"num",
+                         "type":"int",
+                         "value":1
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":784.5,
+                 "y":237.833
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -327,7 +460,7 @@
                  "visible":true,
                  "width":0,
                  "x":174,
-                 "y":400.666666666667
+                 "y":400.667
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -335,8 +468,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":17,
- "nextobjectid":24,
+ "nextlayerid":19,
+ "nextobjectid":27,
  "orientation":"orthogonal",
  "renderorder":"left-down",
  "tiledversion":"1.8.4",

@@ -1,9 +1,8 @@
-import { Coordinates } from '../types';
-
 export default abstract class SpatialTeleporter extends Phaser.Physics.Arcade.Sprite {
     private _nextTp = 0;
     private _tpRate = 500;
     protected oppositeSpatialTeleporter: SpatialTeleporter;
+    protected num: number;
 
     get nextTp(): number {
     	return this._nextTp;
@@ -17,18 +16,10 @@ export default abstract class SpatialTeleporter extends Phaser.Physics.Arcade.Sp
     	return this._tpRate;
     }
     
-    constructor(scene: Phaser.Scene, x: number, y: number, key: string) {
+    constructor(scene: Phaser.Scene, x: number, y: number, key: string, num: number) {
     	super(scene, x, y, key);
     	scene.add.existing(this);
-    }
-
-    public setOpposite(opposite: SpatialTeleporter): void {
-    	this.oppositeSpatialTeleporter = opposite;
-    }
-
-    protected getOppositeCoordinates(): Coordinates {
-    	const { x, y } = this.oppositeSpatialTeleporter;
-    	return { x, y };
+    	this.num = num;
     }
 
     // create() {

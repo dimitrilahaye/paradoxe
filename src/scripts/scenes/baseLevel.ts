@@ -1,4 +1,5 @@
-import { ObjectName } from '../objects';
+import { GameObjects } from 'phaser';
+import { LayerName, ObjectName } from '../objects';
 import DoorEntrance from '../objects/doorEntrance';
 import DoorExit from '../objects/doorExit';
 import DoubleSwitcher from '../objects/doubleSwitcher';
@@ -11,6 +12,7 @@ import Player from '../objects/player';
 import RedSpatialTeleporter from '../objects/redSpatialTeleporter';
 import SimpleSwitcher from '../objects/simpleSwitcher';
 import SimpleTimeTeleporter from '../objects/simpleTimeTeleporter';
+import SpatialTeleporter from '../objects/spatialTeleporter';
 import MyTextBox from '../ui/myTextBox';
 import { SceneKey } from './index';
 
@@ -29,6 +31,11 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	protected end: Phaser.Types.Tilemaps.TiledObject;
 	protected pastPlayersGroup: Phaser.GameObjects.Group;
 	protected ballGroup: Phaser.GameObjects.Group;
+	protected spatialTeleportersGroup: Phaser.GameObjects.Group;
+	protected simpleTimeTeleporterGroup: Phaser.GameObjects.Group;
+	protected simpleSwitchersGroup: Phaser.GameObjects.Group;
+	protected multiTimeTeleportersGroup: Phaser.GameObjects.Group;
+	protected multiSwitchersGroup: Phaser.GameObjects.Group;
 	protected music: Phaser.Sound.BaseSound;
 	
 	protected player: Player;
@@ -56,53 +63,208 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	constructor(key: SceneKey, protected nextScene: SceneKey, protected tilesetKey: string) {
 		super({ key });
 	}
-
+	
 	create() {
 		this.ballGroup = this.add.group();
+		this.spatialTeleportersGroup = this.add.group();
+		this.simpleTimeTeleporterGroup = this.add.group();
+		this.simpleSwitchersGroup = this.add.group();
+		this.multiTimeTeleportersGroup = this.add.group();
+		this.multiSwitchersGroup = this.add.group();
+		
 		this.initMap();
-		
-		// TODO: refacto deeply DoubleTimeTeleporter
-		this.initDoubleTimeTeleporters();
-		// TODO: refacto deeply SimpleTimeTeleporter
-		this.initSimpleTimeTeleporter();
-		// TODO: refacto deeply MultiTimeTeleporter
-		this.initMultiTimeTeleporters();
-		this.initSimpleSwitcher();
-		this.initDoubleSwitcher();
-		this.initMultiSwitchers();
-
 		this.initDoors();
-
-		this.initSpatialTeleporters();
-
 		this.initPlayer();
-		
-		this.initSimpleTimeTeleportersColliders();
-		this.initDoubleTimeTeleportersColliders();
-		this.initMultiTimeTeleportersColliders();
-		
-		// TODO: refactor this part, condition is hard coded
 		this.initPastPlayers();
+		
+		
+		// this.initDoubleTimeTeleporters();
+		// this.initDoubleSwitcher();
+
+		// this.initDoubleTimeTeleportersColliders();
 		
 		this.listenToPlayerEvents();
 		this.listenToPastPlayersEvents();
 		this.listenToMyTextBoxEvents();
 		this.listenToMultiTimeTeleportersEvents();
 		
-		this.launchMusic();
+		// this.launchMusic();
 	}
 
 	update() {
 		this.player.update();
 		this.iterateOnPastPlayers((pastPlayer: Phaser.GameObjects.GameObject) => pastPlayer.update());
 		
-		this.checkForSpatialTeleportersActivation();
-		this.checkForSimpleSwitcherActivation();
-		this.checkForDoubleSwitcherActivation();
-		this.checkForMultiSwitchersActivation();
+		// this.checkForSimpleSwitcherActivation();
+		// this.checkForDoubleSwitcherActivation();
 		
 		this.checkForTutorials();
 		this.checkForLevelEnd();
+	}
+	
+	protected createSimpleTimeTeleporter() {
+		const object = this.getObjectByLayerAndProperties(LayerName.TELEPORTERS_SIMPLE, { num: 0 });
+		if (object) {
+			const simpleTimeTeleporter = new SimpleTimeTeleporter(this, object?.x || 0, object?.y || 0);
+			simpleTimeTeleporter.setData('num', 0);
+			this.simpleTimeTeleporterGroup.add(simpleTimeTeleporter);
+		}
+	}
+	
+	protected createSimpleSwitcher() {
+		const object = this.getObjectByLayerAndProperties(LayerName.SWITCHERS_SIMPLE, { num: 0 });
+		if (object) {
+			const simpleSwitcher = new SimpleSwitcher(this, object?.x || 0, object?.y || 0);
+			simpleSwitcher.setData('num', 0);
+			this.simpleSwitchersGroup.add(simpleSwitcher);
+		}
+	}
+
+	protected createMultiTimeTeleporterByNum(num: number): void {
+		const object = this.getObjectByLayerAndProperties(LayerName.TELEPORTERS_MULTI, { num });
+		if (object) {
+			const objectProperties = this.getPropertiesAsObject(object);
+			const multiTimeTeleporter = new MultiTimeTeleporter(this, object?.x || 0, object?.y || 0, num);
+			multiTimeTeleporter.setData('num', num);
+			multiTimeTeleporter.setData('close', objectProperties.close);
+			this.multiTimeTeleportersGroup.add(multiTimeTeleporter);
+		}
+	}
+
+	protected createMultiSwitcherByNum(num: number) {
+		const object = this.getObjectByLayerAndProperties(LayerName.SWITCHERS_MULTI, { num });
+		if (object) {
+			const multiSwitcher = new MultiSwitcher(this, object?.x || 0, object?.y || 0, num);
+			this.multiSwitchersGroup.add(multiSwitcher);
+		}
+	}
+
+	protected createSpatialTeleportersByColorAndNum(color: 'red' | 'green', num: number) {
+		const object = this.getObjectByLayerAndProperties(LayerName.TELEPORTERS_SPATIAL, { color, num });
+		if (object) {
+			if (color === 'green') {
+				const spatialTeleporter = new GreenSpatialTeleporter(this, object?.x || 0, object?.y || 0, num);
+				this.spatialTeleportersGroup.add(spatialTeleporter);
+			} else if (color === 'red') {
+				const spatialTeleporter = new RedSpatialTeleporter(this, object?.x || 0, object?.y || 0, num);
+				this.spatialTeleportersGroup.add(spatialTeleporter);
+			}
+		}
+	}
+
+	protected initSimpleTimeTeleportersWorldColliders(): void {
+		this.physics.add.collider(this.simpleTimeTeleporterGroup, [this.groundLayer, this.platformsLayer]);
+	}
+
+	protected initMultiTimeTeleportersWorldColliders(): void {
+		this.physics.add.collider(this.multiTimeTeleportersGroup, [this.groundLayer, this.platformsLayer]);
+	}
+
+	protected closeMultiTimeTeleporters() {
+		this.iterateOnGroup(this.multiTimeTeleportersGroup, (teleporter: MultiTimeTeleporter) => {
+			if (teleporter.getData('close')) {
+				teleporter.setToClose();
+			}
+		});
+	}
+
+	protected initSimpleTimeTeleporterObjectsColliders() {
+		const simpleTimeTeleporter = this.findObjectOnGroupByData<SimpleTimeTeleporter>(this.simpleTimeTeleporterGroup, { num: 0 });
+		if (simpleTimeTeleporter) {
+			const playerCollider = this.physics.add.collider(this.player, this.simpleTimeTeleporterGroup, (_, teleporter) => {
+				this.shakeOnTpCollision();
+				const t = teleporter as SimpleTimeTeleporter;
+				t.activate();
+				this.events.emit('BaseLevel::firstTp');
+
+				const dirX = this.player.direction === 'left' ? -20 : +20;
+				const pastPlayer = new PastPlayer(this, t.x - dirX, t.y);
+				pastPlayer.create();
+				this.pastPlayersGroup.add(pastPlayer);
+			});
+
+			const ballsCollider = this.physics.add.collider(this.simpleTimeTeleporterGroup, this.ballGroup, (_, ball) => {
+				ball.destroy();
+			});
+
+			simpleTimeTeleporter.addColliders(playerCollider, ballsCollider);
+		}
+	}
+
+	protected initMultiTimeTeleportersObjectsCollidersByNum(num: number) {
+		const multiTimeTeleporter = this.findObjectOnGroupByData<MultiTimeTeleporter>(this.multiTimeTeleportersGroup, { num });
+		if (multiTimeTeleporter) {
+			const playerCollider = this.physics.add.collider(this.player, multiTimeTeleporter, (p, tp) => {
+				this.shakeOnTpCollision();
+
+				(tp as MultiTimeTeleporter).activate();
+
+				const dirX = (p as Player).direction === 'left' ? -20 : +20;
+				const pastPlayer = new PastPlayer(this, (tp as MultiTimeTeleporter).x - dirX, (tp as MultiTimeTeleporter).y);
+				pastPlayer.create();
+				this.pastPlayersGroup.add(pastPlayer);
+				
+			});
+
+			const ballsCollider = this.physics.add.collider(multiTimeTeleporter, this.ballGroup, (_, ball) => {
+				ball.destroy();
+			});
+
+			multiTimeTeleporter.addColliders(ballsCollider, playerCollider);
+		}
+	}
+
+	protected initMultiTimeTeleportersOpposites(): void {
+		const length = this.multiTimeTeleportersGroup.getLength();
+		const indexes = Array.from(Array(length).keys());
+		this.iterateOnGroup(this.multiTimeTeleportersGroup, (teleporter: MultiTimeTeleporter) => {
+			indexes.forEach((num) => {
+				if (num !== teleporter.num) {
+					const opposite = this.findObjectOnGroupByData<MultiTimeTeleporter>(this.multiTimeTeleportersGroup, { num });
+					if (opposite) {
+						teleporter.addOpposites(opposite);
+					} else {
+						throw new Error(`Unfound MultiTimeTeleporterwith num: ${num}`);
+					}
+				}
+			});
+		});
+	}
+
+	protected checkForSpatialTeleportersActivation() {
+		this.iterateOnGroup(this.spatialTeleportersGroup, (teleporter: SpatialTeleporter) => {
+			if (this.intersect(this.player, teleporter)) {
+				if (this.player.enterActivate) {
+					teleporter.activate();
+				}
+			}
+		});
+	}
+
+	protected checkForSimpleSwitcherActivation() {
+		this.iterateOnGroup(this.simpleSwitchersGroup, (switcher: SimpleSwitcher) => {
+			if (this.intersect(this.player, switcher)) {
+				if (this.player.enterActivate) {
+					switcher.activate();
+				}
+			}
+		});
+	}
+
+	protected checkForMultiSwitchersActivation() {
+		this.iterateOnGroup(this.multiSwitchersGroup, (switcher: MultiSwitcher) => {
+			if (this.intersect(this.player, switcher)) {
+				if (this.player.enterActivate) {
+					switcher.activate();
+				}
+			}
+		});
+	}
+
+	protected listenToMultiTimeTeleportersEvents() {
+		this.events.on('MultiTimeTeleporter::setToOpen', (num: number) => {
+			this.initMultiTimeTeleportersObjectsCollidersByNum(num);
+		});
 	}
 
 	protected addDialog(dialogNumber: number, content): void {
@@ -120,50 +282,6 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}
 	}
 
-	private checkForSimpleSwitcherActivation() {
-		if (this.simpleSwitcher) {
-			if (this.intersect(this.player, this.simpleSwitcher)) {
-				if (this.player.enterActivate) {
-					this.simpleSwitcher.activate();
-				}
-			}
-		}
-	}
-
-	private checkForDoubleSwitcherActivation() {
-		if (this.doubleSwitcher) {
-			if (this.intersect(this.player, this.doubleSwitcher)) {
-				if (this.player.enterActivate) {
-					this.doubleSwitcher.activate();
-				}
-			}
-		}
-	}
-
-	private checkForMultiSwitchersActivation() {
-		if (this.multiSwitcher1) {
-			if (this.intersect(this.player, this.multiSwitcher1)) {
-				if (this.player.enterActivate) {
-					this.multiSwitcher1.activate();
-				}
-			}
-		}
-		if (this.multiSwitcher2) {
-			if (this.intersect(this.player, this.multiSwitcher2)) {
-				if (this.player.enterActivate) {
-					this.multiSwitcher2.activate();
-				}
-			}
-		}
-		if (this.multiSwitcher3) {
-			if (this.intersect(this.player, this.multiSwitcher3)) {
-				if (this.player.enterActivate) {
-					this.multiSwitcher3.activate();
-				}
-			}
-		}
-	}
-
 	private checkForLevelEnd() {
 		if (this.player.x > (this.end?.x || 0) - 10 && this.player.x < (this.end?.x || 0) + 10 &&
 			this.player.y > (this.end?.y || 0) - 10 && this.player.y < (this.end?.y || 0) + 10) {
@@ -176,42 +294,6 @@ export default abstract class BaseLevel extends Phaser.Scene {
 					this.sound.play('end_level');
 					this.music.stop();
 					this.scene.start(this.nextScene);
-				}
-			}
-		}
-	}
-
-	private checkForSpatialTeleportersActivation() {
-		// green ones
-		if (this.greenSpatialTeleporter1) {
-			if (this.intersect(this.player, this.greenSpatialTeleporter1)) {
-				if (this.player.enterActivate) {
-					this.greenSpatialTeleporter1.activate();
-				}
-			}
-		}
-
-		if (this.greenSpatialTeleporter2) {
-			if (this.intersect(this.player, this.greenSpatialTeleporter2)) {
-				if (this.player.enterActivate) {
-					this.greenSpatialTeleporter2.activate();
-				}
-			}
-		}
-
-		// red ones
-		if (this.redSpatialTeleporter1) {
-			if (this.intersect(this.player, this.redSpatialTeleporter1)) {
-				if (this.player.enterActivate) {
-					this.redSpatialTeleporter1.activate();
-				}
-			}
-		}
-
-		if (this.redSpatialTeleporter2) {
-			if (this.intersect(this.player, this.redSpatialTeleporter2)) {
-				if (this.player.enterActivate) {
-					this.redSpatialTeleporter2.activate();
 				}
 			}
 		}
@@ -266,30 +348,29 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}, this);
 	}
 
-	private listenToMultiTimeTeleportersEvents() {
-		this.events.on('MultiTimeTeleporter::setToOpen', (num: number) => {
-			switch (num) {
-			case 1:
-				this.initMultiTimeTeleporter1Colliders();
-				break;
-			case 2:
-				this.initMultiTimeTeleporter2Colliders();
-				break;
-			case 3:
-				this.initMultiTimeTeleporter3Colliders();
-				break;
-			default:
-				// nothing
-			}
-		});
+	private findObjectOnGroupByData<T>(group: Phaser.GameObjects.Group, data: { [key: string]: any }): T | undefined {
+		if (group?.getLength() > 0) {
+			return group.children.getArray().find((child) => {
+				return Object.keys(data).every((d) => child.getData(d) === data[d]);
+			}) as unknown as T;
+		}
+		throw new Error('Object not found');
 	}
 
+	private iterateOnGroup(group: Phaser.GameObjects.Group, callback: (object, index?: number) => void) {
+		if (group?.getLength() > 0) {
+			group.children.iterate(callback);
+		}
+	}
+
+	// TODO: generic one
 	private iterateOnPastPlayers(callback: (pastPlayer: Phaser.GameObjects.GameObject) => void) {
 		if (this.pastPlayersGroup?.getLength() > 0) {
 			this.pastPlayersGroup.children.iterate(callback);
 		}
 	}
 
+	// TODO: generic one
 	private findPastPlayers(callback: (pastPlayer: Phaser.GameObjects.GameObject) => void) {
 		if (this.pastPlayersGroup?.getLength() > 0) {
 			return this.pastPlayersGroup.children.getArray().find(callback);
@@ -304,8 +385,8 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	}
 
 	private initPlayer() {
-		this.start = this.tilemap.findObject('doors', obj => obj.name === ObjectName.START);
-		this.end = this.tilemap.findObject('doors', obj => obj.name === ObjectName.END);
+		this.start = this.tilemap.findObject(LayerName.DOORS, obj => obj.name === ObjectName.START);
+		this.end = this.tilemap.findObject(LayerName.DOORS, obj => obj.name === ObjectName.END);
 		this.player = new Player(this, this.start?.x || 0, this.start?.y || 0);
 		this.player.create();
 		
@@ -314,24 +395,92 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		this.physics.add.collider(this.player, [this.groundLayer, this.platformsLayer]);
 	}
 
-	private initSimpleTimeTeleportersColliders() {
-		if (this.simpleTimeTeleporter) {
-			const playerCollider = this.physics.add.collider(this.player, this.simpleTimeTeleporter, () => {
-				this.shakeOnTpCollision();
-				this.simpleTimeTeleporter.activate();
-				this.events.emit('BaseLevel::firstTp');
+	private getObjectByLayerAndProperties(layer: LayerName, properties: { [key: string]: any }): Phaser.Types.Tilemaps.TiledObject {
+		const object = this.tilemap.findObject(layer, (obj) => {
+			const objectProperties = this.getPropertiesAsObject(obj as unknown as Phaser.Types.Tilemaps.TiledObject);
+			return Object.keys(properties).every((k) => objectProperties[k] === properties[k]);
+		});
+		if (!object) {
+			throw new Error(`Object with properties ${JSON.stringify(properties)} not found in layer ${layer}`);
+		}
+		return object;
+	}
 
-				const dirX = this.player.direction === 'left' ? -20 : +20;
-				const pastPlayer = new PastPlayer(this, this.simpleTimeTeleporter.x - dirX, this.simpleTimeTeleporter.y);
-				pastPlayer.create();
-				this.pastPlayersGroup.add(pastPlayer);
-			});
+	private getPropertiesAsObject(obj: Phaser.Types.Tilemaps.TiledObject) {
+		return obj['properties'].reduce((o, prop) => {
+			return {
+				...o,
+				[prop.name]: prop.value,
+			};
+		}, {});
+	}
 
-			const ballsCollider = this.physics.add.collider([this.simpleTimeTeleporter], this.ballGroup, (_, ball) => {
-				ball.destroy();
-			});
-			
-			this.simpleTimeTeleporter.addCollider(ballsCollider, playerCollider);
+	private shakeOnTpCollision() {
+		this.cameras.main.shake(50, 0.01);
+	}
+
+	private initDoors() {
+		const { x: doorStartX, y: doorStartY } = this.tilemap.findObject(LayerName.DOORS, obj => obj.name === ObjectName.DOOR_START);
+		const { x: doorEndX, y: doorEndY } = this.tilemap.findObject(LayerName.DOORS, obj => obj.name === ObjectName.DOOR_END);
+		this.doorEntrance = new DoorEntrance(this, doorStartX || 0, doorStartY || 0);
+		this.doorExit = new DoorExit(this, doorEndX || 0, doorEndY || 0);
+		
+		this.physics.add.collider([this.doorEntrance, this.doorExit], [this.groundLayer, this.platformsLayer]);
+	}
+
+	private initPastPlayers() {
+		this.pastPlayersGroup = this.add.group();
+		this.physics.add.collider(this.pastPlayersGroup, [this.groundLayer, this.platformsLayer]);
+	}
+
+	private initMap() {
+		this.tilemap = this.add.tilemap(this.tilesetKey);
+		this.tileset = this.tilemap.addTilesetImage('tileset', 'tileset');
+
+		this.bckgLayer = this.tilemap.createLayer(LayerName.BACKGROUND, this.tileset, 0, 0);
+		this.groundLayer = this.tilemap.createLayer(LayerName.GROUND, this.tileset, 0, 0);
+		this.wallLayer = this.tilemap.createLayer(LayerName.WALL, this.tileset, 0, 0);
+		this.wall2Layer = this.tilemap.createLayer(LayerName.WALL2, this.tileset, 0, 0);
+		this.desksLayer = this.tilemap.createLayer(LayerName.DESKS, this.tileset, 0, 0);
+		this.platformsLayer = this.tilemap.createLayer(LayerName.PLATFORMS, this.tileset, 0, 0);
+		this.ceilingLayer = this.tilemap.createLayer(LayerName.CEILING, this.tileset, 0, 0);
+		this.lightsLayer = this.tilemap.createLayer(LayerName.LIGHTS, this.tileset, 0, 0);
+
+		this.groundLayer.setCollisionByProperty({ collides: true });
+		this.platformsLayer.setCollisionByProperty({ collides: true });
+
+		this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, this.tilemap.heightInPixels);
+	}
+
+	private getMiddleSceneCoordinates(): { x: number, y: number } {
+		const x = this.cameras.main.worldView.x + this.cameras.main.width / 2;
+		const y = this.cameras.main.worldView.y + this.cameras.main.height / 2;
+
+		return { x, y };
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	private checkForDoubleSwitcherActivation() {
+		if (this.doubleSwitcher) {
+			if (this.intersect(this.player, this.doubleSwitcher)) {
+				if (this.player.enterActivate) {
+					this.doubleSwitcher.activate();
+				}
+			}
 		}
 	}
 
@@ -367,146 +516,10 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}
 	}
 
-	private initMultiTimeTeleportersColliders() {
-		this.initMultiTimeTeleporter1Colliders();
-		this.initMultiTimeTeleporter2Colliders();
-		this.initMultiTimeTeleporter3Colliders();
-		
-		if (this.multiTimeTeleporter3) {
-			this.multiTimeTeleporter3.setToClose();
-		}
-	}
-
-	private initMultiTimeTeleporter1Colliders() {
-		if (this.multiTimeTeleporter1) {
-			const playerCollider = this.physics.add.collider(this.player, this.multiTimeTeleporter1, () => {
-				this.shakeOnTpCollision();
-
-				this.multiTimeTeleporter1.activate();
-
-				const dirX = this.player.direction === 'left' ? -20 : +20;
-				const pastPlayer = new PastPlayer(this, this.multiTimeTeleporter1.x - dirX, this.multiTimeTeleporter1.y);
-				pastPlayer.create();
-				this.pastPlayersGroup.add(pastPlayer);
-			});
-
-			const ballsCollider = this.physics.add.collider([this.multiTimeTeleporter1], this.ballGroup, (_, ball) => {
-				ball.destroy();
-			});
-			
-			this.multiTimeTeleporter1.addColliders(ballsCollider, playerCollider);
-		}
-	}
-
-	private initMultiTimeTeleporter2Colliders() {
-		if (this.multiTimeTeleporter2) {
-			const playerCollider = this.physics.add.collider(this.player, this.multiTimeTeleporter2, () => {
-				this.shakeOnTpCollision();
-
-				this.multiTimeTeleporter2.activate();
-
-				const dirX = this.player.direction === 'left' ? -20 : +20;
-				const pastPlayer = new PastPlayer(this, this.multiTimeTeleporter2.x - dirX, this.multiTimeTeleporter2.y);
-				pastPlayer.create();
-				this.pastPlayersGroup.add(pastPlayer);
-			});
-
-			const ballsCollider = this.physics.add.collider([this.multiTimeTeleporter2], this.ballGroup, (_, ball) => {
-				ball.destroy();
-			});
-			
-			this.multiTimeTeleporter2.addColliders(ballsCollider, playerCollider);
-		}
-	}
-
-	private initMultiTimeTeleporter3Colliders() {
-		if (this.multiTimeTeleporter3) {
-			const playerCollider = this.physics.add.collider(this.player, this.multiTimeTeleporter3, () => {
-				this.shakeOnTpCollision();
-
-				this.multiTimeTeleporter3.activate();
-
-				const dirX = this.player.direction === 'left' ? -20 : +20;
-				const pastPlayer = new PastPlayer(this, this.multiTimeTeleporter3.x - dirX, this.multiTimeTeleporter3.y);
-				pastPlayer.create();
-				this.pastPlayersGroup.add(pastPlayer);
-			});
-
-			const ballsCollider = this.physics.add.collider([this.multiTimeTeleporter3], this.ballGroup, (_, ball) => {
-				ball.destroy();
-			});
-			
-			this.multiTimeTeleporter3.addColliders(ballsCollider, playerCollider);
-		}
-	}
-
-	private shakeOnTpCollision() {
-		this.cameras.main.shake(50, 0.01);
-	}
-
-	private initDoors() {
-		const { x: doorStartX, y: doorStartY } = this.tilemap.findObject('doors', obj => obj.name === ObjectName.DOOR_START);
-		const { x: doorEndX, y: doorEndY } = this.tilemap.findObject('doors', obj => obj.name === ObjectName.DOOR_END);
-		this.doorEntrance = new DoorEntrance(this, doorStartX || 0, doorStartY || 0);
-		this.doorExit = new DoorExit(this, doorEndX || 0, doorEndY || 0);
-		
-		this.physics.add.collider([this.doorEntrance, this.doorExit], [this.groundLayer, this.platformsLayer]);
-	}
-
-	private initSpatialTeleporters() {
-		const greenDoorTp1Position = this.tilemap.findObject('doors', obj => obj.name === ObjectName.DOOR_TP_GREEN_1);
-		const greenDoorTp2Position = this.tilemap.findObject('doors', obj => obj.name === ObjectName.DOOR_TP_GREEN_2);
-		if (greenDoorTp1Position && greenDoorTp2Position) {
-			this.greenSpatialTeleporter1 = new GreenSpatialTeleporter(this, greenDoorTp1Position?.x || 0, greenDoorTp1Position?.y || 0);
-			this.greenSpatialTeleporter2 = new GreenSpatialTeleporter(this, greenDoorTp2Position?.x || 0, greenDoorTp2Position?.y || 0);
-			this.greenSpatialTeleporter1.setOpposite(this.greenSpatialTeleporter2);
-			this.greenSpatialTeleporter2.setOpposite(this.greenSpatialTeleporter1);
-
-			this.physics.add.collider([this.greenSpatialTeleporter1, this.greenSpatialTeleporter2], [this.platformsLayer, this.groundLayer]);
-		}
-		const redDoorTp1Position = this.tilemap.findObject('doors', obj => obj.name === ObjectName.DOOR_TP_RED_1);
-		const redDoorTp2Position = this.tilemap.findObject('doors', obj => obj.name === ObjectName.DOOR_TP_RED_2);
-		if (redDoorTp1Position && redDoorTp2Position) {
-			this.redSpatialTeleporter1 = new RedSpatialTeleporter(this, redDoorTp1Position?.x || 0, redDoorTp1Position?.y || 0);
-			this.redSpatialTeleporter2 = new RedSpatialTeleporter(this, redDoorTp2Position?.x || 0, redDoorTp2Position?.y || 0);
-			this.redSpatialTeleporter1.setOpposite(this.redSpatialTeleporter2);
-			this.redSpatialTeleporter2.setOpposite(this.redSpatialTeleporter1);
-
-			this.physics.add.collider([this.redSpatialTeleporter1, this.redSpatialTeleporter2], [this.platformsLayer, this.groundLayer]);
-		}
-	}
-
-	private initSimpleSwitcher() {
-		const simpleSwitcherPosition = this.tilemap.findObject('tp_switchers', obj => obj.name === ObjectName.SWITCHER_SIMPLE);
-		if (simpleSwitcherPosition) {
-			this.simpleSwitcher = new SimpleSwitcher(this, simpleSwitcherPosition?.x || 0, simpleSwitcherPosition?.y || 0);
-		}
-	}
-
 	private initDoubleSwitcher() {
 		const doubleSwitcherPosition = this.tilemap.findObject('tp_switchers', obj => obj.name === ObjectName.SWITCHER_DOUBLE);
 		if (doubleSwitcherPosition) {
 			this.doubleSwitcher = new DoubleSwitcher(this, doubleSwitcherPosition?.x || 0, doubleSwitcherPosition?.y || 0);
-		}
-	}
-
-	private initMultiSwitchers() {
-		const multiSwitcherPosition1 = this.tilemap.findObject('tp_switchers', obj => obj.name === ObjectName.SWITCHER_MULTI_1);
-		const multiSwitcherPosition2 = this.tilemap.findObject('tp_switchers', obj => obj.name === ObjectName.SWITCHER_MULTI_2);
-		const multiSwitcherPosition3 = this.tilemap.findObject('tp_switchers', obj => obj.name === ObjectName.SWITCHER_MULTI_3);
-		if (multiSwitcherPosition1 && multiSwitcherPosition2 && multiSwitcherPosition3) {
-			this.multiSwitcher1 = new MultiSwitcher(this, multiSwitcherPosition1?.x || 0, multiSwitcherPosition1?.y || 0, 1);
-			this.multiSwitcher2 = new MultiSwitcher(this, multiSwitcherPosition2?.x || 0, multiSwitcherPosition2?.y || 0, 2);
-			this.multiSwitcher3 = new MultiSwitcher(this, multiSwitcherPosition3?.x || 0, multiSwitcherPosition3?.y || 0, 3);
-		}
-	}
-
-	private initSimpleTimeTeleporter() {
-		const simpleTimeTeleporterPosition = this.tilemap.findObject('tps', obj => obj.name === ObjectName.TP_SIMPLE);
-		if (simpleTimeTeleporterPosition) {
-			this.simpleTimeTeleporter = new SimpleTimeTeleporter(this, simpleTimeTeleporterPosition?.x || 0, simpleTimeTeleporterPosition?.y || 0);
-
-			this.physics.add.collider(this.simpleTimeTeleporter, [this.groundLayer, this.platformsLayer]);
 		}
 	}
 
@@ -522,56 +535,6 @@ export default abstract class BaseLevel extends Phaser.Scene {
 
 			this.physics.add.collider([this.doubleTimeTeleporter1, this.doubleTimeTeleporter2], [this.groundLayer, this.platformsLayer]);
 		}
-	}
-
-	private initMultiTimeTeleporters() {
-		const multiTimeTeleporter1Position = this.tilemap.findObject('tps', obj => obj.name === ObjectName.TP_MULTI_1);
-		const multiTimeTeleporter2Position = this.tilemap.findObject('tps', obj => obj.name === ObjectName.TP_MULTI_2);
-		const multiTimeTeleporter3Position = this.tilemap.findObject('tps', obj => obj.name === ObjectName.TP_MULTI_3);
-		if (multiTimeTeleporter1Position && multiTimeTeleporter2Position && multiTimeTeleporter3Position) {
-			this.multiTimeTeleporter1 = new MultiTimeTeleporter(this, multiTimeTeleporter1Position?.x || 0, multiTimeTeleporter1Position?.y || 0, 1);
-			this.multiTimeTeleporter2 = new MultiTimeTeleporter(this, multiTimeTeleporter2Position?.x || 0, multiTimeTeleporter2Position?.y || 0, 2);
-			this.multiTimeTeleporter3 = new MultiTimeTeleporter(this, multiTimeTeleporter3Position?.x || 0, multiTimeTeleporter3Position?.y || 0, 3);
-			
-			this.multiTimeTeleporter1.setOpposites(this.multiTimeTeleporter2, this.multiTimeTeleporter3);
-			this.multiTimeTeleporter2.setOpposites(this.multiTimeTeleporter1, this.multiTimeTeleporter3);
-			this.multiTimeTeleporter3.setOpposites(this.multiTimeTeleporter1, this.multiTimeTeleporter2);
-
-			this.physics.add.collider([this.multiTimeTeleporter1, this.multiTimeTeleporter2, this.multiTimeTeleporter3], [this.groundLayer, this.platformsLayer]);
-		}
-	}
-
-	private initPastPlayers() {
-		if (this.doubleTimeTeleporter1 || this.simpleTimeTeleporter || this.multiTimeTeleporter1) {
-			this.pastPlayersGroup = this.add.group();
-			this.physics.add.collider(this.pastPlayersGroup, [this.groundLayer, this.platformsLayer]);
-		}
-	}
-
-	private initMap() {
-		this.tilemap = this.add.tilemap(this.tilesetKey);
-		this.tileset = this.tilemap.addTilesetImage('tileset', 'tileset');
-
-		this.bckgLayer = this.tilemap.createLayer('background', this.tileset, 0, 0);
-		this.groundLayer = this.tilemap.createLayer('ground', this.tileset, 0, 0);
-		this.wallLayer = this.tilemap.createLayer('wall', this.tileset, 0, 0);
-		this.wall2Layer = this.tilemap.createLayer('wall2', this.tileset, 0, 0);
-		this.desksLayer = this.tilemap.createLayer('desks', this.tileset, 0, 0);
-		this.platformsLayer = this.tilemap.createLayer('platforms', this.tileset, 0, 0);
-		this.ceilingLayer = this.tilemap.createLayer('ceiling', this.tileset, 0, 0);
-		this.lightsLayer = this.tilemap.createLayer('lights', this.tileset, 0, 0);
-
-		this.groundLayer.setCollisionByProperty({ collides: true });
-		this.platformsLayer.setCollisionByProperty({ collides: true });
-
-		this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, this.tilemap.heightInPixels);
-	}
-
-	private getMiddleSceneCoordinates(): { x: number, y: number } {
-		const x = this.cameras.main.worldView.x + this.cameras.main.width / 2;
-		const y = this.cameras.main.worldView.y + this.cameras.main.height / 2;
-
-		return { x, y };
 	}
 
 	private launchMusic() {

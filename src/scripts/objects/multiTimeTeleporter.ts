@@ -32,29 +32,21 @@ export default class MultiTimeTeleporter extends Phaser.Physics.Arcade.Sprite {
 	create() {
     	this.scene.events.on('MultiSwitcher::activate', (num: number) => {
     		if (num === this.num) {
-    			const openOppositeFindIndex = this.oppositeMultiTimeTeleporters.findIndex((teleporter) => teleporter.alive);
-    			const closedOppositeIndex = openOppositeFindIndex < 0 ? 0 : openOppositeFindIndex;
-    			const openOppositeIndex = closedOppositeIndex === 0 ? 1 : 0;
-    			const oppositeToClose = this.oppositeMultiTimeTeleporters[closedOppositeIndex];
-    			const oppositeToOpen = this.oppositeMultiTimeTeleporters[openOppositeIndex];
 				
-    			this.scene.events.emit('MultiTimeTeleporter::closeOpposite', oppositeToClose.num);
-    			this.scene.events.emit('MultiTimeTeleporter::openOpposite', oppositeToOpen.num);
-    			if (!this.alive) {
-    				this.scene.events.emit('MultiTimeTeleporter::openOpposite', this.num);
-    			}
-    		}
-    	});
-
-    	this.scene.events.on('MultiTimeTeleporter::closeOpposite', (num: number) => {
-    		if (num === this.num) {
-    			this.setToClose();
-    		}
-    	});
-		
-    	this.scene.events.on('MultiTimeTeleporter::openOpposite', (num: number) => {
-    		if (num === this.num) {
-    			this.setToOpen();
+				const firstOpenedOpposite = this.oppositeMultiTimeTeleporters.find((teleporter) => teleporter.alive);
+    			const firstClosedOpposite = this.oppositeMultiTimeTeleporters.find((teleporter) => !teleporter.alive);
+				
+				if (firstOpenedOpposite) {
+					firstOpenedOpposite.setToClose();
+				}
+				if (!this.alive) {
+					this.setToOpen();
+				} else if (firstClosedOpposite) {
+					firstClosedOpposite.setToOpen();
+				}
+    			
+				const firstOpposite = this.oppositeMultiTimeTeleporters.shift();
+    			this.oppositeMultiTimeTeleporters.push(firstOpposite as MultiTimeTeleporter);
     		}
     	});
 	}
@@ -78,7 +70,7 @@ export default class MultiTimeTeleporter extends Phaser.Physics.Arcade.Sprite {
     	this.collidersGroup.push(...collider);
 	}
     
-	public setOpposites(...opposites: MultiTimeTeleporter[]): void {
+	public addOpposites(...opposites: MultiTimeTeleporter[]): void {
     	this.oppositeMultiTimeTeleporters.push(...opposites);
 	}
 

@@ -1,21 +1,29 @@
 import SpatialTeleporter from './spatialTeleporter';
 
 export default class GreenSpatialTeleporter extends SpatialTeleporter {
-	constructor(scene: Phaser.Scene, x: number, y: number) {
-    	super(scene, x, y, 'door_tp_green');
+	constructor(scene: Phaser.Scene, x: number, y: number, num: number) {
+    	super(scene, x, y, 'door_tp_green', num);
+		this.create();
 	}
 
-	// create() {
-	// }
+	create() {
+		this.scene.events.on('GreenSpatialTeleporter::activate', (targetNum: number, nextTp: number) => {
+			if (this.num === targetNum) {
+				this.nextTp = nextTp;
+				this.scene.events.emit('SpatialTeleporter::teleport', { x: this.x, y: this.y });
+			}
+		});
+	}
 
 	// update() {
 	// }
 
 	public activate(): void {
     	if (this.scene.time.now > this.nextTp) {
-    		this.nextTp = this.oppositeSpatialTeleporter.nextTp = this.scene.time.now + this.tpRate;
+    		this.nextTp = this.scene.time.now + this.tpRate;
+			const targetNum = this.num === 0 ? 1 : 0;
     		this.scene.sound.play('door_tp');
-    		this.scene.events.emit('GreenSpatialTeleporter::activate', this.getOppositeCoordinates());
+    		this.scene.events.emit('GreenSpatialTeleporter::activate', targetNum, this.nextTp);
     	}
 	}
 }
