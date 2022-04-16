@@ -149,11 +149,11 @@
             "scaleInDock": 1
         },
         "level1.tmx": {
-            "scale": 3,
-            "selectedLayer": 9,
+            "scale": 11,
+            "selectedLayer": 11,
             "viewCenter": {
-                "x": 624,
-                "y": 239.66666666666666
+                "x": 1229.0454545454545,
+                "y": 388.04545454545456
             }
         },
         "level1.tmx#tileset": {
@@ -161,11 +161,11 @@
             "scaleInEditor": 3
         },
         "level2.tmx": {
-            "scale": 3,
-            "selectedLayer": 11,
+            "scale": 16,
+            "selectedLayer": 9,
             "viewCenter": {
-                "x": 624,
-                "y": 240
+                "x": 1206.90625,
+                "y": 393.09375
             }
         },
         "level2.tmx#tileset": {
@@ -173,11 +173,11 @@
             "scaleInEditor": 1
         },
         "level3.tmx": {
-            "scale": 0.75,
-            "selectedLayer": 9,
+            "scale": 1,
+            "selectedLayer": 13,
             "viewCenter": {
-                "x": 624,
-                "y": 240
+                "x": 702.5,
+                "y": 419.5
             }
         },
         "level3.tmx#tileset": {
@@ -185,11 +185,11 @@
             "scaleInEditor": 2
         },
         "level4.tmx": {
-            "scale": 0.75,
-            "selectedLayer": 10,
+            "scale": 4,
+            "selectedLayer": 8,
             "viewCenter": {
-                "x": 645.9999999999999,
-                "y": 328.66666666666663
+                "x": 612.875,
+                "y": 275.875
             }
         },
         "level4.tmx#tileset": {
@@ -197,11 +197,11 @@
             "scaleInEditor": 1
         },
         "level5.tmx": {
-            "scale": 2,
-            "selectedLayer": 10,
+            "scale": 3,
+            "selectedLayer": 11,
             "viewCenter": {
-                "x": 1037.25,
-                "y": 385.25
+                "x": 1024.1666666666665,
+                "y": 301.5
             }
         },
         "level5.tmx#tileset": {
@@ -266,7 +266,7 @@
         "level4.tmx"
     ],
     "project": "paradoxe.tiled-project",
-    "property.type": "int",
+    "property.type": "string",
     "recentFiles": [
         "tileset.json",
         "level1.tmx",

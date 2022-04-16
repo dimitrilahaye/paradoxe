@@ -8,6 +8,10 @@ export default class Level2 extends BaseLevel {
 
 	create() {
 		super.create();
+
+		this.createSpatialTeleportersByColorAndNum('green', 0);
+		this.createSpatialTeleportersByColorAndNum('green', 1);
+
 		this.addDialog(0,
 			`Félicitations détective. Vous faites honneur à votre profession.
 Dans cette salle, pour accèder à la sortie veuillez empruntez le portail qui se trouve à l'autre bout de la salle.`
@@ -19,9 +23,13 @@ Oui oui, vous avez bien entendu : vous allez être téléporté. Notre laboratoi
 ...
 N'ayez pas peur, nous savons ce que nous faisons.`
 		);
+
+		this.initPlayer();
 	}
 
 	update() {
 		super.update();
+
+		this.checkForSpatialTeleportersActivation();
 	}
 }

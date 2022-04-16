@@ -131,19 +131,52 @@
         {
          "draworder":"topdown",
          "id":15,
-         "name":"tps",
-         "objects":[],
-         "opacity":1,
-         "type":"objectgroup",
-         "visible":true,
-         "x":0,
-         "y":0
-        }, 
-        {
-         "draworder":"topdown",
-         "id":16,
-         "name":"tp_switchers",
-         "objects":[],
+         "name":"teleporters_spatial",
+         "objects":[
+                {
+                 "height":0,
+                 "id":2,
+                 "name":"green 0",
+                 "properties":[
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"green"
+                        }, 
+                        {
+                         "name":"num",
+                         "type":"int",
+                         "value":0
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1216,
+                 "y":398
+                }, 
+                {
+                 "height":0,
+                 "id":7,
+                 "name":"green 1",
+                 "properties":[
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"green"
+                        }, 
+                        {
+                         "name":"num",
+                         "type":"int",
+                         "value":1
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":496,
+                 "y":237.5
+                }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -157,30 +190,8 @@
          "objects":[
                 {
                  "height":0,
-                 "id":1,
-                 "name":"start",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":63.75,
-                 "y":400
-                }, 
-                {
-                 "height":0,
-                 "id":2,
-                 "name":"door_tp_green_1",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":1216,
-                 "y":398
-                }, 
-                {
-                 "height":0,
                  "id":3,
-                 "name":"door_start",
+                 "name":"start",
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -191,35 +202,13 @@
                 {
                  "height":0,
                  "id":5,
-                 "name":"door_end",
+                 "name":"end",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
                  "x":815,
                  "y":235
-                }, 
-                {
-                 "height":0,
-                 "id":7,
-                 "name":"door_tp_green_2",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":496,
-                 "y":237.5
-                }, 
-                {
-                 "height":0,
-                 "id":8,
-                 "name":"end",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":811.5,
-                 "y":240.5
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -264,7 +253,40 @@
                  "visible":true,
                  "width":0,
                  "x":1214.5,
-                 "y":400.416666666667
+                 "y":400.417
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":17,
+         "name":"player",
+         "objects":[
+                {
+                 "height":0,
+                 "id":1,
+                 "name":"start",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":63.75,
+                 "y":400
+                }, 
+                {
+                 "height":0,
+                 "id":8,
+                 "name":"end",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":811.5,
+                 "y":240.5
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -272,7 +294,7 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":17,
+ "nextlayerid":18,
  "nextobjectid":13,
  "orientation":"orthogonal",
  "renderorder":"left-down",

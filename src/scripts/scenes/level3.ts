@@ -14,12 +14,15 @@ export default class Level3 extends BaseLevel {
 		this.createSimpleTimeTeleporter();
 		this.createSimpleSwitcher();
 
-		this.initSimpleTimeTeleporterObjectsColliders();
-
-		this.initSimpleTimeTeleportersWorldColliders();
-
 		this.createSpatialTeleportersByColorAndNum('green', 0);
 		this.createSpatialTeleportersByColorAndNum('green', 1);
+		
+		this.initPlayer();
+		
+		this.initSimpleTimeTeleporterObjectsColliders();
+
+		this.initSimpleTimeTeleporterWorldColliders();
+
 
 		this.events.on('BaseLevel::firstTp', () => {
 			if (!this.firstTpTaken) {

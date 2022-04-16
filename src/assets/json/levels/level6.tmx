@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="left-down" width="40" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="19" nextobjectid="27">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="left-down" width="40" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="19" nextobjectid="28">
  <editorsettings>
   <export target="level6.json" format="json"/>
  </editorsettings>
@@ -1415,12 +1415,6 @@
     <property name="num" type="int" value="2"/>
    </properties>
   </object>
-  <object id="26" name="multi 3" x="975.5" y="398">
-   <properties>
-    <property name="close" type="bool" value="true"/>
-    <property name="num" type="int" value="3"/>
-   </properties>
-  </object>
  </objectgroup>
  <objectgroup id="15" name="switchers_multi">
   <object id="13" name="multi 1" x="688.5" y="238.167">
@@ -1474,7 +1468,12 @@
   </object>
  </objectgroup>
  <objectgroup id="16" name="dialogs">
-  <object id="14" name="dialog" x="174" y="400.667">
+  <object id="14" name="dialog" x="238" y="400.667">
+   <properties>
+    <property name="num" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="27" name="dialog" x="110" y="400.667">
    <properties>
     <property name="num" type="int" value="0"/>
    </properties>

@@ -130,30 +130,8 @@
         }, 
         {
          "draworder":"topdown",
-         "id":15,
-         "name":"tps",
-         "objects":[],
-         "opacity":1,
-         "type":"objectgroup",
-         "visible":true,
-         "x":0,
-         "y":0
-        }, 
-        {
-         "draworder":"topdown",
-         "id":16,
-         "name":"tp_switchers",
-         "objects":[],
-         "opacity":1,
-         "type":"objectgroup",
-         "visible":true,
-         "x":0,
-         "y":0
-        }, 
-        {
-         "draworder":"topdown",
-         "id":11,
-         "name":"doors",
+         "id":17,
+         "name":"player",
          "objects":[
                 {
                  "height":0,
@@ -168,8 +146,30 @@
                 }, 
                 {
                  "height":0,
+                 "id":4,
+                 "name":"end",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1217.25,
+                 "y":401.25
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":11,
+         "name":"doors",
+         "objects":[
+                {
+                 "height":0,
                  "id":2,
-                 "name":"door_end",
+                 "name":"end",
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -180,24 +180,13 @@
                 {
                  "height":0,
                  "id":3,
-                 "name":"door_start",
+                 "name":"start",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
                  "x":53.75,
                  "y":396
-                }, 
-                {
-                 "height":0,
-                 "id":4,
-                 "name":"end",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":1217.25,
-                 "y":401.25
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -250,7 +239,7 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":17,
+ "nextlayerid":18,
  "nextobjectid":8,
  "orientation":"orthogonal",
  "renderorder":"left-down",

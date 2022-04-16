@@ -17,6 +17,7 @@ import MyTextBox from '../ui/myTextBox';
 import { SceneKey } from './index';
 
 export default abstract class BaseLevel extends Phaser.Scene {
+	protected music: Phaser.Sound.BaseSound;
 	protected tilemap: Phaser.Tilemaps.Tilemap;
 	protected tileset: Phaser.Tilemaps.Tileset;
 	protected bckgLayer: Phaser.Tilemaps.TilemapLayer;
@@ -29,33 +30,20 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	protected lightsLayer: Phaser.Tilemaps.TilemapLayer;
 	protected start: Phaser.Types.Tilemaps.TiledObject;
 	protected end: Phaser.Types.Tilemaps.TiledObject;
+
 	protected pastPlayersGroup: Phaser.GameObjects.Group;
 	protected ballGroup: Phaser.GameObjects.Group;
 	protected spatialTeleportersGroup: Phaser.GameObjects.Group;
 	protected simpleTimeTeleporterGroup: Phaser.GameObjects.Group;
-	protected simpleSwitchersGroup: Phaser.GameObjects.Group;
+	protected simpleSwitcherGroup: Phaser.GameObjects.Group;
+	protected doubleTimeTeleportersGroup: Phaser.GameObjects.Group;
+	protected doubleSwitchersGroup: Phaser.GameObjects.Group;
 	protected multiTimeTeleportersGroup: Phaser.GameObjects.Group;
 	protected multiSwitchersGroup: Phaser.GameObjects.Group;
-	protected music: Phaser.Sound.BaseSound;
 	
 	protected player: Player;
 	protected doorEntrance: DoorEntrance;
 	protected doorExit: DoorExit;
-	protected greenSpatialTeleporter1: GreenSpatialTeleporter;
-	protected greenSpatialTeleporter2: GreenSpatialTeleporter;
-	protected redSpatialTeleporter1: RedSpatialTeleporter;
-	protected redSpatialTeleporter2: RedSpatialTeleporter;
-	protected simpleTimeTeleporter: SimpleTimeTeleporter;
-	protected doubleTimeTeleporter1: DoubleTimeTeleporter;
-	protected doubleTimeTeleporter2: DoubleTimeTeleporter;
-	protected multiTimeTeleporter1: MultiTimeTeleporter;
-	protected multiTimeTeleporter2: MultiTimeTeleporter;
-	protected multiTimeTeleporter3: MultiTimeTeleporter;
-	protected simpleSwitcher: SimpleSwitcher;
-	protected doubleSwitcher: DoubleSwitcher;
-	protected multiSwitcher1: MultiSwitcher;
-	protected multiSwitcher2: MultiSwitcher;
-	protected multiSwitcher3: MultiSwitcher;
 	protected textBox: MyTextBox;
 	protected dialogs = new Map<string, string>();
 	protected isDialogLaunched = false;
@@ -68,38 +56,41 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		this.ballGroup = this.add.group();
 		this.spatialTeleportersGroup = this.add.group();
 		this.simpleTimeTeleporterGroup = this.add.group();
-		this.simpleSwitchersGroup = this.add.group();
+		this.simpleSwitcherGroup = this.add.group();
+		this.doubleTimeTeleportersGroup = this.add.group();
+		this.doubleSwitchersGroup = this.add.group();
 		this.multiTimeTeleportersGroup = this.add.group();
 		this.multiSwitchersGroup = this.add.group();
 		
 		this.initMap();
 		this.initDoors();
-		this.initPlayer();
 		this.initPastPlayers();
-		
-		
-		// this.initDoubleTimeTeleporters();
-		// this.initDoubleSwitcher();
-
-		// this.initDoubleTimeTeleportersColliders();
 		
 		this.listenToPlayerEvents();
 		this.listenToPastPlayersEvents();
 		this.listenToMyTextBoxEvents();
 		this.listenToMultiTimeTeleportersEvents();
 		
-		// this.launchMusic();
+		this.launchMusic();
 	}
 
 	update() {
 		this.player.update();
 		this.iterateOnPastPlayers((pastPlayer: Phaser.GameObjects.GameObject) => pastPlayer.update());
 		
-		// this.checkForSimpleSwitcherActivation();
-		// this.checkForDoubleSwitcherActivation();
-		
 		this.checkForTutorials();
 		this.checkForLevelEnd();
+	}
+
+	protected initPlayer() {
+		this.start = this.tilemap.findObject(LayerName.DOORS, obj => obj.name === ObjectName.START);
+		this.end = this.tilemap.findObject(LayerName.DOORS, obj => obj.name === ObjectName.END);
+		this.player = new Player(this, this.start?.x || 0, this.start?.y || 0);
+		this.player.create();
+		
+		this.cameras.main.startFollow(this.player);
+
+		this.physics.add.collider(this.player, [this.groundLayer, this.platformsLayer]);
 	}
 	
 	protected createSimpleTimeTeleporter() {
@@ -116,7 +107,30 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		if (object) {
 			const simpleSwitcher = new SimpleSwitcher(this, object?.x || 0, object?.y || 0);
 			simpleSwitcher.setData('num', 0);
-			this.simpleSwitchersGroup.add(simpleSwitcher);
+			this.simpleSwitcherGroup.add(simpleSwitcher);
+		}
+	}
+
+	protected createDoubleTimeTeleporters() {
+		const doubleTimeTeleporter1Position = this.getObjectByLayerAndProperties(LayerName.TELEPORTERS_DOUBLE, { num: 0 });
+		const doubleTimeTeleporter2Position = this.getObjectByLayerAndProperties(LayerName.TELEPORTERS_DOUBLE, { num: 1 });
+		if (doubleTimeTeleporter1Position && doubleTimeTeleporter2Position) {
+			const doubleTimeTeleporter1 = new DoubleTimeTeleporter(this, doubleTimeTeleporter1Position?.x || 0, doubleTimeTeleporter1Position?.y || 0);
+			const doubleTimeTeleporter2 = new DoubleTimeTeleporter(this, doubleTimeTeleporter2Position?.x || 0, doubleTimeTeleporter2Position?.y || 0);
+			
+			doubleTimeTeleporter1.setOpposite(doubleTimeTeleporter2);
+			doubleTimeTeleporter2.setOpposite(doubleTimeTeleporter1);
+
+			this.doubleTimeTeleportersGroup.add(doubleTimeTeleporter1);
+			this.doubleTimeTeleportersGroup.add(doubleTimeTeleporter2);
+		}
+	}
+
+	protected createDoubleSwitcher() {
+		const object = this.getObjectByLayerAndProperties(LayerName.SWITCHERS_DOUBLE, { num: 0 });
+		if (object) {
+			const doubleSwitcher = new DoubleSwitcher(this, object?.x || 0, object?.y || 0);
+			this.doubleSwitchersGroup.add(doubleSwitcher);
 		}
 	}
 
@@ -152,8 +166,12 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}
 	}
 
-	protected initSimpleTimeTeleportersWorldColliders(): void {
+	protected initSimpleTimeTeleporterWorldColliders(): void {
 		this.physics.add.collider(this.simpleTimeTeleporterGroup, [this.groundLayer, this.platformsLayer]);
+	}
+
+	protected initDoubleTimeTeleportersWorldColliders(): void {
+		this.physics.add.collider(this.doubleTimeTeleportersGroup, [this.groundLayer, this.platformsLayer]);
 	}
 
 	protected initMultiTimeTeleportersWorldColliders(): void {
@@ -231,6 +249,27 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		});
 	}
 
+	protected initDoubleTimeTeleportersObjectsColliders() {
+		this.iterateOnGroup(this.doubleTimeTeleportersGroup, (teleporter: DoubleTimeTeleporter) => {
+			const playerCollider = this.physics.add.collider(this.player, teleporter, () => {
+				this.shakeOnTpCollision();
+
+				teleporter.activate();
+
+				const dirX = this.player.direction === 'left' ? -20 : +20;
+				const pastPlayer = new PastPlayer(this, teleporter.x - dirX, teleporter.y);
+				pastPlayer.create();
+				this.pastPlayersGroup.add(pastPlayer);
+			});
+
+			const ballsCollider = this.physics.add.collider(teleporter, this.ballGroup, (_, ball) => {
+				ball.destroy();
+			});
+			
+			teleporter.addCollider(ballsCollider, playerCollider);
+		});
+	}
+
 	protected checkForSpatialTeleportersActivation() {
 		this.iterateOnGroup(this.spatialTeleportersGroup, (teleporter: SpatialTeleporter) => {
 			if (this.intersect(this.player, teleporter)) {
@@ -242,7 +281,17 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	}
 
 	protected checkForSimpleSwitcherActivation() {
-		this.iterateOnGroup(this.simpleSwitchersGroup, (switcher: SimpleSwitcher) => {
+		this.iterateOnGroup(this.simpleSwitcherGroup, (switcher: SimpleSwitcher) => {
+			if (this.intersect(this.player, switcher)) {
+				if (this.player.enterActivate) {
+					switcher.activate();
+				}
+			}
+		});
+	}
+
+	protected checkForDoubleSwitcherActivation() {
+		this.iterateOnGroup(this.doubleSwitchersGroup, (switcher: SimpleSwitcher) => {
 			if (this.intersect(this.player, switcher)) {
 				if (this.player.enterActivate) {
 					switcher.activate();
@@ -384,17 +433,6 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		return RectangleToRectangle(obj1.getBounds(), obj2.getBounds());
 	}
 
-	private initPlayer() {
-		this.start = this.tilemap.findObject(LayerName.DOORS, obj => obj.name === ObjectName.START);
-		this.end = this.tilemap.findObject(LayerName.DOORS, obj => obj.name === ObjectName.END);
-		this.player = new Player(this, this.start?.x || 0, this.start?.y || 0);
-		this.player.create();
-		
-		this.cameras.main.startFollow(this.player);
-
-		this.physics.add.collider(this.player, [this.groundLayer, this.platformsLayer]);
-	}
-
 	private getObjectByLayerAndProperties(layer: LayerName, properties: { [key: string]: any }): Phaser.Types.Tilemaps.TiledObject {
 		const object = this.tilemap.findObject(layer, (obj) => {
 			const objectProperties = this.getPropertiesAsObject(obj as unknown as Phaser.Types.Tilemaps.TiledObject);
@@ -458,85 +496,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 
 		return { x, y };
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	private checkForDoubleSwitcherActivation() {
-		if (this.doubleSwitcher) {
-			if (this.intersect(this.player, this.doubleSwitcher)) {
-				if (this.player.enterActivate) {
-					this.doubleSwitcher.activate();
-				}
-			}
-		}
-	}
-
-	private initDoubleTimeTeleportersColliders() {
-		if (this.doubleTimeTeleporter1 && this.doubleTimeTeleporter2) {
-			const playerCollider1 = this.physics.add.collider(this.player, this.doubleTimeTeleporter1, () => {
-				this.shakeOnTpCollision();
-
-				this.doubleTimeTeleporter1.activate();
-
-				const dirX = this.player.direction === 'left' ? -20 : +20;
-				const pastPlayer = new PastPlayer(this, this.doubleTimeTeleporter1.x - dirX, this.doubleTimeTeleporter1.y);
-				pastPlayer.create();
-				this.pastPlayersGroup.add(pastPlayer);
-			});
-			const playerCollider2 = this.physics.add.collider(this.player, this.doubleTimeTeleporter2, () => {
-				this.shakeOnTpCollision();
-
-				this.doubleTimeTeleporter2.activate();
-
-				const dirX = this.player.direction === 'left' ? -20 : +20;
-				const pastPlayer = new PastPlayer(this, this.doubleTimeTeleporter2.x + dirX, this.doubleTimeTeleporter2.y);
-				pastPlayer.create();
-				this.pastPlayersGroup.add(pastPlayer);
-			});
-
-			const ballsCollider = this.physics.add.collider([this.doubleTimeTeleporter1, this.doubleTimeTeleporter2], this.ballGroup, (_, ball) => {
-				ball.destroy();
-			});
-			
-			this.doubleTimeTeleporter1.addCollider(ballsCollider, playerCollider1);
-			this.doubleTimeTeleporter2.addCollider(ballsCollider, playerCollider2);
-		}
-	}
-
-	private initDoubleSwitcher() {
-		const doubleSwitcherPosition = this.tilemap.findObject('tp_switchers', obj => obj.name === ObjectName.SWITCHER_DOUBLE);
-		if (doubleSwitcherPosition) {
-			this.doubleSwitcher = new DoubleSwitcher(this, doubleSwitcherPosition?.x || 0, doubleSwitcherPosition?.y || 0);
-		}
-	}
-
-	private initDoubleTimeTeleporters() {
-		const doubleTimeTeleporter1Position = this.tilemap.findObject('tps', obj => obj.name === ObjectName.TP_DOUBLE_1);
-		const doubleTimeTeleporter2Position = this.tilemap.findObject('tps', obj => obj.name === ObjectName.TP_DOUBLE_2);
-		if (doubleTimeTeleporter1Position && doubleTimeTeleporter2Position) {
-			this.doubleTimeTeleporter1 = new DoubleTimeTeleporter(this, doubleTimeTeleporter1Position?.x || 0, doubleTimeTeleporter1Position?.y || 0);
-			this.doubleTimeTeleporter2 = new DoubleTimeTeleporter(this, doubleTimeTeleporter2Position?.x || 0, doubleTimeTeleporter2Position?.y || 0);
-			
-			this.doubleTimeTeleporter1.setOpposite(this.doubleTimeTeleporter2);
-			this.doubleTimeTeleporter2.setOpposite(this.doubleTimeTeleporter1);
-
-			this.physics.add.collider([this.doubleTimeTeleporter1, this.doubleTimeTeleporter2], [this.groundLayer, this.platformsLayer]);
-		}
-	}
-
+	
 	private launchMusic() {
 		this.music = this.sound.add('levels');
 		if (!this.music.isPlaying) {

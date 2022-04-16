@@ -184,28 +184,6 @@
                  "width":0,
                  "x":1167.5,
                  "y":238.5
-                }, 
-                {
-                 "height":0,
-                 "id":26,
-                 "name":"multi 3",
-                 "properties":[
-                        {
-                         "name":"close",
-                         "type":"bool",
-                         "value":true
-                        }, 
-                        {
-                         "name":"num",
-                         "type":"int",
-                         "value":3
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":975.5,
-                 "y":398
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -453,13 +431,30 @@
                         {
                          "name":"num",
                          "type":"int",
+                         "value":1
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":238,
+                 "y":400.667
+                }, 
+                {
+                 "height":0,
+                 "id":27,
+                 "name":"dialog",
+                 "properties":[
+                        {
+                         "name":"num",
+                         "type":"int",
                          "value":0
                         }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":174,
+                 "x":110,
                  "y":400.667
                 }],
          "opacity":1,
@@ -469,7 +464,7 @@
          "y":0
         }],
  "nextlayerid":19,
- "nextobjectid":27,
+ "nextobjectid":28,
  "orientation":"orthogonal",
  "renderorder":"left-down",
  "tiledversion":"1.8.4",
