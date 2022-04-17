@@ -29,8 +29,8 @@ const config = {
 		height: DEFAULT_HEIGHT,
 	},
 	scene: [
-		PreloadLevel7, // mix all teleporters
 		PreloadLevel1, // simple exit door
+		PreloadLevel7, // mix all teleporters
 		PreloadLevel6, // WIP: multi time teleporters
 		PreloadLevel5, // mix simple / double teleporters
 		PreloadLevel2, // spatial doors
