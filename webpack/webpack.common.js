@@ -3,6 +3,11 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+	performance: {
+		hints: false,
+		maxEntrypointSize: 702000,
+		maxAssetSize: 702000
+	},
 	entry: ['./src/scripts/game.ts', './webpack/credits.js'],
 	output: {
 		path: path.resolve(__dirname, '../dist'),
@@ -34,7 +39,7 @@ module.exports = {
 				{ from: 'src/assets', to: 'assets' },
 				{ from: 'pwa', to: '' },
 				{ from: 'src/favicon.ico', to: '' }
-			]
+			],
 		})
 	]
 };
