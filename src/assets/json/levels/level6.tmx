@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="left-down" width="40" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="19" nextobjectid="28">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="left-down" width="40" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="19" nextobjectid="30">
  <editorsettings>
   <export target="level6.json" format="json"/>
  </editorsettings>
@@ -1397,31 +1397,26 @@
   </data>
  </layer>
  <objectgroup id="14" name="teleporters_multi">
-  <object id="16" name="multi 1" x="655.5" y="238">
-   <properties>
-    <property name="close" type="bool" value="false"/>
-    <property name="num" type="int" value="1"/>
-   </properties>
-  </object>
   <object id="18" name="multi 0" x="111" y="232.5">
    <properties>
-    <property name="close" type="bool" value="false"/>
+    <property name="close" type="bool" value="true"/>
     <property name="num" type="int" value="0"/>
    </properties>
   </object>
   <object id="23" name="multi 2" x="1167.5" y="238.5">
    <properties>
-    <property name="close" type="bool" value="true"/>
+    <property name="close" type="bool" value="false"/>
     <property name="num" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="29" name="multi 1" x="1103.5" y="398.5">
+   <properties>
+    <property name="close" type="bool" value="false"/>
+    <property name="num" type="int" value="1"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup id="15" name="switchers_multi">
-  <object id="13" name="multi 1" x="688.5" y="238.167">
-   <properties>
-    <property name="num" type="int" value="1"/>
-   </properties>
-  </object>
   <object id="17" name="multi 0" x="78" y="241">
    <properties>
     <property name="num" type="int" value="0"/>
@@ -1432,35 +1427,40 @@
     <property name="num" type="int" value="2"/>
    </properties>
   </object>
+  <object id="28" name="multi 1" x="1134.5" y="397">
+   <properties>
+    <property name="num" type="int" value="1"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="11" name="doors">
   <object id="3" name="start" x="53.75" y="396"/>
-  <object id="5" name="end" x="530.5" y="234.5"/>
+  <object id="5" name="end" x="1234.5" y="394.5"/>
  </objectgroup>
  <objectgroup id="18" name="player">
   <object id="1" name="start" x="63.75" y="400"/>
-  <object id="8" name="end" x="527" y="240"/>
+  <object id="8" name="end" x="1231" y="400"/>
  </objectgroup>
  <objectgroup id="17" name="teleporters_spatial">
-  <object id="25" name="green 0" x="15" y="240.5">
+  <object id="25" name="green 0" x="591" y="398.5">
    <properties>
     <property name="color" value="green"/>
     <property name="num" type="int" value="0"/>
    </properties>
   </object>
-  <object id="21" name="green 1" x="1263" y="238">
-   <properties>
-    <property name="color" value="green"/>
-    <property name="num" type="int" value="1"/>
-   </properties>
-  </object>
-  <object id="2" name="red 0" x="624.167" y="398.666">
+  <object id="21" name="red 0" x="1263" y="238">
    <properties>
     <property name="color" value="red"/>
     <property name="num" type="int" value="0"/>
    </properties>
   </object>
-  <object id="7" name="red 1" x="784.5" y="237.833">
+  <object id="2" name="green 1" x="16.167" y="238.666">
+   <properties>
+    <property name="color" value="green"/>
+    <property name="num" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="7" name="red 1" x="1200.5" y="397.833">
    <properties>
     <property name="color" value="red"/>
     <property name="num" type="int" value="1"/>

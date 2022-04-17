@@ -15,11 +15,13 @@ export default class Level6 extends BaseLevel {
 		this.createMultiTimeTeleporterByNum(0);
 		this.createMultiTimeTeleporterByNum(1);
 		this.createMultiTimeTeleporterByNum(2);
+		// this.createMultiTimeTeleporterByNum(3);
 
 		// init multi switchers
 		this.createMultiSwitcherByNum(0);
 		this.createMultiSwitcherByNum(1);
 		this.createMultiSwitcherByNum(2);
+		// this.createMultiSwitcherByNum(3);
 		
 		// TODO: init spatial teleporters in one function
 		// create spatial teleporters
@@ -34,6 +36,7 @@ export default class Level6 extends BaseLevel {
 		this.initMultiTimeTeleportersObjectsCollidersByNum(0);
 		this.initMultiTimeTeleportersObjectsCollidersByNum(1);
 		this.initMultiTimeTeleportersObjectsCollidersByNum(2);
+		// this.initMultiTimeTeleportersObjectsCollidersByNum(3);
 		
 		this.initMultiTimeTeleportersWorldColliders();
 		

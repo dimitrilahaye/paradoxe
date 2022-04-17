@@ -397,6 +397,53 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}, this);
 	}
 
+	private shakeOnTpCollision() {
+		this.cameras.main.shake(50, 0.01);
+	}
+
+	private initDoors() {
+		const { x: doorStartX, y: doorStartY } = this.tilemap.findObject(LayerName.DOORS, obj => obj.name === ObjectName.DOOR_START);
+		const { x: doorEndX, y: doorEndY } = this.tilemap.findObject(LayerName.DOORS, obj => obj.name === ObjectName.DOOR_END);
+		this.doorEntrance = new DoorEntrance(this, doorStartX || 0, doorStartY || 0);
+		this.doorExit = new DoorExit(this, doorEndX || 0, doorEndY || 0);
+		
+		this.physics.add.collider([this.doorEntrance, this.doorExit], [this.groundLayer, this.platformsLayer]);
+	}
+
+	private initPastPlayers() {
+		this.pastPlayersGroup = this.add.group();
+		this.physics.add.collider(this.pastPlayersGroup, [this.groundLayer, this.platformsLayer]);
+	}
+
+	private initMap() {
+		this.tilemap = this.add.tilemap(this.tilesetKey);
+		this.tileset = this.tilemap.addTilesetImage('tileset', 'tileset');
+
+		this.bckgLayer = this.tilemap.createLayer(LayerName.BACKGROUND, this.tileset, 0, 0);
+		this.groundLayer = this.tilemap.createLayer(LayerName.GROUND, this.tileset, 0, 0);
+		this.wallLayer = this.tilemap.createLayer(LayerName.WALL, this.tileset, 0, 0);
+		this.wall2Layer = this.tilemap.createLayer(LayerName.WALL2, this.tileset, 0, 0);
+		this.desksLayer = this.tilemap.createLayer(LayerName.DESKS, this.tileset, 0, 0);
+		this.platformsLayer = this.tilemap.createLayer(LayerName.PLATFORMS, this.tileset, 0, 0);
+		this.ceilingLayer = this.tilemap.createLayer(LayerName.CEILING, this.tileset, 0, 0);
+		this.lightsLayer = this.tilemap.createLayer(LayerName.LIGHTS, this.tileset, 0, 0);
+
+		this.groundLayer.setCollisionByProperty({ collides: true });
+		this.platformsLayer.setCollisionByProperty({ collides: true });
+
+		this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, this.tilemap.heightInPixels);
+	}
+	
+	private launchMusic() {
+		this.music = this.sound.add('levels');
+		if (!this.music.isPlaying) {
+			this.music.play({
+				loop: true,
+				volume: 0.1,
+			});
+		}
+	}
+
 	private findObjectOnGroupByData<T>(group: Phaser.GameObjects.Group, data: { [key: string]: any }): T | undefined {
 		if (group?.getLength() > 0) {
 			return group.children.getArray().find((child) => {
@@ -453,57 +500,10 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}, {});
 	}
 
-	private shakeOnTpCollision() {
-		this.cameras.main.shake(50, 0.01);
-	}
-
-	private initDoors() {
-		const { x: doorStartX, y: doorStartY } = this.tilemap.findObject(LayerName.DOORS, obj => obj.name === ObjectName.DOOR_START);
-		const { x: doorEndX, y: doorEndY } = this.tilemap.findObject(LayerName.DOORS, obj => obj.name === ObjectName.DOOR_END);
-		this.doorEntrance = new DoorEntrance(this, doorStartX || 0, doorStartY || 0);
-		this.doorExit = new DoorExit(this, doorEndX || 0, doorEndY || 0);
-		
-		this.physics.add.collider([this.doorEntrance, this.doorExit], [this.groundLayer, this.platformsLayer]);
-	}
-
-	private initPastPlayers() {
-		this.pastPlayersGroup = this.add.group();
-		this.physics.add.collider(this.pastPlayersGroup, [this.groundLayer, this.platformsLayer]);
-	}
-
-	private initMap() {
-		this.tilemap = this.add.tilemap(this.tilesetKey);
-		this.tileset = this.tilemap.addTilesetImage('tileset', 'tileset');
-
-		this.bckgLayer = this.tilemap.createLayer(LayerName.BACKGROUND, this.tileset, 0, 0);
-		this.groundLayer = this.tilemap.createLayer(LayerName.GROUND, this.tileset, 0, 0);
-		this.wallLayer = this.tilemap.createLayer(LayerName.WALL, this.tileset, 0, 0);
-		this.wall2Layer = this.tilemap.createLayer(LayerName.WALL2, this.tileset, 0, 0);
-		this.desksLayer = this.tilemap.createLayer(LayerName.DESKS, this.tileset, 0, 0);
-		this.platformsLayer = this.tilemap.createLayer(LayerName.PLATFORMS, this.tileset, 0, 0);
-		this.ceilingLayer = this.tilemap.createLayer(LayerName.CEILING, this.tileset, 0, 0);
-		this.lightsLayer = this.tilemap.createLayer(LayerName.LIGHTS, this.tileset, 0, 0);
-
-		this.groundLayer.setCollisionByProperty({ collides: true });
-		this.platformsLayer.setCollisionByProperty({ collides: true });
-
-		this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, this.tilemap.heightInPixels);
-	}
-
 	private getMiddleSceneCoordinates(): { x: number, y: number } {
 		const x = this.cameras.main.worldView.x + this.cameras.main.width / 2;
 		const y = this.cameras.main.worldView.y + this.cameras.main.height / 2;
 
 		return { x, y };
-	}
-	
-	private launchMusic() {
-		this.music = this.sound.add('levels');
-		if (!this.music.isPlaying) {
-			this.music.play({
-				loop: true,
-				volume: 0.1,
-			});
-		}
 	}
 }
