@@ -42,7 +42,7 @@ To cross each room of this place, you will have to face travels in time and spac
   - [ ] go to credits
 - [ ] Credits scene
 - [ ] Put dialogs in json config files
-- [ ] Add github page
+- [X] Add github page
 - [ ] Add game in itchi.io
 
 ## Best effort
