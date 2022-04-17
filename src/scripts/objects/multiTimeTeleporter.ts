@@ -74,10 +74,9 @@ export default class MultiTimeTeleporter extends Phaser.Physics.Arcade.Sprite {
     	this.oppositeMultiTimeTeleporters.push(...opposites);
 	}
 
-
 	public activate(): void {
     	this.scene.sound.play('tp');
-    	this.scene.events.emit('DoubleTimeTeleporter::activate', {x: this.x, y: this.y }, this.getOppositeCoordinates());
+    	this.scene.events.emit('DoubleTimeTeleporter::activate', { x: this.x, y: this.y }, this.getOppositeCoordinates());
 	}
     
 	private getOppositeCoordinates(): Coordinates {

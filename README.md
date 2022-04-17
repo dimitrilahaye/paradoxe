@@ -21,8 +21,8 @@
 - [X] rename levels by their real names
 - [X] system for many spatial teleporters
 - [X] create level to present orange tp game play
-- [ ] **WIP:** :construction: create level that mix all tp types
-- [ ] replay button
+- [X] create level that mix all tp types
+- [ ] **WIP:** :construction: replay button
 - [ ] past player tween
 - [ ] make past player able to shot us
 - [ ] player death

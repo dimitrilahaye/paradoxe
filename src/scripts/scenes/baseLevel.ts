@@ -118,8 +118,8 @@ export default abstract class BaseLevel extends Phaser.Scene {
 			const doubleTimeTeleporter1 = new DoubleTimeTeleporter(this, doubleTimeTeleporter1Position?.x || 0, doubleTimeTeleporter1Position?.y || 0);
 			const doubleTimeTeleporter2 = new DoubleTimeTeleporter(this, doubleTimeTeleporter2Position?.x || 0, doubleTimeTeleporter2Position?.y || 0);
 			
-			doubleTimeTeleporter1.setOpposite(doubleTimeTeleporter2);
-			doubleTimeTeleporter2.setOpposite(doubleTimeTeleporter1);
+			doubleTimeTeleporter1.addOpposite(doubleTimeTeleporter2);
+			doubleTimeTeleporter2.addOpposite(doubleTimeTeleporter1);
 
 			this.doubleTimeTeleportersGroup.add(doubleTimeTeleporter1);
 			this.doubleTimeTeleportersGroup.add(doubleTimeTeleporter2);
@@ -266,7 +266,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 				ball.destroy();
 			});
 			
-			teleporter.addCollider(ballsCollider, playerCollider);
+			teleporter.addColliders(ballsCollider, playerCollider);
 		});
 	}
 
@@ -450,7 +450,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 				return Object.keys(data).every((d) => child.getData(d) === data[d]);
 			}) as unknown as T;
 		}
-		throw new Error('Object not found');
+		throw new Error(`Object not found with data ${JSON.stringify(data)}`);
 	}
 
 	private iterateOnGroup(group: Phaser.GameObjects.Group, callback: (object, index?: number) => void) {

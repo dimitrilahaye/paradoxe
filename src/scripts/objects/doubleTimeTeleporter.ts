@@ -26,18 +26,17 @@ export default class DoubleTimeTeleporter extends Phaser.Physics.Arcade.Sprite {
 	// update() {
 	// }
 	
-	public addCollider(...collider: Phaser.Physics.Arcade.Collider[]) {
+	public addColliders(...collider: Phaser.Physics.Arcade.Collider[]) {
     	this.collidersGroup.push(...collider);
 	}
     
-	public setOpposite(opposite: DoubleTimeTeleporter): void {
+	public addOpposite(opposite: DoubleTimeTeleporter): void {
     	this.oppositeDoubleTimeTeleporter = opposite;
 	}
 
-
 	public activate(): void {
     	this.scene.sound.play('tp');
-    	this.scene.events.emit('DoubleTimeTeleporter::activate', {x: this.x, y: this.y }, this.getOppositeCoordinates());
+    	this.scene.events.emit('DoubleTimeTeleporter::activate', { x: this.x, y: this.y }, this.getOppositeCoordinates());
 	}
     
 	private getOppositeCoordinates(): Coordinates {
