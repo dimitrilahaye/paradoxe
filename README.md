@@ -33,6 +33,7 @@
   - [ ] checkbox for sound fx
   - [ ] go to credits
 - [ ] Credits scene
+- [ ] Put dialogs in json config files
 - [ ] Add github page
 - [ ] Add game in itchi.io
 
