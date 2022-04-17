@@ -1,3 +1,11 @@
+# Paradoxe
+
+Paradoxe is a puzzle game powered by Phaser.
+You play a detective who goes through a strange laboratory to investigate a murder.
+To cross each room of this place, you will have to face travels in time and space... and fight against yourself.
+
+[The game is playable here in pre-alpha version](https://dimitrilahaye.github.io/paradoxe/)
+
 # TODO
 
 ## MPG (Minimum Playable Game)
