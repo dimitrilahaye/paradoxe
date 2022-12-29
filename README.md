@@ -39,7 +39,10 @@ To cross each room of this place, you will have to face travels in time and spac
   - [X] checkbox for lang en
   - [X] start new game
   - [X] continue
-- [ ] **WIP:** :construction: Topbar UI
+- [ ] **WIP:** :construction: Tutorials
+  - [ ] Put dialogs in json config files
+  - [ ] Switch fr to en
+- [ ] Topbar UI
   - [ ] button back to start screen
   - [ ] button replay
   - [ ] buttons music and sounds
@@ -47,7 +50,6 @@ To cross each room of this place, you will have to face travels in time and spac
 - [ ] past player tween
 - [ ] make past player able to shot us
 - [ ] player death
-- [ ] Put dialogs in json config files
 - [X] Add github page
 - [ ] Add game in itchi.io
 

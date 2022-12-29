@@ -168,6 +168,7 @@ export default abstract class StartScreen extends Phaser.Scene {
 	private checkStartNewGame() {
 		if (this.playerIsNearCoordinates(this.startNewGameCoordinates)) {
 			if (this.player.enterActivate) {
+				this.music.stop();
 				this.scene.start(SceneKey.PreloadLevel1);
 			}
 		}
@@ -177,6 +178,7 @@ export default abstract class StartScreen extends Phaser.Scene {
 		const level = this.store.get<SceneKey>('level');
 		if (level && this.playerIsNearCoordinates(this.continueGameCoordinates)) {
 			if (this.player.enterActivate) {
+				this.music.stop();
 				this.scene.start(level);
 			}
 		}
