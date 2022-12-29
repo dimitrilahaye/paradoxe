@@ -36,10 +36,13 @@ export enum LayerName {
     // tiles
     CEILING = 'ceiling',
     LIGHTS = 'lights',
+    OPTIONS = 'options',
     PLATFORMS = 'platforms',
     DESKS = 'desks',
     WALL2 = 'wall2',
     WALL = 'wall',
+    TP = 'tp',
     GROUND = 'ground',
     BACKGROUND = 'background',
+    TITLE = 'title',
 }

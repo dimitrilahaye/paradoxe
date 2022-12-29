@@ -1,20 +1,9 @@
 export default class PastPlayer extends Phaser.Physics.Arcade.Sprite {
-	left: Phaser.Input.Keyboard.Key;
-	right: Phaser.Input.Keyboard.Key;
-	up: Phaser.Input.Keyboard.Key;
-	down: Phaser.Input.Keyboard.Key;
-	goLeft: boolean;
-	goRight: boolean;
-	goUp: boolean;
-	goDown: boolean;
-	speedX: number;
-	speedY: number;
-	noiseDone: boolean;
-	noiseCircle: Phaser.GameObjects.Arc;
-	enter: Phaser.Input.Keyboard.Key;
-	enterActivate: boolean;
 	isDead = false;
-	isDeadEventEmitted = false;
+	private isDeadEventEmitted = false;
+	private speedX: number;
+	private speedY: number;
+	private hasFx = true;
 
 
 	constructor(scene: Phaser.Scene, x, y) {
@@ -22,6 +11,7 @@ export default class PastPlayer extends Phaser.Physics.Arcade.Sprite {
 		scene.add.existing(this);
 		this.scene.physics.world.enable(this);
 		this.setCollideWorldBounds(true);
+		this.hasFx = this.scene.store.get('fx') ?? true;
 	}
 	
 	create() {
@@ -54,12 +44,18 @@ export default class PastPlayer extends Phaser.Physics.Arcade.Sprite {
 					this.flipX = direction !== 'left';
 					this.isDead = true;
 					this.body.enable = false;
-					this.scene.sound.play('death');
+					if (this.hasFx) {
+						this.scene.sound.play('death');
+					}
 					this.anims.play('death', true);
 					this.setVelocity(0);
 				}
 			}, undefined, this);
 		}, this);
+
+		this.scene.events.on('SoundSwitcher::fx', (isOn) => {
+			this.hasFx = isOn;
+		});
 	}
 	
 	update() {
@@ -77,24 +73,5 @@ export default class PastPlayer extends Phaser.Physics.Arcade.Sprite {
 		this.speedX = 180;
 		this.speedY = 180;
 		this.body.setSize(2);
-	}
-
-	private movePlayer() {
-		if (this.goLeft || this.goRight) {
-			this.anims.play('walk', true);
-		} else {
-			this.anims.stop();
-			this.setTexture('player', 'idle-1');
-		}
-
-		if (this.goLeft) {
-			this.flipX = true;
-			this.setVelocityX(-this.speedX);
-		} else if (this.goRight) {
-			this.flipX = false;
-			this.setVelocityX(this.speedX);
-		} else {
-			this.setVelocityX(0);
-		}
 	}
 }

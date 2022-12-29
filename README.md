@@ -30,17 +30,23 @@ To cross each room of this place, you will have to face travels in time and spac
 - [X] system for many spatial teleporters
 - [X] create level to present orange tp game play
 - [X] create level that mix all tp types
-- [ ] **WIP:** :construction: replay button
+- [X] Start screen
+  - [X] new game
+  - [X] checkbox for tutorials
+  - [X] checkbox for music
+  - [X] checkbox for sound fx
+  - [X] checkbox for lang fr
+  - [X] checkbox for lang en
+  - [X] start new game
+  - [X] continue
+- [ ] **WIP:** :construction: Topbar UI
+  - [ ] button back to start screen
+  - [ ] button replay
+  - [ ] buttons music and sounds
+  - [ ] Score (based on number of kills)
 - [ ] past player tween
 - [ ] make past player able to shot us
 - [ ] player death
-- [ ] Start screen
-  - [ ] new game
-  - [ ] checkbox for tutorials
-  - [ ] checkbox for music
-  - [ ] checkbox for sound fx
-  - [ ] go to credits
-- [ ] Credits scene
 - [ ] Put dialogs in json config files
 - [X] Add github page
 - [ ] Add game in itchi.io

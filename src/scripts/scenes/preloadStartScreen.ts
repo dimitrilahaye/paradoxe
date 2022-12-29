@@ -1,10 +1,7 @@
 import { SceneKey } from './index';
-export default abstract class BasePreloadLevel extends Phaser.Scene {
-	private key: SceneKey;
-
-	constructor(key: SceneKey, protected nextScene: SceneKey, protected tilesetKey: string) {
-		super({ key });
-		this.key = key;
+export default class PreloadStartScreen extends Phaser.Scene {
+	constructor() {
+		super({ key: SceneKey.PreloadStartScreen });
 	}
 
 	preload() {
@@ -25,8 +22,11 @@ export default abstract class BasePreloadLevel extends Phaser.Scene {
 		this.load.audio('door_open', 'assets/sounds/door_open.wav');
 		this.load.audio('door_close', 'assets/sounds/door_close.wav');
 		this.load.audio('end_level', 'assets/sounds/end_level.wav');
+		this.load.bitmapFont('pixels', 'assets/fonts/pixels.png', 'assets/fonts/pixels.xml.fnt');
 
 		this.load.image('tileset', 'assets/img/tileset.png');
+		// todo change image name
+		this.load.image('title', 'assets/img/logo-1200-3.png');
 		this.load.image('door_start', 'assets/img/objects/door_start.png');
 		this.load.image('door_end_open', 'assets/img/objects/door_end_open.png');
 		this.load.image('door_end_close', 'assets/img/objects/door_end_close.png');
@@ -42,8 +42,10 @@ export default abstract class BasePreloadLevel extends Phaser.Scene {
 		this.load.image('switcher_red', 'assets/img/objects/switcher_red.png');
 		this.load.image('switcher_green', 'assets/img/objects/switcher_green.png');
 		this.load.image('switcher_orange', 'assets/img/objects/switcher_orange.png');
+		this.load.image('bool_white_on', 'assets/img/objects/bool_white_on.png');
+		this.load.image('bool_white_off', 'assets/img/objects/bool_white_off.png');
 		
-		this.load.tilemapTiledJSON(this.tilesetKey, `assets/json/levels/${this.tilesetKey}.json`);
+		this.load.tilemapTiledJSON('tileset', 'assets/json/levels/game-screen.json');
 		
 		this.load.atlas(
 			'player',
@@ -63,7 +65,6 @@ export default abstract class BasePreloadLevel extends Phaser.Scene {
 	}
 
 	create() {
-		this.store.set('level', this.key);
-		this.scene.start(this.nextScene);
+		this.scene.start(SceneKey.StartScreen);
 	}
 }

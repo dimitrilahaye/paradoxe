@@ -19,6 +19,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 	private walkSoundRate = 500;
 	private nextActivability = 0;
 	private activabilityRate = 500;
+	private hasFx = true;
 	
 	public enterActivate: boolean;
 	public direction: 'left' | 'right';
@@ -28,6 +29,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 		scene.add.existing(this);
 		this.scene.physics.world.enable(this);
 		this.setCollideWorldBounds(true);
+		this.hasFx = this.scene.store.get('fx') ?? true;
 	}
 
 	create() {
@@ -44,6 +46,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 		this.initAnimations();
 		
 		this.initBulletsGroups();
+
+		this.scene.events.on('SoundSwitcher::fx', (isOn) => {
+			this.hasFx = isOn;
+		});
 	}
 
 	update() {
@@ -159,18 +165,24 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 	}
 
 	private shotBullet(velocity: number) {
-		this.scene.sound.play('simple_gun_shot', { volume: 1 });
+		if (this.hasFx) {
+			this.scene.sound.play('simple_gun_shot', { volume: 1 });
+		}
 		
 		const shotX = this.direction === 'left' ? this.x - 12 : this.x + 12;
 		const shotGun = this.scene.add.sprite(shotX, this.y, 'simple_gun_shot');
+		
 		this.anims.play('simple_gun_shot');
+		
 		this.scene.time.delayedCall(50, () => {
 			this.anims.stop();
 			shotGun.destroy();
 		});
 
 		const ball = this.bullets.get(this.x, this.y);
+		
 		ball.anims.play('simple_bullet');
+		
 		ball.body.velocity.x = velocity;
 		ball.checkWorldBounds = true;
 		ball.outOfBoundsKill = true;
@@ -215,7 +227,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 					this.anims.play('walk', true);
 					if (this.scene.time.now > this.nextWalkSound) {
 						this.nextWalkSound = this.scene.time.now + this.walkSoundRate;
-						this.scene.sound.play('walk');
+						if (this.hasFx) {
+							this.scene.sound.play('walk');
+						}
 					}
 				} else {
 					this.anims.stop();

@@ -47,12 +47,15 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	protected textBox: MyTextBox;
 	protected dialogs = new Map<string, string>();
 	protected isDialogLaunched = false;
+	private allowsTutorials: boolean;
+	private hasFx: boolean;
 
 	constructor(key: SceneKey, protected nextScene: SceneKey, protected tilesetKey: string) {
 		super({ key });
 	}
 	
 	create() {
+		this.hasFx = this.store.get<boolean>('fx') ?? true;
 		this.ballGroup = this.add.group();
 		this.spatialTeleportersGroup = this.add.group();
 		this.simpleTimeTeleporterGroup = this.add.group();
@@ -72,6 +75,10 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		this.listenToMultiTimeTeleportersEvents();
 		
 		this.launchMusic();
+
+		this.initAllowsTutorialsOption();
+		this.listenToMusicSwitcherEvents();
+		this.listenToTutorialsSwitcherEvents();
 	}
 
 	update() {
@@ -322,7 +329,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	}
 
 	protected startDialog(content: string) {
-		if (!this.isDialogLaunched) {
+		if (!this.isDialogLaunched && this.allowsTutorials) {
 			const { x, y } = this.getMiddleSceneCoordinates();
 			this.textBox = new MyTextBox(this, x, y);
 			this.textBox.start(content);
@@ -337,28 +344,19 @@ export default abstract class BaseLevel extends Phaser.Scene {
 			if (this.player.enterActivate) {
 				const leftAlivePastPlayers = this.findPastPlayers((pastPlayer) => !(pastPlayer as PastPlayer).isDead);
 				if (this.pastPlayersGroup?.getLength() > 0 && leftAlivePastPlayers) {
-					this.sound.play('door_tp');
+					if (this.hasFx) {
+						this.sound.play('door_tp');
+					}
 					this.player.setPosition(this.start.x, this.start.y);
 				} else {
-					this.sound.play('end_level');
+					if (this.hasFx) {
+						this.sound.play('end_level');
+					}
 					this.music.stop();
 					this.scene.start(this.nextScene);
 				}
 			}
 		}
-	}
-
-	private checkForTutorials() {
-		this.dialogs.forEach((content, key) => {
-			const { x, y } = JSON.parse(key);
-			if (!this.isDialogLaunched) {
-				if (this.player.x > (x || 0) - 10 && this.player.x < (x || 0) + 10 &&
-					this.player.y > (y || 0) - 10 && this.player.y < (y || 0) + 10) {
-					this.startDialog(content);
-					this.dialogs.delete(key);
-				}
-			}
-		});
 	}
 
 	private listenToPastPlayersEvents() {
@@ -433,16 +431,6 @@ export default abstract class BaseLevel extends Phaser.Scene {
 
 		this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, this.tilemap.heightInPixels);
 	}
-	
-	private launchMusic() {
-		this.music = this.sound.add('levels');
-		if (!this.music.isPlaying) {
-			this.music.play({
-				loop: true,
-				volume: 0.1,
-			});
-		}
-	}
 
 	private findObjectOnGroupByData<T>(group: Phaser.GameObjects.Group, data: { [key: string]: any }): T | undefined {
 		if (group?.getLength() > 0) {
@@ -491,8 +479,78 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		return object;
 	}
 
+	private getMiddleSceneCoordinates(): { x: number, y: number } {
+		const x = this.cameras.main.worldView.x + this.cameras.main.width / 2;
+		const y = this.cameras.main.worldView.y + this.cameras.main.height / 2;
+
+		return { x, y };
+	}
+
+	private checkForTutorials() {
+		if (this.allowsTutorials) {
+			this.dialogs.forEach((content, key) => {
+				const { x, y } = JSON.parse(key);
+				if (!this.isDialogLaunched) {
+					if (this.player.x > (x || 0) - 10 && this.player.x < (x || 0) + 10 &&
+					this.player.y > (y || 0) - 10 && this.player.y < (y || 0) + 10) {
+						this.startDialog(content);
+						this.dialogs.delete(key);
+					}
+				}
+			});
+		}
+	}
+	
+	private launchMusic() {
+		const musicIsOn = this.store.get('music') ?? true;
+		this.music = this.sound.add('levels');
+		if (musicIsOn && !this.music.isPlaying) {
+			this.music.play({
+				loop: true,
+				volume: 0.1,
+			});
+		}
+	}
+
+	private getObjectsByLayerAndProperties(layer: LayerName, properties: { [key: string]: any }): Phaser.Types.Tilemaps.TiledObject[] {
+		const objects = this.tilemap.filterObjects(layer, (obj) => {
+			const objectProperties = this.getPropertiesAsObject(obj as unknown as Phaser.Types.Tilemaps.TiledObject);
+			if (!objectProperties) {
+				return false;
+			}
+			return Object.keys(properties).every((k) => objectProperties[k] === properties[k]);
+		});
+		if (!objects) {
+			throw new Error(`Objects with properties ${JSON.stringify(properties)} not found in layer ${layer}`);
+		}
+		return objects;
+	}
+
+	private getObjectByLayerAndName(layer: LayerName, name: string): Phaser.Types.Tilemaps.TiledObject {
+		const object = this.tilemap.findObject(layer, (obj) => {
+			return obj.name === name;
+		});
+		if (!object) {
+			throw new Error(`Object with name ${name} not found in layer ${layer}`);
+		}
+		return object;
+	}
+
+	private getObjectsByLayerAndName(layer: LayerName, name: string): Phaser.Types.Tilemaps.TiledObject[] {
+		const objects = this.tilemap.filterObjects(layer, (obj) => {
+			return obj.name === name;
+		});
+		if (!objects) {
+			throw new Error(`Objects with name ${name} not found in layer ${layer}`);
+		}
+		return objects;
+	}
+
 	private getPropertiesAsObject(obj: Phaser.Types.Tilemaps.TiledObject) {
-		return obj['properties'].reduce((o, prop) => {
+		if (!obj.properties) {
+			return null;
+		}
+		return obj.properties.reduce((o, prop) => {
 			return {
 				...o,
 				[prop.name]: prop.value,
@@ -500,10 +558,30 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}, {});
 	}
 
-	private getMiddleSceneCoordinates(): { x: number, y: number } {
-		const x = this.cameras.main.worldView.x + this.cameras.main.width / 2;
-		const y = this.cameras.main.worldView.y + this.cameras.main.height / 2;
+	private listenToMusicSwitcherEvents() {
+		this.events.on('MusicSwitcher::music', (isOn) => {
+			if (!isOn) {
+				this.music.stop();
+			}
+			if (isOn) {
+				this.launchMusic();
+			}
+		});
+	}
 
-		return { x, y };
+	private initAllowsTutorialsOption() {
+		const allowsTutorials = this.store.get<boolean>('tutorials');
+		if (allowsTutorials !== null) {
+			this.allowsTutorials = allowsTutorials;
+		}
+		if (allowsTutorials === null) {
+			this.allowsTutorials = true;
+		}
+	}
+
+	private listenToTutorialsSwitcherEvents() {
+		this.events.on('TutorialsSwitcher::tutorials', (isOn) => {
+			this.allowsTutorials = isOn;
+		});
 	}
 }

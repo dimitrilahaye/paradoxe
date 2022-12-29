@@ -4,12 +4,14 @@ export default class DoubleTimeTeleporter extends Phaser.Physics.Arcade.Sprite {
 	private collidersGroup: Phaser.Physics.Arcade.Collider[] = [];
 	private oppositeDoubleTimeTeleporter: DoubleTimeTeleporter;
 	private alive = true;
+	private hasFx: boolean;
     
 	constructor(scene: Phaser.Scene, x: number, y: number) {
     	super(scene, x, y, 'tp_red');
     	scene.add.existing(this);
     	this.scene.physics.world.enable(this);
     	this.setImmovable(true);
+		this.hasFx = this.scene.store.get<boolean>('fx') ?? true;
     	this.create();
 	}
     
@@ -35,7 +37,9 @@ export default class DoubleTimeTeleporter extends Phaser.Physics.Arcade.Sprite {
 	}
 
 	public activate(): void {
-    	this.scene.sound.play('tp');
+		if (this.hasFx) {
+    		this.scene.sound.play('tp');
+		}
     	this.scene.events.emit('DoubleTimeTeleporter::activate', { x: this.x, y: this.y }, this.getOppositeCoordinates());
 	}
     

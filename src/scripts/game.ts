@@ -14,13 +14,17 @@ import PreloadLevel6 from './scenes/preloadLevel6';
 import Level6 from './scenes/level6';
 import PreloadLevel7 from './scenes/preloadLevel7';
 import Level7 from './scenes/level7';
+import PreloadStartScreen from './scenes/preloadStartScreen';
+import StartScreen from './scenes/startScreen';
+import StorePlugin from './plugins/store';
 
 const DEFAULT_WIDTH = 1280;
 const DEFAULT_HEIGHT = 480;
 
-const config = {
+const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
 	backgroundColor: '#ffffff',
+	antialias: false,
 	scale: {
 		parent: 'phaser-game',
 		mode: Phaser.Scale.FIT,
@@ -29,6 +33,7 @@ const config = {
 		height: DEFAULT_HEIGHT,
 	},
 	scene: [
+		PreloadStartScreen, // start screen
 		PreloadLevel1, // simple exit door
 		PreloadLevel7, // mix all teleporters
 		PreloadLevel6, // WIP: multi time teleporters
@@ -36,6 +41,7 @@ const config = {
 		PreloadLevel2, // spatial doors
 		PreloadLevel4, // double time teleporters
 		PreloadLevel3, // simple time teleporter
+		StartScreen,
 		Level1,
 		Level2,
 		Level3,
@@ -55,8 +61,12 @@ const config = {
 		scene: [{
 			key: 'rexUI',
 			plugin: UIPlugin,
-			mapping: 'rexUI'
-		},]
+			mapping: 'rexUI',
+		}, {
+			key: 'store',
+			plugin: StorePlugin,
+			mapping: 'store',
+		}]
 	},
 };
 

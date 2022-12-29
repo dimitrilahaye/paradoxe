@@ -149,6 +149,26 @@
         "/home/dimitrilahaye/snap/tiled/3981/.local/share/tiled/#tileset": {
             "scaleInDock": 1
         },
+        "game-screen.tmx": {
+            "expandedObjectLayers": [
+                14,
+                19,
+                17
+            ],
+            "scale": 1,
+            "selectedLayer": 11,
+            "viewCenter": {
+                "x": 973.5,
+                "y": 400.5
+            }
+        },
+        "game-screen.tmx#tileset": {
+            "scaleInDock": 1
+        },
+        "game-screen.tmx#title": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "level1.tmx": {
             "scale": 11,
             "selectedLayer": 11,
@@ -165,8 +185,8 @@
             "scale": 16,
             "selectedLayer": 9,
             "viewCenter": {
-                "x": 1206.90625,
-                "y": 393.09375
+                "x": 639.96875,
+                "y": 240
             }
         },
         "level2.tmx#tileset": {
@@ -174,10 +194,13 @@
             "scaleInEditor": 1
         },
         "level3.tmx": {
+            "expandedObjectLayers": [
+                19
+            ],
             "scale": 1,
-            "selectedLayer": 13,
+            "selectedLayer": 12,
             "viewCenter": {
-                "x": 702.5,
+                "x": 690.5,
                 "y": 419.5
             }
         },
@@ -201,30 +224,39 @@
             "scale": 3,
             "selectedLayer": 11,
             "viewCenter": {
-                "x": 1024.1666666666665,
-                "y": 301.5
+                "x": 1012.1666666666665,
+                "y": 301.16666666666663
             }
         },
         "level5.tmx#tileset": {
-            "scaleInDock": 1.5
+            "scaleInDock": 1.5,
+            "scaleInEditor": 1
         },
         "level6.tmx": {
+            "expandedObjectLayers": [
+                15,
+                14
+            ],
             "scale": 2,
-            "selectedLayer": 9,
+            "selectedLayer": 8,
             "viewCenter": {
-                "x": 865.25,
-                "y": 325.75
+                "x": 110.75,
+                "y": 325.25
             }
         },
         "level6.tmx#tileset": {
             "scaleInDock": 1.5
         },
         "level7.tmx": {
+            "expandedObjectLayers": [
+                20,
+                19
+            ],
             "scale": 4,
-            "selectedLayer": 9,
+            "selectedLayer": 8,
             "viewCenter": {
-                "x": 71.875,
-                "y": 287.125
+                "x": 1167.375,
+                "y": 398.375
             }
         },
         "level7.tmx#tileset": {
@@ -255,11 +287,15 @@
         "tileset.json": {
             "scaleInDock": 1,
             "scaleInEditor": 1
+        },
+        "title.json": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         }
     },
     "last.exportedFilePath": "/home/dimitrilahaye/Documents/projets/games/paradoxe/game/src/assets/json/levels",
     "last.externalTilesetPath": "/home/dimitrilahaye/Documents/projets/phaser/exo2/assets/json",
-    "last.imagePath": "/home/dimitrilahaye/Documents/projets/games/paradoxe/game/src/assets/img",
+    "last.imagePath": "/home/dimitrilahaye/Documents/projets/games/paradoxe",
     "lastUsedTilesetExportFilter": "JSON tileset files (*.tsj *.json)",
     "map.height": 15,
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
@@ -280,18 +316,18 @@
     "project": "paradoxe.tiled-project",
     "property.type": "string",
     "recentFiles": [
+        "title.json",
+        "tileset.json",
+        "game-screen.tmx",
         "level1.tmx",
         "level2.tmx",
         "level3.tmx",
         "level5.tmx",
         "level4.tmx",
         "level7.tmx",
-        "tileset.json",
         "level6.tmx",
         "level_red.tmx",
-        "/home/dimitrilahaye/Documents/projets/phaser/perso3/src/assets/json/levels/level2.tmx",
-        "/home/dimitrilahaye/Documents/projets/phaser/perso3/src/assets/json/levels/level1.tmx",
-        "/home/dimitrilahaye/Documents/projets/phaser/exo4/assets/json/level1.tmx"
+        "/home/dimitrilahaye/Documents/projets/phaser/perso3/src/assets/json/levels/level2.tmx"
     ],
     "tileset.embedInMap": true,
     "tileset.lastUsedFilter": "JSON tileset files (*.tsj *.json)",

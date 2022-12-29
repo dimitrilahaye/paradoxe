@@ -1,4 +1,6 @@
 export enum SceneKey {
+  PreloadStartScreen = 'PreloadStartScreen',
+  StartScreen = 'StartScreen',
   PreloadLevel1 = 'PreloadLevel1',
   Level1 = 'Level1',
   PreloadLevel2 = 'PreloadLevel2',

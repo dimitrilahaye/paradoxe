@@ -2,10 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=1.0, minimum-scale=0.5, user-scalable=no, minimal-ui">
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
     <meta name="theme-color" content="#000000" />
@@ -60,6 +57,10 @@
         margin: 0;
         background-color: #000000;
       }
+      @font-face {
+        font-family: "Pixels";
+        src: url('./assets/fonts/SquaredanceFontV1-Regular.ttf') format("truetype");
+      }
     </style>
 
     <noscript
@@ -76,6 +77,7 @@
     </script> -->
   </head>
   <body>
+    <span style="font-family:'Pixels'"></span>
     <div id="phaser-game"></div>
   </body>
 </html>

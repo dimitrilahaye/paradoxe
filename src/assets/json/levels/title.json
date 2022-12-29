@@ -1,0 +1,15 @@
+{ "columns":37,
+ "image":"..\/..\/img\/logo-1200-3.png",
+ "imageheight":134,
+ "imagewidth":1200,
+ "margin":0,
+ "name":"title",
+ "spacing":0,
+ "tilecount":148,
+ "tiledversion":"1.9.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#ff00ff",
+ "type":"tileset",
+ "version":"1.9"
+}

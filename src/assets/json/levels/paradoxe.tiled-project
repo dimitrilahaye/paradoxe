@@ -6,7 +6,39 @@
     "folders": [
         "."
     ],
-    "objectTypesFile": "",
     "propertyTypes": [
+        {
+            "color": "#ffa0a0a4",
+            "id": 1,
+            "members": [
+                {
+                    "name": "name",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "on",
+                    "type": "bool",
+                    "value": false
+                },
+                {
+                    "name": "type",
+                    "type": "string",
+                    "value": ""
+                }
+            ],
+            "name": "BoolWhite",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset"
+            ]
+        }
     ]
 }
