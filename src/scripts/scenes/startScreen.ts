@@ -304,39 +304,6 @@ export default abstract class StartScreen extends Phaser.Scene {
 			this.player.y > (coordinates.y || 0) - offset && this.player.y < (coordinates.y || 0) + offset;
 	}
 
-	private findObjectOnGroupByData<T>(group: Phaser.GameObjects.Group, data: { [key: string]: any }): T | undefined {
-		if (group?.getLength() > 0) {
-			return group.children.getArray().find((child) => {
-				return Object.keys(data).every((d) => child.getData(d) === data[d]);
-			}) as unknown as T;
-		}
-		throw new Error(`Object not found with data ${JSON.stringify(data)}`);
-	}
-
-	private iterateOnGroup(group: Phaser.GameObjects.Group, callback: (object, index?: number) => void) {
-		if (group?.getLength() > 0) {
-			group.children.iterate(callback);
-		}
-	}
-
-	private intersect(obj1: Phaser.GameObjects.Sprite, obj2: Phaser.GameObjects.Sprite): boolean {
-		const RectangleToRectangle = Phaser.Geom.Intersects.RectangleToRectangle;
-
-		return RectangleToRectangle(obj1.getBounds(), obj2.getBounds());
-	}
-
-	private getObjectByLayerAndProperties(layer: LayerName, properties: { [key: string]: any }): Phaser.Types.Tilemaps.TiledObject {
-		const object = this.tilemap.findObject(layer, (obj) => {
-			const objectProperties = this.getPropertiesAsObject(obj as unknown as Phaser.Types.Tilemaps.TiledObject);
-			return Object.keys(properties).every((k) => objectProperties[k] === properties[k]);
-		});
-		if (!object) {
-			throw new Error(`Object with properties ${JSON.stringify(properties)} not found in layer ${layer}`);
-		}
-		return object;
-	}
-
-	// todo fix
 	private checkForTutorials() {
 		if (this.allowsTutorials) {
 			this.dialogs.forEach((content, key) => {
@@ -361,20 +328,6 @@ export default abstract class StartScreen extends Phaser.Scene {
 				volume: 0.1,
 			});
 		}
-	}
-
-	private getObjectsByLayerAndProperties(layer: LayerName, properties: { [key: string]: any }): Phaser.Types.Tilemaps.TiledObject[] {
-		const objects = this.tilemap.filterObjects(layer, (obj) => {
-			const objectProperties = this.getPropertiesAsObject(obj as unknown as Phaser.Types.Tilemaps.TiledObject);
-			if (!objectProperties) {
-				return false;
-			}
-			return Object.keys(properties).every((k) => objectProperties[k] === properties[k]);
-		});
-		if (!objects) {
-			throw new Error(`Objects with properties ${JSON.stringify(properties)} not found in layer ${layer}`);
-		}
-		return objects;
 	}
 
 	private getObjectByLayerAndName(layer: LayerName, name: string): Phaser.Types.Tilemaps.TiledObject {
