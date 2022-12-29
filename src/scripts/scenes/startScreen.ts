@@ -61,37 +61,8 @@ export default abstract class StartScreen extends Phaser.Scene {
 
 		this.buildWhiteSwitchers();
 
-		const startNewGame = this.getObjectByLayerAndName(LayerName.OPTIONS, 'start');
-		if (startNewGame) {
-			this.startNewGameCoordinates = {
-				x: startNewGame.x!,
-				y: startNewGame.y!,
-			};
-			this.add.text(
-				Math.round(this.startNewGameCoordinates.x),
-				Math.round(this.startNewGameCoordinates.y - 40),
-				'NEW GAME',
-				{
-					fontFamily: 'Pixels',
-					align: 'left', 
-				},).setScale(1).setFontSize(15).setResolution(10).setOrigin(0.5, 0.5).setColor('blue');
-		}
-
-		const continueGame = this.getObjectByLayerAndName(LayerName.OPTIONS, 'continue');
-		if (continueGame) {
-			this.continueGameCoordinates = {
-				x: continueGame.x!,
-				y: continueGame.y!,
-			};
-			this.add.text(
-				Math.round(this.continueGameCoordinates.x),
-				Math.round(this.continueGameCoordinates.y - 40),
-				'CONTINUE',
-				{
-					fontFamily: 'Pixels',
-					align: 'left', 
-				},).setScale(1).setFontSize(15).setResolution(10).setOrigin(0.5, 0.5).setColor('blue');
-		}
+		this.initStartNewGame();
+		this.initContinueGame();
 		
 		this.listenToPlayerEvents();
 		this.listenToMyTextBoxEvents();
@@ -117,6 +88,42 @@ export default abstract class StartScreen extends Phaser.Scene {
 
 		this.checkStartNewGame();
 		this.checkContinueGame();
+	}
+
+	private initContinueGame() {
+		const continueGame = this.getObjectByLayerAndName(LayerName.OPTIONS, 'continue');
+		if (continueGame) {
+			this.continueGameCoordinates = {
+				x: continueGame.x!,
+				y: continueGame.y!,
+			};
+			this.add.text(
+				Math.round(this.continueGameCoordinates.x),
+				Math.round(this.continueGameCoordinates.y - 40),
+				'CONTINUE',
+				{
+					fontFamily: 'Pixels',
+					align: 'left',
+				}).setScale(1).setFontSize(15).setResolution(10).setOrigin(0.5, 0.5).setColor('blue');
+		}
+	}
+
+	private initStartNewGame() {
+		const startNewGame = this.getObjectByLayerAndName(LayerName.OPTIONS, 'start');
+		if (startNewGame) {
+			this.startNewGameCoordinates = {
+				x: startNewGame.x!,
+				y: startNewGame.y!,
+			};
+			this.add.text(
+				Math.round(this.startNewGameCoordinates.x),
+				Math.round(this.startNewGameCoordinates.y - 40),
+				'NEW GAME',
+				{
+					fontFamily: 'Pixels',
+					align: 'left',
+				}).setScale(1).setFontSize(15).setResolution(10).setOrigin(0.5, 0.5).setColor('blue');
+		}
 	}
 
 	private buildWhiteSwitchers() {
