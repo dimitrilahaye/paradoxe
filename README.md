@@ -54,6 +54,8 @@ To cross each room of this place, you will have to face travels in time and spac
 - [ ] player death
 - [ ] Last level
 - [ ] Ending scene
+- [ ] :bug: Bugs fixes
+  - [ ] Music does not quite if clicks too fast
 - [ ] TODOs
 - [X] Add github page
 - [ ] Add game in itchi.io
