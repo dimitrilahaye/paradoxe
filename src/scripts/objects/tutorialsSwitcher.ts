@@ -16,7 +16,7 @@ export default class TutorialsSwitcher extends WhiteSwitcher {
 				this.scene.store.set('tutorials', this.isOn);
 				this.scene.events.emit('TutorialsSwitcher::tutorials', this.isOn);
 			}
-		});
+		}, this);
 	}
 
 	// update() {

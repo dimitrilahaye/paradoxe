@@ -19,7 +19,7 @@ export default class EnSwitcher extends WhiteSwitcher {
 					this.scene.store.set('lang', 'en');
 				}
 			}
-		});
+		}, this);
 	}
 
 	// update() {

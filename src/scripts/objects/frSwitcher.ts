@@ -19,7 +19,7 @@ export default class FrSwitcher extends WhiteSwitcher {
 					this.scene.store.set('lang', 'fr');
 				}
 			}
-		});
+		}, this);
 	}
 
 	// update() {

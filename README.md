@@ -52,12 +52,17 @@ To cross each room of this place, you will have to face travels in time and spac
 - [ ] past player tween
 - [ ] make past player able to shot us
 - [ ] player death
+- [ ] Last level
+- [ ] Ending scene
+- [ ] TODOs
 - [X] Add github page
 - [ ] Add game in itchi.io
 
 ## Best effort
+- [ ] bigger levels + minimap!!!
 - [ ] sprites titles level
-- [ ] time gardians
+- [ ] time gardians (wtf???)
+- [ ] tps with arrows
 - [ ] anim doors open close
 - [ ] make real tp
 - [ ] anim tp

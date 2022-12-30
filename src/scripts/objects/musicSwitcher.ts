@@ -14,9 +14,8 @@ export default class MusicSwitcher extends WhiteSwitcher {
 				this.nextActivability = this.scene.time.now + this.activabilityRate;
 				this.switch();
 				this.scene.store.set('music', this.isOn);
-				this.scene.events.emit('MusicSwitcher::music', this.isOn);
 			}
-		});
+		}, this);
 	}
 
 	// update() {

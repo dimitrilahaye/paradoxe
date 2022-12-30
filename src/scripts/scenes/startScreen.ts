@@ -49,12 +49,15 @@ export default abstract class StartScreen extends Phaser.Scene {
 	private startNewGameCoordinates: Coordinates;
 	private continueGameCoordinates: Coordinates;
 	private allowsTutorials: boolean;
+	private musicHasBeenPlayed: boolean;
+	private hasMusic: boolean;
 
 	constructor() {
 		super({ key: SceneKey.StartScreen });
 	}
 	
 	create() {
+		this.hasMusic = this.store.get<boolean>('music') ?? true;
 		this.ballGroup = this.add.group();
 		
 		this.initMap();
@@ -320,9 +323,9 @@ export default abstract class StartScreen extends Phaser.Scene {
 	}
 	
 	private launchMusic() {
-		const musicIsOn = this.store.get('music') ?? true;
 		this.music = this.sound.add('levels');
-		if (musicIsOn && !this.music.isPlaying) {
+		if (this.hasMusic && !this.music.isPlaying) {
+			this.musicHasBeenPlayed = true;
 			this.music.play({
 				loop: true,
 				volume: 0.1,
@@ -363,12 +366,18 @@ export default abstract class StartScreen extends Phaser.Scene {
 	}
 
 	private listenToMusicSwitcherEvents() {
-		this.events.on('MusicSwitcher::music', (isOn) => {
+		this.events.on('Store::music', (isOn) => {
+			this.hasMusic = isOn;
 			if (!isOn) {
 				this.music.pause();
 			}
 			if (isOn) {
-				this.music.resume();
+				if (this.musicHasBeenPlayed) {
+					this.music.resume();
+				}
+				if (!this.musicHasBeenPlayed) {
+					this.launchMusic();
+				}
 			}
 		});
 	}
