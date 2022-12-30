@@ -1,4 +1,4 @@
-export default class WhiteSwitcher extends Phaser.Physics.Arcade.Sprite {
+export default abstract class WhiteSwitcher extends Phaser.Physics.Arcade.Sprite {
 	protected nextActivability = 0;
 	protected activabilityRate = 500;
     protected isOn: boolean;
@@ -7,23 +7,38 @@ export default class WhiteSwitcher extends Phaser.Physics.Arcade.Sprite {
     constructor(scene: Phaser.Scene, x: number, y: number, isOn: boolean, private readonly textContent) {
     	super(scene, x, y, isOn ? 'bool_white_on' : 'bool_white_off');
     	this.isOn = isOn;
+    	this.setInteractive();
     	scene.add.existing(this);
     }
     
     create() {
+    	this.on('pointerdown', () => {
+    		if (this.scene.time.now > this.nextActivability) {
+    			this.nextActivability = this.scene.time.now + this.activabilityRate;
+    			this.activate();
+    		}
+    	});
+    	this.on('pointerover', () => {
+    		this.scene.sys.canvas.style.cursor = 'pointer';
+    	});
+    	this.on('pointerout', () => {
+    		this.scene.sys.canvas.style.cursor = 'default';
+    	});
     	this.resolveState();
     }
+
+	abstract activate(): void;
 	
-    protected switch(): void {
+	protected switch(): void {
     	this.isOn = !this.isOn;
     	this.resolveState();
     	const fxIsOn = this.scene.store.get<boolean>('fx');
     	if (fxIsOn) {
     		this.scene.sound.play('switcher');
     	}
-    }
+	}
 
-    private resolveState() {
+	private resolveState() {
     	if (this.text) {
     		this.text.destroy();
     	}
@@ -39,7 +54,7 @@ export default class WhiteSwitcher extends Phaser.Physics.Arcade.Sprite {
     		this.text.setColor('red').setAlpha(0.2);
     		this.setTexture('bool_white_off');
     	}
-    }
+	}
 
 	// update() {
 	// }

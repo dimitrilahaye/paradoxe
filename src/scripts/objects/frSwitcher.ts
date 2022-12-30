@@ -13,13 +13,17 @@ export default class FrSwitcher extends WhiteSwitcher {
 		this.scene.events.on('StartScreen::switchFr', () => {
 			if (this.scene.time.now > this.nextActivability) {
 				this.nextActivability = this.scene.time.now + this.activabilityRate;
-				this.switch();
-				this.scene.events.emit('StartScreen::switchEn');
-				if (this.isOn) {
-					this.scene.store.set('lang', 'fr');
-				}
+				this.activate();
 			}
 		}, this);
+	}
+	
+	activate(): void {
+		this.switch();
+		this.scene.events.emit('StartScreen::switchEn');
+		if (this.isOn) {
+			this.scene.store.set('lang', 'fr');
+		}
 	}
 
 	// update() {

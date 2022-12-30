@@ -12,11 +12,15 @@ export default class SoundSwitcher extends WhiteSwitcher {
 		this.scene.events.on('StartScreen::switchFx', () => {
 			if (this.scene.time.now > this.nextActivability) {
 				this.nextActivability = this.scene.time.now + this.activabilityRate;
-				this.switch();
-				this.scene.store.set('fx', this.isOn);
-				this.scene.events.emit('SoundSwitcher::fx', this.isOn);
+				this.activate();
 			}
 		}, this);
+	}
+	
+	activate(): void {
+		this.switch();
+		this.scene.store.set('fx', this.isOn);
+		this.scene.events.emit('SoundSwitcher::fx', this.isOn);
 	}
 
 	// update() {

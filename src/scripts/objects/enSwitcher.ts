@@ -13,13 +13,17 @@ export default class EnSwitcher extends WhiteSwitcher {
 		this.scene.events.on('StartScreen::switchEn', () => {
 			if (this.scene.time.now > this.nextActivability) {
 				this.nextActivability = this.scene.time.now + this.activabilityRate;
-				this.switch();
-				this.scene.events.emit('StartScreen::switchFr');
-				if (this.isOn) {
-					this.scene.store.set('lang', 'en');
-				}
+				this.activate();
 			}
 		}, this);
+	}
+	
+	activate(): void {
+		this.switch();
+		this.scene.events.emit('StartScreen::switchFr');
+		if (this.isOn) {
+			this.scene.store.set('lang', 'en');
+		}
 	}
 
 	// update() {

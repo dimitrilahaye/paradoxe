@@ -38,7 +38,7 @@ To cross each room of this place, you will have to face travels in time and spac
   - [X] checkbox for lang en
   - [X] start new game
   - [X] continue
-  - [ ] make elements clickable
+  - [X] make elements clickable
   - [ ] door "continue" closed if never played
   - [ ] sounds on doors ("continue" door *wonk* if closed)
 - [X] Tutorials

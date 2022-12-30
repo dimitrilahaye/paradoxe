@@ -12,11 +12,15 @@ export default class TutorialsSwitcher extends WhiteSwitcher {
 		this.scene.events.on('StartScreen::switchTutorials', () => {
 			if (this.scene.time.now > this.nextActivability) {
 				this.nextActivability = this.scene.time.now + this.activabilityRate;
-				this.switch();
-				this.scene.store.set('tutorials', this.isOn);
-				this.scene.events.emit('TutorialsSwitcher::tutorials', this.isOn);
+				this.activate();
 			}
 		}, this);
+	}
+	
+	activate(): void {
+		this.switch();
+		this.scene.store.set('tutorials', this.isOn);
+		this.scene.events.emit('TutorialsSwitcher::tutorials', this.isOn);
 	}
 
 	// update() {
