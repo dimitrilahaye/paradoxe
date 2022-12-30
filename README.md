@@ -30,7 +30,7 @@ To cross each room of this place, you will have to face travels in time and spac
 - [X] system for many spatial teleporters
 - [X] create level to present orange tp game play
 - [X] create level that mix all tp types
-- [X] **WIP:** :construction: Start screen
+- [X] Start screen
   - [X] checkbox for tutorials
   - [X] checkbox for music
   - [X] checkbox for sound fx
@@ -39,12 +39,12 @@ To cross each room of this place, you will have to face travels in time and spac
   - [X] start new game
   - [X] continue
   - [X] make elements clickable
-  - [ ] door "continue" closed if never played
-  - [ ] sounds on doors ("continue" door *wonk* if closed)
+  - [X] door "continue" closed if never played
+  - [X] sounds on doors ("continue" door *wonk* if closed)
 - [X] Tutorials
   - [X] Put dialogs in json config files
   - [X] Switch fr to en
-- [ ] Topbar UI
+- [ ] **WIP:** :construction: Topbar UI
   - [X] button back to start screen
   - [X] button replay
   - [X] buttons music and sounds

@@ -11,6 +11,8 @@ import SoundSwitcher from '../objects/soundSwitcher';
 import TutorialsSwitcher from '../objects/tutorialsSwitcher';
 import MyTextBox from '../ui/myTextBox';
 import { SceneKey } from './index';
+import StartNewGame from '../objects/startNewGame';
+import ContinueGame from '../objects/continueGame';
 
 export default abstract class StartScreen extends Phaser.Scene {
 	protected music: Phaser.Sound.BaseSound;
@@ -38,6 +40,8 @@ export default abstract class StartScreen extends Phaser.Scene {
 	protected textBox: MyTextBox;
 	protected dialogs = new Map<string, string>();
 	protected isDialogLaunched = false;
+	private nextActivability = 0;
+	private activabilityRate = 500;
 
 	protected nextScene: SceneKey = SceneKey.PreloadLevel1;
 	protected tilesetKey = 'tileset';
@@ -51,6 +55,8 @@ export default abstract class StartScreen extends Phaser.Scene {
 	private allowsTutorials: boolean;
 	private musicHasBeenPlayed: boolean;
 	private hasMusic: boolean;
+	private continueGameDoor: ContinueGame;
+	private hasFx: boolean;
 
 	constructor() {
 		super({ key: SceneKey.StartScreen });
@@ -59,6 +65,7 @@ export default abstract class StartScreen extends Phaser.Scene {
 	create() {
 		this.removeEvents();
 
+		this.hasFx = this.store.get<boolean>('fx') ?? true;
 		this.hasMusic = this.store.get<boolean>('music') ?? true;
 		this.musicHasBeenPlayed = false;
 		this.ballGroup = this.add.group();
@@ -79,19 +86,50 @@ export default abstract class StartScreen extends Phaser.Scene {
 
 		this.addDialog(0, this.translate.get(SceneKey.StartScreen, 0));
 
+		this.listenToStartNewGameEvents();
+		this.listenToContinueGameEvents();
 		this.initAllowsTutorialsOption();
 		this.listenToMusicSwitcherEvents();
 		this.listenToTutorialsSwitcherEvents();
+		this.listenToFxButtonEvents();
 	}
 
 	update() {
 		this.player.update();
 		this.checkForTutorials();
-		this.checkForLevelEnd();
 		this.checkForOptions();
 
 		this.checkStartNewGame();
 		this.checkContinueGame();
+	}
+
+	private listenToFxButtonEvents() {
+		this.events.on('Store::fx', (isOn) => {
+			this.hasFx = isOn;
+		});
+	}
+
+	private listenToStartNewGameEvents() {
+		this.events.on('StartNewGame::go', () => {
+			if (this.hasFx) {
+				this.sound.play('door_tp');
+			}
+			this.music.stop();
+			this.scene.start(SceneKey.PreloadLevel1);
+		});
+	}
+
+	private listenToContinueGameEvents() {
+		this.events.on('ContinueGame::go', () => {
+			const level = this.store.get<SceneKey>('level');
+			if (level) {
+				if (this.hasFx) {
+					this.sound.play('door_tp');
+				}
+				this.music.stop();
+				this.scene.start(level);
+			}
+		});
 	}
 
 	private removeEvents() {
@@ -131,14 +169,7 @@ export default abstract class StartScreen extends Phaser.Scene {
 				x: continueGame.x!,
 				y: continueGame.y!,
 			};
-			this.add.text(
-				Math.round(this.continueGameCoordinates.x),
-				Math.round(this.continueGameCoordinates.y - 40),
-				'CONTINUE',
-				{
-					fontFamily: 'Pixels',
-					align: 'left',
-				}).setScale(1).setFontSize(15).setResolution(10).setOrigin(0.5, 0.5).setColor('blue');
+			this.continueGameDoor = new ContinueGame(this, this.continueGameCoordinates.x, this.continueGameCoordinates.y);
 		}
 	}
 
@@ -149,14 +180,7 @@ export default abstract class StartScreen extends Phaser.Scene {
 				x: startNewGame.x!,
 				y: startNewGame.y!,
 			};
-			this.add.text(
-				Math.round(this.startNewGameCoordinates.x),
-				Math.round(this.startNewGameCoordinates.y - 40),
-				'NEW GAME',
-				{
-					fontFamily: 'Pixels',
-					align: 'left',
-				}).setScale(1).setFontSize(15).setResolution(10).setOrigin(0.5, 0.5).setColor('blue');
+			new StartNewGame(this, this.startNewGameCoordinates.x, this.startNewGameCoordinates.y);
 		}
 	}
 
@@ -209,6 +233,9 @@ export default abstract class StartScreen extends Phaser.Scene {
 	private checkStartNewGame() {
 		if (this.playerIsNearCoordinates(this.startNewGameCoordinates)) {
 			if (this.player.enterActivate) {
+				if (this.hasFx) {
+					this.sound.play('door_tp');
+				}
 				this.music.stop();
 				this.scene.start(SceneKey.PreloadLevel1);
 			}
@@ -217,10 +244,23 @@ export default abstract class StartScreen extends Phaser.Scene {
 
 	private checkContinueGame() {
 		const level = this.store.get<SceneKey>('level');
-		if (level && this.playerIsNearCoordinates(this.continueGameCoordinates)) {
+		if (this.playerIsNearCoordinates(this.continueGameCoordinates)) {
 			if (this.player.enterActivate) {
-				this.music.stop();
-				this.scene.start(level);
+				if (this.time.now > this.nextActivability) {
+					this.nextActivability = this.time.now + this.activabilityRate;
+					if (!this.continueGameDoor.isOpen) {
+						if (this.hasFx) {
+							this.sound.play('door_close');
+						}
+					}
+					if (level) {
+						if (this.hasFx) {
+							this.sound.play('door_tp');
+						}
+						this.music.stop();
+						this.scene.start(level);
+					}
+				}
 			}
 		}
 	}
@@ -276,17 +316,6 @@ export default abstract class StartScreen extends Phaser.Scene {
 			this.textBox.start(content);
 			this.player.pause();
 			this.isDialogLaunched = true;
-		}
-	}
-
-	private checkForLevelEnd() {
-		if (this.player.x > (this.end?.x || 0) - 10 && this.player.x < (this.end?.x || 0) + 10 &&
-			this.player.y > (this.end?.y || 0) - 10 && this.player.y < (this.end?.y || 0) + 10) {
-			if (this.player.enterActivate) {
-				this.sound.play('end_level');
-				this.music.pause();
-				this.scene.start(this.nextScene);
-			}
 		}
 	}
 
