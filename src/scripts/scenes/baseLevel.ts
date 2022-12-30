@@ -64,8 +64,11 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	}
 	
 	create() {
+		this.removeEvents();
+
 		this.hasFx = this.store.get<boolean>('fx') ?? true;
 		this.hasMusic = this.store.get<boolean>('music') ?? true;
+		this.musicHasBeenPlayed = false;
 		this.ballGroup = this.add.group();
 		this.spatialTeleportersGroup = this.add.group();
 		this.simpleTimeTeleporterGroup = this.add.group();
@@ -105,6 +108,36 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		
 		this.checkForTutorials();
 		this.checkForLevelEnd();
+	}
+
+	private removeEvents() {
+		this.events.off('DoubleSwitcher::activate');
+		this.events.off('DoubleTimeTeleporter::activate');
+		this.events.off('StartScreen::switchFr');
+		this.events.off('StartScreen::switchEn');
+		this.events.off('SpatialTeleporter::teleport');
+		this.events.off('GreenSpatialTeleporter::activate');
+		this.events.off('MultiSwitcher::activate');
+		this.events.off('MultiTimeTeleporter::setToOpen');
+		this.events.off('PastPlayer::init');
+		this.events.off('PastPlayer::isDead');
+		this.events.off('Player::shotBullet');
+		this.events.off('RedSpatialTeleporter::activate');
+		this.events.off('SimpleSwitcher::activate');
+		this.events.off('SimpleTimeTeleporter::activate');
+		this.events.off('SoundSwitcher::fx');
+		this.events.off('TutorialsSwitcher::tutorials');
+		this.events.off('Store::lang');
+		this.events.off('Store::music');
+		this.events.off('Store::tutorials');
+		this.events.off('Store::fx');
+		this.events.off('ExitButton::exit');
+		this.events.off('MyTextBox::complete');
+		this.events.off('ResetButton::reset');
+		this.events.off('DoubleSwitcher::activate');
+		this.events.off('StartScreen::switchMusic');
+		this.events.off('StartScreen::switchFx');
+		this.events.off('StartScreen::switchTutorials');
 	}
 
 	private listenToMusicButtonEvents() {
@@ -407,7 +440,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 					if (this.hasFx) {
 						this.sound.play('end_level');
 					}
-					this.music.pause();
+					this.music.stop();
 					this.scene.start(this.nextScene);
 				}
 			}
