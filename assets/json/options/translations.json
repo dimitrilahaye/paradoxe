@@ -1,10 +1,10 @@
 {
   "StartScreen": {
     "fr": [
-      "Bienvenue dans mon super jeu :) Pour activer ou désactiver une option, positionnez-vous devant l'interrupteur et appuyez sur ENTRÉE."
+      "Bienvenue dans mon super jeu :) Pour activer ou désactiver une option, positionnez-vous devant l'interrupteur et appuyez sur ENTRÉE.\nVous pouvez aussi simplement cliquer sur les différentes options pour les activer ou les désactiver."
     ],
     "en": [
-      "Welcome to my awesome game :) To activate or deactivate an option, position yourself in front of the switch and press ENTER."
+      "Welcome to my great game :) To activate or deactivate an option, position yourself in front of the switch and press ENTER.\nYou can also simply click on the different options to activate or deactivate them."
     ]
   },
   "Level1": {
