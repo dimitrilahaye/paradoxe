@@ -82,10 +82,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		this.initDoors();
 		this.initPastPlayers();
 
-		new ExitButton(this, 30, 60);
-		new ResetButton(this, 80, 60);
-		new MusicButton(this, 130, 60);
-		new FxButton(this, 180, 60);
+		this.initTopBarUI();
 		
 		this.listenToPlayerEvents();
 		this.listenToPastPlayersEvents();
@@ -108,6 +105,13 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		
 		this.checkForTutorials();
 		this.checkForLevelEnd();
+	}
+
+	private initTopBarUI() {
+		new ExitButton(this, 30, 60);
+		new ResetButton(this, 80, 60);
+		new MusicButton(this, 130, 60);
+		new FxButton(this, 180, 60);
 	}
 
 	private removeEvents() {
@@ -535,14 +539,14 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}
 	}
 
-	// TODO: generic one
+	// todo: generic one
 	private iterateOnPastPlayers(callback: (pastPlayer: Phaser.GameObjects.GameObject) => void) {
 		if (this.pastPlayersGroup?.getLength() > 0) {
 			this.pastPlayersGroup.children.iterate(callback);
 		}
 	}
 
-	// TODO: generic one
+	// todo: generic one
 	private findPastPlayers(callback: (pastPlayer: Phaser.GameObjects.GameObject) => void) {
 		if (this.pastPlayersGroup?.getLength() > 0) {
 			return this.pastPlayersGroup.children.getArray().find(callback);

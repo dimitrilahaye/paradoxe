@@ -17,6 +17,7 @@ import Level7 from './scenes/level7';
 import PreloadStartScreen from './scenes/preloadStartScreen';
 import StartScreen from './scenes/startScreen';
 import StorePlugin from './plugins/store';
+import TranslatePlugin from './plugins/translate';
 
 const DEFAULT_WIDTH = 1280;
 const DEFAULT_HEIGHT = 480;
@@ -66,6 +67,10 @@ const config: Phaser.Types.Core.GameConfig = {
 			key: 'store',
 			plugin: StorePlugin,
 			mapping: 'store',
+		}, {
+			key: 'translate',
+			plugin: TranslatePlugin,
+			mapping: 'translate',
 		}]
 	},
 };

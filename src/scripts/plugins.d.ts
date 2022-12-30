@@ -4,6 +4,9 @@ declare namespace Phaser {
       store: {
         set(key: string, data: any): void;
         get<T>(key: string): T | null;
+      };
+      translate: {
+        get(key: SceneKey, index: number): string;
       }
     }
   }

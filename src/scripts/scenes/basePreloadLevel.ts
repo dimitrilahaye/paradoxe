@@ -8,6 +8,7 @@ export default abstract class BasePreloadLevel extends Phaser.Scene {
 	}
 
 	preload() {
+		this.load.json('translations', 'assets/json/options/translations.json');
 		this.load.scenePlugin({
 			key: 'rexUI',
 			sceneKey: 'rexUI'

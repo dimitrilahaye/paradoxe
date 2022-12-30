@@ -77,9 +77,7 @@ export default abstract class StartScreen extends Phaser.Scene {
 		
 		this.launchMusic();
 
-		this.addDialog(0,
-			'Bienvenue dans mon super jeu :) Pour activer ou désactiver une option, positionnez-vous devant l\'interrupteur et appuyez sur ENTRÉE.'
-		);
+		this.addDialog(0, this.translate.get(SceneKey.StartScreen, 0));
 
 		this.initAllowsTutorialsOption();
 		this.listenToMusicSwitcherEvents();
