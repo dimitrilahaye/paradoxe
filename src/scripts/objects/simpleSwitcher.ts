@@ -7,10 +7,14 @@ export default class SimpleSwitcher extends Phaser.Physics.Arcade.Sprite {
     	super(scene, x, y, 'switcher_green');
     	scene.add.existing(this);
 		this.hasFx = this.scene.store.get<boolean>('fx') ?? true;
+		this.create();
 	}
     
-	// create() {
-	// }
+	create() {
+		this.scene.events.on('Store::fx', (isOn) => {
+			this.hasFx = isOn;
+		});
+	}
 
 	// update() {
 	// }

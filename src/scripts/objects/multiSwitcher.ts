@@ -9,10 +9,14 @@ export default class MultiSwitcher extends Phaser.Physics.Arcade.Sprite {
     	scene.add.existing(this);
 		this.num = num;
 		this.hasFx = this.scene.store.get<boolean>('fx') ?? true;
+		this.create();
 	}
     
-	// create() {
-	// }
+	create() {
+		this.scene.events.on('Store::fx', (isOn) => {
+			this.hasFx = isOn;
+		});
+	}
 
 	// update() {
 	// }

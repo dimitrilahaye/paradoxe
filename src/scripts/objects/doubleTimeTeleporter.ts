@@ -23,6 +23,9 @@ export default class DoubleTimeTeleporter extends Phaser.Physics.Arcade.Sprite {
     			this.collidersGroup.forEach((collider) => this.scene.physics.world.removeCollider(collider));
     		}
     	});
+		this.scene.events.on('Store::fx', (isOn) => {
+			this.hasFx = isOn;
+		});
 	}
 	
 	// update() {

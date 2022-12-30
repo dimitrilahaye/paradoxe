@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Coordinates } from '../types';
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
@@ -47,9 +48,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 		
 		this.initBulletsGroups();
 
-		this.scene.events.on('SoundSwitcher::fx', (isOn) => {
-			this.hasFx = isOn;
-		});
+		this.listenToStoreEvents();
 	}
 
 	update() {
@@ -63,6 +62,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
 	resume() {
 		this.isMovable = true;
+	}
+
+	private listenToStoreEvents() {
+		this.scene.events.on('Store::fx', (isOn) => {
+			this.hasFx = isOn;
+		});
 	}
 
 	private initBulletsGroups() {

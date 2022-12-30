@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 export default class DoorExit extends Phaser.Physics.Arcade.Sprite {
 	private hasFx: boolean;
 	
@@ -5,10 +6,14 @@ export default class DoorExit extends Phaser.Physics.Arcade.Sprite {
     	super(scene, x, y, 'door_end_open');
     	scene.add.existing(this);
 		this.hasFx = this.scene.store.get<boolean>('fx') ?? true;
+		this.create();
 	}
     
-	// create() {
-	// }
+	create() {
+		this.scene.events.on('Store::fx', (isOn) => {
+			this.hasFx = isOn;
+		});
+	}
 
 	// update() {
 	// }

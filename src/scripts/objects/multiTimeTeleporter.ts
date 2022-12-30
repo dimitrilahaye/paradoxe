@@ -51,6 +51,9 @@ export default class MultiTimeTeleporter extends Phaser.Physics.Arcade.Sprite {
     			this.oppositeMultiTimeTeleporters.push(firstOpposite as MultiTimeTeleporter);
     		}
     	});
+		this.scene.events.on('Store::fx', (isOn) => {
+			this.hasFx = isOn;
+		});
 	}
 	
 	// update() {

@@ -53,7 +53,7 @@ export default class PastPlayer extends Phaser.Physics.Arcade.Sprite {
 			}, undefined, this);
 		}, this);
 
-		this.scene.events.on('SoundSwitcher::fx', (isOn) => {
+		this.scene.events.on('Store::fx', (isOn) => {
 			this.hasFx = isOn;
 		});
 	}

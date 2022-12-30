@@ -31,7 +31,6 @@ To cross each room of this place, you will have to face travels in time and spac
 - [X] create level to present orange tp game play
 - [X] create level that mix all tp types
 - [X] Start screen
-  - [X] new game
   - [X] checkbox for tutorials
   - [X] checkbox for music
   - [X] checkbox for sound fx
@@ -39,13 +38,16 @@ To cross each room of this place, you will have to face travels in time and spac
   - [X] checkbox for lang en
   - [X] start new game
   - [X] continue
-- [ ] **WIP:** :construction: Tutorials
+  - [ ] make elements clickable
+  - [ ] door "continue" closed if never played
+  - [ ] sounds on doors ("continue" door *wonk* if closed)
+- [ ] Tutorials
   - [ ] Put dialogs in json config files
   - [ ] Switch fr to en
-- [ ] Topbar UI
-  - [ ] button back to start screen
-  - [ ] button replay
-  - [ ] buttons music and sounds
+- [ ] **WIP:** :construction: Topbar UI
+  - [X] button back to start screen
+  - [X] button replay
+  - [X] buttons music and sounds
   - [ ] Score (based on number of kills)
 - [ ] past player tween
 - [ ] make past player able to shot us

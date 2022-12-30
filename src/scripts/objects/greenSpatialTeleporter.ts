@@ -16,6 +16,9 @@ export default class GreenSpatialTeleporter extends SpatialTeleporter {
 				this.scene.events.emit('SpatialTeleporter::teleport', { x: this.x, y: this.y });
 			}
 		});
+		this.scene.events.on('Store::fx', (isOn) => {
+			this.hasFx = isOn;
+		});
 	}
 
 	// update() {

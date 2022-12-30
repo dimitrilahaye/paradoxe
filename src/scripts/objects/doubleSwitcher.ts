@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 export default class DoubleSwitcher extends Phaser.Physics.Arcade.Sprite {
 	private nextActivability = 0;
 	private activabilityRate = 500;
@@ -7,10 +8,14 @@ export default class DoubleSwitcher extends Phaser.Physics.Arcade.Sprite {
     	super(scene, x, y, 'switcher_red');
     	scene.add.existing(this);
 		this.hasFx = this.scene.store.get<boolean>('fx') ?? true;
+		this.create();
 	}
     
-	// create() {
-	// }
+	create() {
+		this.scene.events.on('Store::fx', (isOn) => {
+			this.hasFx = isOn;
+		});
+	}
 
 	// update() {
 	// }

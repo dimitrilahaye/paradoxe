@@ -175,7 +175,7 @@ export default abstract class StartScreen extends Phaser.Scene {
 	private checkStartNewGame() {
 		if (this.playerIsNearCoordinates(this.startNewGameCoordinates)) {
 			if (this.player.enterActivate) {
-				this.music.stop();
+				this.music.pause();
 				this.scene.start(SceneKey.PreloadLevel1);
 			}
 		}
@@ -185,7 +185,7 @@ export default abstract class StartScreen extends Phaser.Scene {
 		const level = this.store.get<SceneKey>('level');
 		if (level && this.playerIsNearCoordinates(this.continueGameCoordinates)) {
 			if (this.player.enterActivate) {
-				this.music.stop();
+				this.music.pause();
 				this.scene.start(level);
 			}
 		}
@@ -250,7 +250,7 @@ export default abstract class StartScreen extends Phaser.Scene {
 			this.player.y > (this.end?.y || 0) - 10 && this.player.y < (this.end?.y || 0) + 10) {
 			if (this.player.enterActivate) {
 				this.sound.play('end_level');
-				this.music.stop();
+				this.music.pause();
 				this.scene.start(this.nextScene);
 			}
 		}
@@ -365,10 +365,10 @@ export default abstract class StartScreen extends Phaser.Scene {
 	private listenToMusicSwitcherEvents() {
 		this.events.on('MusicSwitcher::music', (isOn) => {
 			if (!isOn) {
-				this.music.stop();
+				this.music.pause();
 			}
 			if (isOn) {
-				this.launchMusic();
+				this.music.resume();
 			}
 		});
 	}

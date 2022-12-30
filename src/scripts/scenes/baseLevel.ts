@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { GameObjects } from 'phaser';
 import { LayerName, ObjectName } from '../objects';
 import DoorEntrance from '../objects/doorEntrance';
@@ -13,7 +14,11 @@ import RedSpatialTeleporter from '../objects/redSpatialTeleporter';
 import SimpleSwitcher from '../objects/simpleSwitcher';
 import SimpleTimeTeleporter from '../objects/simpleTimeTeleporter';
 import SpatialTeleporter from '../objects/spatialTeleporter';
+import ExitButton from '../ui/exitButton';
+import FxButton from '../ui/fxButton';
+import MusicButton from '../ui/musicButton';
 import MyTextBox from '../ui/myTextBox';
+import ResetButton from '../ui/resetButton';
 import { SceneKey } from './index';
 
 export default abstract class BaseLevel extends Phaser.Scene {
@@ -49,13 +54,18 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	protected isDialogLaunched = false;
 	private allowsTutorials: boolean;
 	private hasFx: boolean;
+	private hasMusic: boolean;
+	private key: SceneKey;
+	private musicHasBeenPlayed: boolean;
 
 	constructor(key: SceneKey, protected nextScene: SceneKey, protected tilesetKey: string) {
 		super({ key });
+		this.key = key;
 	}
 	
 	create() {
 		this.hasFx = this.store.get<boolean>('fx') ?? true;
+		this.hasMusic = this.store.get<boolean>('music') ?? true;
 		this.ballGroup = this.add.group();
 		this.spatialTeleportersGroup = this.add.group();
 		this.simpleTimeTeleporterGroup = this.add.group();
@@ -68,6 +78,11 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		this.initMap();
 		this.initDoors();
 		this.initPastPlayers();
+
+		new ExitButton(this, 30, 60);
+		new ResetButton(this, 80, 60);
+		new MusicButton(this, 130, 60);
+		new FxButton(this, 180, 60);
 		
 		this.listenToPlayerEvents();
 		this.listenToPastPlayersEvents();
@@ -77,8 +92,11 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		this.launchMusic();
 
 		this.initAllowsTutorialsOption();
-		this.listenToMusicSwitcherEvents();
 		this.listenToTutorialsSwitcherEvents();
+		this.listenToResetButtonEvents();
+		this.listenToExitButtonEvents();
+		this.listenToFxButtonEvents();
+		this.listenToMusicButtonEvents();
 	}
 
 	update() {
@@ -87,6 +105,43 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		
 		this.checkForTutorials();
 		this.checkForLevelEnd();
+	}
+
+	private listenToMusicButtonEvents() {
+		this.events.on('Store::music', (isOn) => {
+			this.hasMusic = isOn;
+			if (!isOn) {
+				this.music.pause();
+			}
+			if (isOn) {
+				if (this.musicHasBeenPlayed) {
+					this.music.resume();
+				}
+				if (!this.musicHasBeenPlayed) {
+					this.launchMusic();
+				}
+			}
+		});
+	}
+
+	private listenToFxButtonEvents() {
+		this.events.on('Store::fx', (isOn) => {
+			this.hasFx = isOn;
+		});
+	}
+
+	private listenToResetButtonEvents() {
+		this.events.on('ResetButton::reset', () => {
+			this.music.stop();
+			this.scene.start(this.key);
+		});
+	}
+
+	private listenToExitButtonEvents() {
+		this.events.on('ExitButton::exit', () => {
+			this.music.stop();
+			this.scene.start(SceneKey.PreloadStartScreen);
+		});
 	}
 
 	protected initPlayer() {
@@ -352,7 +407,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 					if (this.hasFx) {
 						this.sound.play('end_level');
 					}
-					this.music.stop();
+					this.music.pause();
 					this.scene.start(this.nextScene);
 				}
 			}
@@ -502,9 +557,9 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	}
 	
 	private launchMusic() {
-		const musicIsOn = this.store.get('music') ?? true;
 		this.music = this.sound.add('levels');
-		if (musicIsOn && !this.music.isPlaying) {
+		if (this.hasMusic && !this.music.isPlaying) {
+			this.musicHasBeenPlayed = true;
 			this.music.play({
 				loop: true,
 				volume: 0.1,
@@ -556,17 +611,6 @@ export default abstract class BaseLevel extends Phaser.Scene {
 				[prop.name]: prop.value,
 			};
 		}, {});
-	}
-
-	private listenToMusicSwitcherEvents() {
-		this.events.on('MusicSwitcher::music', (isOn) => {
-			if (!isOn) {
-				this.music.stop();
-			}
-			if (isOn) {
-				this.launchMusic();
-			}
-		});
 	}
 
 	private initAllowsTutorialsOption() {
