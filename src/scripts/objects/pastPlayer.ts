@@ -1,22 +1,33 @@
+import { Direction } from '../types';
+import Player from './player';
+
 export default class PastPlayer extends Phaser.Physics.Arcade.Sprite {
 	isDead = false;
+	private bullets: Phaser.Physics.Arcade.Group;
 	private isDeadEventEmitted = false;
-	private speedX: number;
-	private speedY: number;
+	private nextFire = 0;
+	private fireRate = 500;
 	private hasFx = true;
+	private direction: Direction;
+	private turnRight = true;
+	private turnLeft = false;
+	private canDetectPlayer = false;
 
-
-	constructor(scene: Phaser.Scene, x, y) {
+	constructor(scene: Phaser.Scene, x, y, private readonly player: Player) {
 		super(scene, x, y, 'player', 'idle-1');
 		scene.add.existing(this);
 		this.scene.physics.world.enable(this);
 		this.setCollideWorldBounds(true);
 		this.hasFx = this.scene.store.get('fx') ?? true;
+		this.direction = 'left';
+		this.create();
 	}
 	
 	create() {
 		this.init();
 		this.scene.events.emit('PastPlayer::init');
+		
+		this.initBulletsGroups();
 
 		this.anims.create({
 			key: 'walk',
@@ -33,6 +44,19 @@ export default class PastPlayer extends Phaser.Physics.Arcade.Sprite {
 		this.anims.create({
 			key: 'shot',
 			frames: this.scene.anims.generateFrameNames('player', { prefix: 'shot-', start: 1, end: 3 }),
+			frameRate: 5,
+			repeat: 0,
+		});
+
+		this.anims.create({
+			key: 'simple_gun_shot',
+			frames: this.scene.anims.generateFrameNames('simple_gun_shot', { prefix: 'hits-1-', start: 2, end: 5 }),
+			frameRate: 5,
+			repeat: 0,
+		});
+		this.anims.create({
+			key: 'simple_bullet',
+			frames: this.scene.anims.generateFrameNames('simple_bullet', { prefix: 'simple-bullet-', start: 1, end: 4 }),
 			frameRate: 5,
 			repeat: -1,
 		});
@@ -59,7 +83,6 @@ export default class PastPlayer extends Phaser.Physics.Arcade.Sprite {
 	}
 	
 	update() {
-		// this.movePlayer();
 		this.on('animationcomplete', () => {
 			if (this.isDead && !this.isDeadEventEmitted) {
 				this.anims.stop();
@@ -67,11 +90,112 @@ export default class PastPlayer extends Phaser.Physics.Arcade.Sprite {
 				this.isDeadEventEmitted = true;
 			}
 		});
+
+		if (!this.isDead) {
+			const distance = this.calculateDistanceWithPlayer();
+			this.canDetectPlayer = distance < 150;
+			
+			if (this.canDetectPlayer) {
+				console.info('can detect player');
+				this.scene.time.delayedCall(2000, () => {
+					if (!this.isDead) {
+						this.detectPlayer();
+					}
+				});
+			}
+		}
+	}
+
+	private calculateDistanceWithPlayer() {
+		const dx = this.x - this.player.x;
+		const dy = this.y - this.player.y;
+
+		const distance = Math.sqrt(dx * dx + dy * dy);
+		return Math.abs(distance);
+	}
+
+	private detectPlayer() {
+		if (this.turnRight && this.player.x < this.x) {
+			this.turnLeft = true;
+			this.turnRight = false;
+			this.scene.time.delayedCall(3000, () => {
+				if (!this.isDead) {
+					this.flipX = !this.flipX;
+					this.direction = 'right';
+					this.shoot();
+				}
+			});
+		}
+		if (this.turnLeft && this.player.x > this.x) {
+			this.turnRight = true;
+			this.turnLeft = false;
+			this.scene.time.delayedCall(3000, () => {
+				if (!this.isDead) {
+					this.flipX = !this.flipX;
+					this.direction = 'left';
+					this.shoot();
+				}
+			});
+		}
+	}
+
+	private shoot(): void {
+		if (!this.isDead) {
+			this.anims.play('shot');
+			if (this.scene.time.now > this.nextFire) {
+				this.nextFire = this.scene.time.now + this.fireRate;
+				if (this.direction === 'right') {
+					this.shotBullet(-500);
+				}
+				if (this.direction === 'left') {
+					this.shotBullet(500);
+				}
+			}
+		}
+	}
+
+	private initBulletsGroups() {
+		this.bullets = this.scene.physics.add.group({
+			defaultKey: 'simple_bullet',
+			allowGravity: false,
+			immovable: true,
+			frameQuantity: 5,
+		});
+	}
+
+	private shotBullet(velocity: number) {
+		if (this.hasFx) {
+			this.scene.sound.play('simple_gun_shot', { volume: 1 });
+		}
+		
+		const shotX = this.direction === 'right' ? this.x - 12 : this.x + 12;
+		const shotGun = this.scene.add.sprite(shotX, this.y, 'simple_gun_shot');
+		
+		shotGun.anims.play('simple_gun_shot');
+		
+		this.scene.time.delayedCall(50, () => {
+			this.anims.stop();
+			shotGun.destroy();
+		});
+
+		const ball = this.bullets.get(this.x, this.y);
+		
+		ball.anims.play('simple_bullet');
+		
+		ball.body.velocity.x = velocity;
+		ball.checkWorldBounds = true;
+		ball.outOfBoundsKill = true;
+		this.scene.events.emit('PastPlayer::shotBullet', ball, this.direction);
+
+		this.scene.time.delayedCall(500, () => {
+			if (!this.isDead) {
+				this.anims.stop();
+				this.setTexture('player', 'idle-1');
+			}
+		});
 	}
 
 	private init() {
-		this.speedX = 180;
-		this.speedY = 180;
 		this.body.setSize(2);
 	}
 }

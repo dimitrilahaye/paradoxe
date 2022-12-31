@@ -49,10 +49,9 @@ To cross each room of this place, you will have to face travels in time and spac
   - [X] button replay
   - [X] buttons music and sounds
   - [X] Score (based on number of teleportations through portals)
-- [ ] past player tween
-- [ ] make past player able to shot us
-- [ ] player death
-- [ ] Last level
+- [X] make past player able to shot us
+- [X] player death
+- [ ] **WIP:** :construction: Last level
 - [ ] Ending scene
 - [ ] :bug: Bugs fixes
   - [ ] Translations not working on start screen at the opening of the game
@@ -61,7 +60,7 @@ To cross each room of this place, you will have to face travels in time and spac
 - [X] Add github page
 - [ ] Add game in itchi.io
 
-## Best effort
+## Future steps
 - [ ] bigger levels + minimap!!!
 - [ ] sprites titles level
 - [ ] time gardians (wtf???)

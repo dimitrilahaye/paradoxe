@@ -21,7 +21,6 @@ export default abstract class StartScreen extends Phaser.Scene {
 	protected tpLayer: Phaser.Tilemaps.TilemapLayer;
 	protected bckgLayer: Phaser.Tilemaps.TilemapLayer;
 	protected groundLayer: Phaser.Tilemaps.TilemapLayer;
-	protected optionsLayer: Phaser.Tilemaps.TilemapLayer;
 	protected wallLayer: Phaser.Tilemaps.TilemapLayer;
 	protected wall2Layer: Phaser.Tilemaps.TilemapLayer;
 	protected desksLayer: Phaser.Tilemaps.TilemapLayer;
@@ -30,7 +29,6 @@ export default abstract class StartScreen extends Phaser.Scene {
 	protected lightsLayer: Phaser.Tilemaps.TilemapLayer;
 	protected titleLayer: Phaser.Tilemaps.TilemapLayer;
 	protected start: Phaser.Types.Tilemaps.TiledObject;
-	protected end: Phaser.Types.Tilemaps.TiledObject;
 
 	protected ballGroup: Phaser.GameObjects.Group;
 	
@@ -144,7 +142,9 @@ export default abstract class StartScreen extends Phaser.Scene {
 		this.events.off('MultiTimeTeleporter::setToOpen');
 		this.events.off('PastPlayer::init');
 		this.events.off('PastPlayer::isDead');
+		this.events.off('Player::isDead');
 		this.events.off('Player::shotBullet');
+		this.events.off('PastPlayer::shotBullet');
 		this.events.off('RedSpatialTeleporter::activate');
 		this.events.off('SimpleSwitcher::activate');
 		this.events.off('SimpleTimeTeleporter::activate');
@@ -297,7 +297,6 @@ export default abstract class StartScreen extends Phaser.Scene {
 
 	protected initPlayer() {
 		this.start = this.tilemap.findObject(LayerName.PLAYER, obj => obj.name === ObjectName.START);
-		this.end = this.tilemap.findObject(LayerName.DOORS, obj => obj.name === ObjectName.END);
 		this.player = new Player(this, this.start?.x || 0, this.start?.y || 0);
 		this.player.create();
 		
@@ -354,9 +353,8 @@ export default abstract class StartScreen extends Phaser.Scene {
 		this.platformsLayer = this.tilemap.createLayer(LayerName.PLATFORMS, this.tileset, 0, 0);
 		this.ceilingLayer = this.tilemap.createLayer(LayerName.CEILING, this.tileset, 0, 0);
 		this.lightsLayer = this.tilemap.createLayer(LayerName.LIGHTS, this.tileset, 0, 0);
-		this.optionsLayer = this.tilemap.createLayer(LayerName.OPTIONS, this.tileset, 0, 0);
 		this.tpLayer = this.tilemap.createLayer(LayerName.TP, this.tileset, 0, 0);
-		this.titleLayer = this.tilemap.createLayer(LayerName.TITLE, [this.tileset, titleTileset], 0, 0);
+		this.titleLayer = this.tilemap.createLayer(LayerName.TITLE, titleTileset, 0, 0);
 		
 		this.groundLayer.setCollisionByProperty({ collides: true });
 		this.platformsLayer.setCollisionByProperty({ collides: true });
@@ -365,8 +363,11 @@ export default abstract class StartScreen extends Phaser.Scene {
 	}
 
 	private playerIsNearCoordinates(coordinates: Coordinates, offset = 10) {
-		return this.player.x > (coordinates.x || 0) - offset && this.player.x < (coordinates.x || 0) + offset &&
-			this.player.y > (coordinates.y || 0) - offset && this.player.y < (coordinates.y || 0) + offset;
+		const dx = coordinates.x - this.player.x;
+		const dy = coordinates.y - this.player.y;
+		const distance = Math.sqrt(dx * dx + dy * dy);
+
+		return Math.abs(distance) < offset;
 	}
 
 	private checkForTutorials() {

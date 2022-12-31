@@ -58,6 +58,9 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	private hasMusic: boolean;
 	private key: SceneKey;
 	private musicHasBeenPlayed: boolean;
+	private nextActivability = 0;
+	private activabilityRate = 500;
+	private currentScore: number;
 
 	constructor(key: SceneKey, protected nextScene: SceneKey, protected tilesetKey: string) {
 		super({ key });
@@ -69,6 +72,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 
 		this.hasFx = this.store.get<boolean>('fx') ?? true;
 		this.hasMusic = this.store.get<boolean>('music') ?? true;
+		this.currentScore = this.store.get<number>('score') ?? 0;
 		this.musicHasBeenPlayed = false;
 		this.ballGroup = this.add.group();
 		this.spatialTeleportersGroup = this.add.group();
@@ -127,7 +131,9 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		this.events.off('MultiTimeTeleporter::setToOpen');
 		this.events.off('PastPlayer::init');
 		this.events.off('PastPlayer::isDead');
+		this.events.off('Player::isDead');
 		this.events.off('Player::shotBullet');
+		this.events.off('PastPlayer::shotBullet');
 		this.events.off('RedSpatialTeleporter::activate');
 		this.events.off('SimpleSwitcher::activate');
 		this.events.off('SimpleTimeTeleporter::activate');
@@ -171,6 +177,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 
 	private listenToResetButtonEvents() {
 		this.events.on('ResetButton::reset', () => {
+			this.store.set('score', this.currentScore);
 			this.music.stop();
 			this.scene.start(this.key);
 		});
@@ -297,13 +304,23 @@ export default abstract class BaseLevel extends Phaser.Scene {
 				this.events.emit('BaseLevel::firstTp');
 
 				const dirX = this.player.direction === 'left' ? -20 : +20;
-				const pastPlayer = new PastPlayer(this, t.x - dirX, t.y);
-				pastPlayer.create();
+				const pastPlayer = new PastPlayer(this, t.x - dirX, t.y, this.player);
 				this.pastPlayersGroup.add(pastPlayer);
 			});
 
 			const ballsCollider = this.physics.add.collider(this.simpleTimeTeleporterGroup, this.ballGroup, (_, ball) => {
 				ball.destroy();
+			});
+
+			this.physics.add.collider(this.simpleTimeTeleporterGroup, this.pastPlayersGroup, (tp, pp) => {
+				const currentPastPlayerX = (pp.body.gameObject as PastPlayer).x;
+				const currentTpX = (tp.body.gameObject as SimpleTimeTeleporter).x;
+				if (currentTpX > currentPastPlayerX) {
+					(pp.body.gameObject as PastPlayer).setX(currentPastPlayerX - 20);
+				}
+				if (currentTpX < currentPastPlayerX) {
+					(pp.body.gameObject as PastPlayer).setX(currentPastPlayerX + 20);
+				}
 			});
 
 			simpleTimeTeleporter.addColliders(playerCollider, ballsCollider);
@@ -319,14 +336,19 @@ export default abstract class BaseLevel extends Phaser.Scene {
 				(tp as MultiTimeTeleporter).activate();
 
 				const dirX = (p as Player).direction === 'left' ? -20 : +20;
-				const pastPlayer = new PastPlayer(this, (tp as MultiTimeTeleporter).x - dirX, (tp as MultiTimeTeleporter).y);
-				pastPlayer.create();
+				const pastPlayer = new PastPlayer(this, (tp as MultiTimeTeleporter).x - dirX, (tp as MultiTimeTeleporter).y, this.player);
 				this.pastPlayersGroup.add(pastPlayer);
 				
 			});
 
 			const ballsCollider = this.physics.add.collider(multiTimeTeleporter, this.ballGroup, (_, ball) => {
 				ball.destroy();
+			});
+
+			this.physics.add.collider(multiTimeTeleporter, this.pastPlayersGroup, (_, pp) => {
+				const currentX = (pp.body.gameObject as PastPlayer).x;
+				const dirX = this.player.direction === 'left' ? -20 : +20;
+				(pp.body.gameObject as PastPlayer).setX(currentX - dirX);
 			});
 
 			multiTimeTeleporter.addColliders(ballsCollider, playerCollider);
@@ -358,13 +380,18 @@ export default abstract class BaseLevel extends Phaser.Scene {
 				teleporter.activate();
 
 				const dirX = this.player.direction === 'left' ? -20 : +20;
-				const pastPlayer = new PastPlayer(this, teleporter.x - dirX, teleporter.y);
-				pastPlayer.create();
+				const pastPlayer = new PastPlayer(this, teleporter.x - dirX, teleporter.y, this.player);
 				this.pastPlayersGroup.add(pastPlayer);
 			});
 
 			const ballsCollider = this.physics.add.collider(teleporter, this.ballGroup, (_, ball) => {
 				ball.destroy();
+			});
+
+			this.physics.add.collider(teleporter, this.pastPlayersGroup, (_, pp) => {
+				const currentX = (pp.body.gameObject as PastPlayer).x;
+				const dirX = this.player.direction === 'left' ? -20 : +20;
+				(pp.body.gameObject as PastPlayer).setX(currentX - dirX);
 			});
 			
 			teleporter.addColliders(ballsCollider, playerCollider);
@@ -438,10 +465,12 @@ export default abstract class BaseLevel extends Phaser.Scene {
 			if (this.player.enterActivate) {
 				const leftAlivePastPlayers = this.findPastPlayers((pastPlayer) => !(pastPlayer as PastPlayer).isDead);
 				if (this.pastPlayersGroup?.getLength() > 0 && leftAlivePastPlayers) {
-					if (this.hasFx) {
-						this.sound.play('door_tp');
+					if (this.time.now > this.nextActivability) {
+						this.nextActivability = this.time.now + this.activabilityRate;
+						if (this.hasFx) {
+							this.sound.play('door_close');
+						}
 					}
-					this.player.setPosition(this.start.x, this.start.y);
 				} else {
 					if (this.hasFx) {
 						this.sound.play('end_level');
@@ -457,6 +486,13 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		this.events.on('PastPlayer::init', () => {
 			this.time.delayedCall(200, () => {
 				this.doorExit.close();
+			});
+		}, this);
+		this.events.on('PastPlayer::shotBullet', (ball: Phaser.Physics.Arcade.Sprite) => {
+			this.ballGroup.add(ball);
+			
+			this.physics.add.collider([this.groundLayer], ball, () => {
+				ball.destroy();
 			});
 		}, this);
 		this.events.on('PastPlayer::isDead', () => {
@@ -478,6 +514,12 @@ export default abstract class BaseLevel extends Phaser.Scene {
 				ball.destroy();
 			});
 		}, this);
+
+		this.events.on('Player::isDead', () => {
+			this.store.set('score', 0);
+			alert(this.translate.get(SceneKey.BaseLevel, 0));
+			location.reload();
+		});
 	}
 
 	private listenToMyTextBoxEvents() {

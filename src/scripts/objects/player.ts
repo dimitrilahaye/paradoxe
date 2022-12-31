@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Coordinates } from '../types';
+import { Coordinates, Direction } from '../types';
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
 	private bullets: Phaser.Physics.Arcade.Group;
@@ -23,7 +23,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 	private hasFx = true;
 	
 	public enterActivate: boolean;
-	public direction: 'left' | 'right';
+	public direction: Direction;
+	private isDeadEventEmitted = false;
+	isDead = false;
 
 	constructor(scene: Phaser.Scene, x: number, y: number) {
 		super(scene, x, y, 'player', 'idle-1');
@@ -49,9 +51,34 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 		this.initBulletsGroups();
 
 		this.listenToStoreEvents();
+
+		this.scene.events.on('PastPlayer::shotBullet', (ball: Phaser.Physics.Arcade.Sprite, direction: Direction) => {
+			this.scene.physics.add.collider(this, ball, () => {
+				ball.destroy();
+				if (!this.isDead) {
+					this.isMovable = false;
+					this.flipX = direction !== 'right';
+					this.isDead = true;
+					this.body.enable = false;
+					if (this.hasFx) {
+						this.scene.sound.play('death');
+					}
+					this.anims.play('death', true);
+					this.setVelocity(0);
+				}
+			}, undefined, this);
+		}, this);
 	}
 
 	update() {
+		this.on('animationcomplete', () => {
+			if (this.isDead && !this.isDeadEventEmitted) {
+				this.anims.stop();
+				this.scene.events.emit('Player::isDead');
+				this.isDeadEventEmitted = true;
+			}
+		});
+		
 		this.movePlayer();
 		this.checkActions();
 	}
@@ -90,7 +117,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 			key: 'death',
 			frames: this.scene.anims.generateFrameNames('player', { prefix: 'death-', start: 1, end: 5 }),
 			frameRate: 5,
-			repeat: -1,
+			repeat: 0,
 		});
 		this.anims.create({
 			key: 'shot',
@@ -239,8 +266,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 						}
 					}
 				} else {
-					this.anims.stop();
-					this.setTexture('player', 'idle-1');
+					if (!this.isDead) {
+						this.anims.stop();
+						this.setTexture('player', 'idle-1');
+					}
 				}
 				if (this.goLeft) {
 					this.flipX = true;
@@ -257,9 +286,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 				this.setVelocityX(0);
 			}
 		} else {
-			this.setVelocityX(0);
-			this.anims.stop();
-			this.setTexture('player', 'idle-1');
+			if (!this.isDead) {
+				this.setVelocityX(0);
+				this.anims.stop();
+				this.setTexture('player', 'idle-1');
+			}
 		}
 	}
 }

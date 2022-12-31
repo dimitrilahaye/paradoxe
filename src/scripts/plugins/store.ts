@@ -22,4 +22,8 @@ export default class StorePlugin extends Phaser.Plugins.ScenePlugin {
 		return JSON.parse(data) as T;
 	}
 
+	remove(key: string):void {
+		localStorage.removeItem(this.prefix+key);
+	}
+
 }
