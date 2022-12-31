@@ -53,12 +53,20 @@
   },
   "Level6": {
     "fr": [
-      "Je suis très fier de vous détective ! Vous vous en sortez très bien !\n...\n...\nMais... je sens que vous êtes un peu en colère. Vous devriez respirer profondément, un cerveau aussi brillant que le vôtre mérite d'être suffisament oxygéné.`",
+      "Je suis très fier de vous détective ! Vous vous en sortez très bien !\n...\n...\nMais... je sens que vous êtes un peu en colère. Vous devriez respirer profondément, un cerveau aussi brillant que le vôtre mérite d'être suffisament oxygéné.",
       "Vous voyez ces portails orange ?\n...\n...\nParfait, vous avez une excellente vue.\nSi vous activez un des boutons orange, vous désactiverez les autres portails en alternance.\n...\n...\nBien, vous savez ce qu'ils vous restent à faire pour quitter cette salle."
     ],
     "en": [
-      "I'm very proud of you detective! You're doing very well!\n...\n...\nBut...I sense you're a little angry. You should take a deep breath, such a brilliant brain that yours deserves to be sufficiently oxygenated.`",
+      "I'm very proud of you detective! You're doing very well!\n...\n...\nBut...I sense you're a little angry. You should take a deep breath, such a brilliant brain that yours deserves to be sufficiently oxygenated.",
       "See those orange portals?\n...\n...\nPerfect, you have excellent eyesight.\nIf you activate one of the orange buttons, you will alternately deactivate the other portals.\n...\n ...\nWell, you know what you have to do to leave this room."
+    ]
+  },
+  "Level8": {
+    "fr": [
+      "Oui Détective.\n...\n...\nVous avez bien vu.\n...\n...\nC'est votre corps.\n...\n...\nOh mais je sais bien que vous n'êtes jamais venu dans cette salle. Il n'y a qu'une seule explication plausible à ce phénomène.\n...\n...\nCe cadavre n'est pas une émanation du passé, que vous auriez crée en faisant des petits sauts dans le futur.\n...\n...\nCe cadavre vient du futur !\n...\n...\nOui, vous avez bien compris Détective. Vous allez mourir. Ou plutôt, vous êtes mort.\n...\n...\nLe meurtre que vous venez élucider dans notre belle entreprise, c'est le vôtre.\n...\n...\nLa suite... prochainement !"
+    ],
+    "en": [
+      "Yes Detective.\n...\n...\nYou saw correctly.\n...\n...\nIt's your body.\n...\n...\nOh but I know very well that you have never been in this room. There is only one plausible explanation for this phenomenon.\n...\n...\nThis corpse is not an emanation of the past, which you would have created by making small jumps in the future. \n...\n...\nThis corpse is from the future!\n...\n...\nYes, Detective. You are going to die. Or rather, you are dead.\n...\n...\nThe murder you have come to solve in our beautiful company is yours.\n...\n...\nThe rest.. . shortly !"
     ]
   }
 }
