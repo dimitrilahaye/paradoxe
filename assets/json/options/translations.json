@@ -1,4 +1,8 @@
 {
+  "BaseLevel": {
+    "fr": ["Vous êtes mort, détective."],
+    "en": ["You're dead, detective."]
+  },
   "StartScreen": {
     "fr": [
       "Bienvenue dans mon super jeu :) Pour activer ou désactiver une option, positionnez-vous devant l'interrupteur et appuyez sur ENTRÉE.\nVous pouvez aussi simplement cliquer sur les différentes options pour les activer ou les désactiver."
