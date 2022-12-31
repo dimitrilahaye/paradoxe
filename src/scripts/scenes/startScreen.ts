@@ -145,6 +145,7 @@ export default abstract class StartScreen extends Phaser.Scene {
 		this.events.off('Player::isDead');
 		this.events.off('Player::shotBullet');
 		this.events.off('PastPlayer::shotBullet');
+		this.events.off('Player::canDetect');
 		this.events.off('RedSpatialTeleporter::activate');
 		this.events.off('SimpleSwitcher::activate');
 		this.events.off('SimpleTimeTeleporter::activate');

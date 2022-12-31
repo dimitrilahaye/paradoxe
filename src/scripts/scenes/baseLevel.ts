@@ -132,6 +132,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		this.events.off('PastPlayer::init');
 		this.events.off('PastPlayer::isDead');
 		this.events.off('Player::isDead');
+		this.events.off('Player::canDetect');
 		this.events.off('Player::shotBullet');
 		this.events.off('PastPlayer::shotBullet');
 		this.events.off('RedSpatialTeleporter::activate');

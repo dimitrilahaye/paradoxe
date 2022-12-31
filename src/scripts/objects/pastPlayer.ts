@@ -12,6 +12,7 @@ export default class PastPlayer extends Phaser.Physics.Arcade.Sprite {
 	private turnRight = true;
 	private turnLeft = false;
 	private canDetectPlayer = false;
+	private hasDetected = false;
 
 	constructor(scene: Phaser.Scene, x, y, private readonly player: Player) {
 		super(scene, x, y, 'player', 'idle-1');
@@ -77,6 +78,10 @@ export default class PastPlayer extends Phaser.Physics.Arcade.Sprite {
 			}, undefined, this);
 		}, this);
 
+		this.scene.events.on('Player::canDetect', () => {
+			this.hasDetected = false;
+		});
+
 		this.scene.events.on('Store::fx', (isOn) => {
 			this.hasFx = isOn;
 		});
@@ -93,15 +98,13 @@ export default class PastPlayer extends Phaser.Physics.Arcade.Sprite {
 
 		if (!this.isDead) {
 			const distance = this.calculateDistanceWithPlayer();
-			this.canDetectPlayer = distance < 150;
+			this.canDetectPlayer = distance < 150 && this.player.y === this.y;
+			if (!this.canDetectPlayer) {
+				this.hasDetected = false;
+			}
 			
-			if (this.canDetectPlayer) {
-				console.info('can detect player');
-				this.scene.time.delayedCall(2000, () => {
-					if (!this.isDead) {
-						this.detectPlayer();
-					}
-				});
+			if (!this.hasDetected && this.canDetectPlayer) {
+				this.detectPlayer();
 			}
 		}
 	}
@@ -115,25 +118,29 @@ export default class PastPlayer extends Phaser.Physics.Arcade.Sprite {
 	}
 
 	private detectPlayer() {
-		if (this.turnRight && this.player.x < this.x) {
+		if (!this.hasDetected && this.player.x < this.x) {
 			this.turnLeft = true;
 			this.turnRight = false;
-			this.scene.time.delayedCall(3000, () => {
-				if (!this.isDead) {
-					this.flipX = !this.flipX;
+			this.hasDetected = true;
+			this.scene.time.delayedCall(2000, () => {
+				if (!this.isDead && this.canDetectPlayer) {
+					this.flipX = true;
 					this.direction = 'right';
+					this.hasDetected = false;
 					this.shoot();
 				}
 			});
 		}
-		if (this.turnLeft && this.player.x > this.x) {
+		if (!this.hasDetected && this.player.x > this.x) {
 			this.turnRight = true;
 			this.turnLeft = false;
-			this.scene.time.delayedCall(3000, () => {
-				if (!this.isDead) {
-					this.flipX = !this.flipX;
+			this.hasDetected = true;
+			this.scene.time.delayedCall(2000, () => {
+				if (!this.isDead && this.canDetectPlayer) {
+					this.flipX = false;
 					this.direction = 'left';
 					this.shoot();
+					this.hasDetected = false;
 				}
 			});
 		}

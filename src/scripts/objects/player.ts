@@ -163,6 +163,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 	private teleportOnCoordinates({ x, y }: Coordinates) {
 		const xDirection = this.direction === 'left' ? x - 10 : x + 10;
 		this.setPosition(xDirection, y);
+		this.scene.events.emit('Player::canDetect');
 	}
 
 	private checkActions() {
