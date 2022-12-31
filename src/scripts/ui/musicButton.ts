@@ -37,6 +37,10 @@ export default class MusicButton extends Phaser.Physics.Arcade.Sprite {
 			if (hasMusic) {
 				this.setTexture('music_off');
 			}
+			const hasFx = this.scene.store.get<boolean>('fx');
+			if (hasFx) {
+				this.scene.sound.play('switcher');
+			}
 		}
 	}
 }

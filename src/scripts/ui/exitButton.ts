@@ -29,6 +29,10 @@ export default class ExitButton extends Phaser.Physics.Arcade.Sprite {
 		if (this.scene.time.now > this.nextActivability) {
 			this.nextActivability = this.scene.time.now + this.activabilityRate;
     		this.scene.events.emit('ExitButton::exit');
+			const hasFx = this.scene.store.get<boolean>('fx');
+			if (hasFx) {
+				this.scene.sound.play('switcher');
+			}
 		}
 	}
 }

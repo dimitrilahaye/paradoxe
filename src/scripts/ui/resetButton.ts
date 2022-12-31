@@ -29,6 +29,10 @@ export default class ResetButton extends Phaser.Physics.Arcade.Sprite {
 		if (this.scene.time.now > this.nextActivability) {
 			this.nextActivability = this.scene.time.now + this.activabilityRate;
     		this.scene.events.emit('ResetButton::reset');
+			const hasFx = this.scene.store.get<boolean>('fx');
+			if (hasFx) {
+				this.scene.sound.play('switcher');
+			}
 		}
 	}
 }

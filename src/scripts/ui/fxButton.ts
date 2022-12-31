@@ -40,6 +40,9 @@ export default class FxButton extends Phaser.Physics.Arcade.Sprite {
 			if (hasFx) {
 				this.setTexture('audio_off');
 			}
+			if (hasFx) {
+				this.scene.sound.play('switcher');
+			}
 		}
 	}
 }
