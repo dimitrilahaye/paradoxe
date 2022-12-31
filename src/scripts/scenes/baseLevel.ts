@@ -537,12 +537,20 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	}
 
 	private initDoors() {
-		const { x: doorStartX, y: doorStartY } = this.tilemap.findObject(LayerName.DOORS, obj => obj.name === ObjectName.DOOR_START);
-		const { x: doorEndX, y: doorEndY } = this.tilemap.findObject(LayerName.DOORS, obj => obj.name === ObjectName.DOOR_END);
-		this.doorEntrance = new DoorEntrance(this, doorStartX || 0, doorStartY || 0);
-		this.doorExit = new DoorExit(this, doorEndX || 0, doorEndY || 0);
-		
-		this.physics.add.collider([this.doorEntrance, this.doorExit], [this.groundLayer, this.platformsLayer]);
+		const doorStart = this.tilemap.findObject(LayerName.DOORS, obj => obj.name === ObjectName.DOOR_START);
+		if (doorStart) {
+			const { x: doorStartX, y: doorStartY } = this.tilemap.findObject(LayerName.DOORS, obj => obj.name === ObjectName.DOOR_START);
+			this.doorEntrance = new DoorEntrance(this, doorStartX || 0, doorStartY || 0);
+		}
+		const doorEnd = this.tilemap.findObject(LayerName.DOORS, obj => obj.name === ObjectName.DOOR_END);
+		if (doorEnd) {
+			const { x: doorEndX, y: doorEndY } = this.tilemap.findObject(LayerName.DOORS, obj => obj.name === ObjectName.DOOR_END);
+			this.doorExit = new DoorExit(this, doorEndX || 0, doorEndY || 0);
+		}
+
+		if (this.doorEntrance && this.doorExit) {
+			this.physics.add.collider([this.doorEntrance, this.doorExit], [this.groundLayer, this.platformsLayer]);
+		}
 	}
 
 	private initPastPlayers() {

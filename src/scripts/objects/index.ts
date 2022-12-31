@@ -1,5 +1,6 @@
 export enum ObjectName {
     DOOR_START = 'start',
+    CORPSE = 'corpse',
     DOOR_END = 'end',
     START = 'start',
     END = 'end',

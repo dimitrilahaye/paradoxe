@@ -51,12 +51,11 @@ To cross each room of this place, you will have to face travels in time and spac
   - [X] Score (based on number of teleportations through portals)
 - [X] make past player able to shot us
 - [X] player death
-- [ ] **WIP:** :construction: Last level
-- [ ] Ending scene
+- [X] Last level
 - [ ] :bug: Bugs fixes
   - [ ] Translations not working on start screen at the opening of the game
   - [ ] Music does not quite if clicks too fast
-- [ ] TODOs
+- [ ] **WIP:** :construction: TODOs
 - [X] Add github page
 - [ ] Add game in itchi.io
 

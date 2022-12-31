@@ -18,6 +18,8 @@ import PreloadStartScreen from './scenes/preloadStartScreen';
 import StartScreen from './scenes/startScreen';
 import StorePlugin from './plugins/store';
 import TranslatePlugin from './plugins/translate';
+import PreloadLevel8 from './scenes/preloadLevel8';
+import Level8 from './scenes/level8';
 
 const DEFAULT_WIDTH = 1280;
 const DEFAULT_HEIGHT = 480;
@@ -36,12 +38,13 @@ const config: Phaser.Types.Core.GameConfig = {
 	scene: [
 		PreloadStartScreen, // start screen
 		PreloadLevel1, // simple exit door
-		PreloadLevel7, // mix all teleporters
-		PreloadLevel6, // WIP: multi time teleporters
-		PreloadLevel5, // mix simple / double teleporters
 		PreloadLevel2, // spatial doors
-		PreloadLevel4, // double time teleporters
 		PreloadLevel3, // simple time teleporter
+		PreloadLevel4, // double time teleporters
+		PreloadLevel5, // mix simple / double teleporters
+		PreloadLevel6, // WIP: multi time teleporters
+		PreloadLevel7, // mix all teleporters
+		PreloadLevel8, // final stage
 		StartScreen,
 		Level1,
 		Level2,
@@ -50,6 +53,7 @@ const config: Phaser.Types.Core.GameConfig = {
 		Level5,
 		Level6,
 		Level7,
+		Level8,
 	],
 	physics: {
 		default: 'arcade',
