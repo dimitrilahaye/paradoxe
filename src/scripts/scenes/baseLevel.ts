@@ -19,6 +19,7 @@ import FxButton from '../ui/fxButton';
 import MusicButton from '../ui/musicButton';
 import MyTextBox from '../ui/myTextBox';
 import ResetButton from '../ui/resetButton';
+import Score from '../ui/score';
 import { SceneKey } from './index';
 
 export default abstract class BaseLevel extends Phaser.Scene {
@@ -112,6 +113,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		new ResetButton(this, 80, 60);
 		new MusicButton(this, 130, 60);
 		new FxButton(this, 180, 60);
+		new Score(this, 280, 94);
 	}
 
 	private removeEvents() {

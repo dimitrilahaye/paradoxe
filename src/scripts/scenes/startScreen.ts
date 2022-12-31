@@ -115,6 +115,7 @@ export default abstract class StartScreen extends Phaser.Scene {
 				this.sound.play('door_tp');
 			}
 			this.music.stop();
+			this.store.set('score', 0);
 			this.scene.start(SceneKey.PreloadLevel1);
 		});
 	}
@@ -237,6 +238,7 @@ export default abstract class StartScreen extends Phaser.Scene {
 					this.sound.play('door_tp');
 				}
 				this.music.stop();
+				this.store.set('score', 0);
 				this.scene.start(SceneKey.PreloadLevel1);
 			}
 		}

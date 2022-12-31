@@ -115,12 +115,14 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
 	private listenToSimpleTimeTeleporterEvents() {
 		this.scene.events.on('SimpleTimeTeleporter::activate', ({ x, y }: Coordinates) => {
+			this.scene.events.emit('Player::tps');
 			this.teleportOnCoordinates({ x, y });
 		});
 	}
 
 	private listenToDoubleTimeTeleporterEvents() {
 		this.scene.events.on('DoubleTimeTeleporter::activate', (_, { x, y }: Coordinates) => {
+			this.scene.events.emit('Player::tps');
 			this.teleportOnCoordinates({ x, y });
 		});
 	}

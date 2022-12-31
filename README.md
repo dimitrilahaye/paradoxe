@@ -44,17 +44,18 @@ To cross each room of this place, you will have to face travels in time and spac
 - [X] Tutorials
   - [X] Put dialogs in json config files
   - [X] Switch fr to en
-- [ ] **WIP:** :construction: Topbar UI
+- [X] Topbar UI
   - [X] button back to start screen
   - [X] button replay
   - [X] buttons music and sounds
-  - [ ] Score (based on number of kills)
+  - [X] Score (based on number of teleportations through portals)
 - [ ] past player tween
 - [ ] make past player able to shot us
 - [ ] player death
 - [ ] Last level
 - [ ] Ending scene
 - [ ] :bug: Bugs fixes
+  - [ ] Translations not working on start screen at the opening of the game
   - [ ] Music does not quite if clicks too fast
 - [ ] TODOs
 - [X] Add github page
