@@ -15,7 +15,7 @@ export default class PastPlayer extends Phaser.Physics.Arcade.Sprite {
 	private hasDetected = false;
 
 	constructor(scene: Phaser.Scene, x, y, private readonly player: Player) {
-		super(scene, x, y, 'player', 'idle-1');
+		super(scene, x, y, 'past_player', 'idle-1');
 		scene.add.existing(this);
 		this.scene.physics.world.enable(this);
 		this.setCollideWorldBounds(true);
@@ -32,19 +32,19 @@ export default class PastPlayer extends Phaser.Physics.Arcade.Sprite {
 
 		this.anims.create({
 			key: 'walk',
-			frames: this.scene.anims.generateFrameNames('player', { prefix: 'walk-', start: 1, end: 6 }),
+			frames: this.scene.anims.generateFrameNames('past_player', { prefix: 'walk-', start: 1, end: 6 }),
 			frameRate: 5,
 			repeat: -1,
 		});
 		this.anims.create({
 			key: 'death',
-			frames: this.scene.anims.generateFrameNames('player', { prefix: 'death-', start: 1, end: 5 }),
+			frames: this.scene.anims.generateFrameNames('past_player', { prefix: 'death-', start: 1, end: 5 }),
 			frameRate: 5,
 			repeat: 0,
 		});
 		this.anims.create({
 			key: 'shot',
-			frames: this.scene.anims.generateFrameNames('player', { prefix: 'shot-', start: 1, end: 3 }),
+			frames: this.scene.anims.generateFrameNames('past_player', { prefix: 'shot-', start: 1, end: 3 }),
 			frameRate: 5,
 			repeat: 0,
 		});
@@ -197,7 +197,7 @@ export default class PastPlayer extends Phaser.Physics.Arcade.Sprite {
 		this.scene.time.delayedCall(500, () => {
 			if (!this.isDead) {
 				this.anims.stop();
-				this.setTexture('player', 'idle-1');
+				this.setTexture('past_player', 'idle-1');
 			}
 		});
 	}

@@ -59,6 +59,11 @@ export default abstract class BasePreloadLevel extends Phaser.Scene {
 			'assets/json/chars/player_atlas.json',
 		);
 		this.load.atlas(
+			'past_player',
+			'assets/img/chars/past_player_atlas.png',
+			'assets/json/chars/past_player_atlas.json',
+		);
+		this.load.atlas(
 			'simple_bullet',
 			'assets/img/objects/simple_bullet_atlas.png',
 			'assets/json/objects/simple_bullet_atlas.json',
