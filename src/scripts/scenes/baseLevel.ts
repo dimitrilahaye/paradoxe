@@ -475,7 +475,8 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	// generic
 	protected startDialog(content: string) {
 		if (!this.isDialogLaunched && this.allowsTutorials) {
-			const { x, y } = this.getMiddleSceneCoordinates();
+			const x = this.cameras.main.worldView.x + 25;
+			const y = this.cameras.main.worldView.y + this.cameras.main.height / 2;
 			this.textBox = new MyTextBox(this, x, y);
 			this.textBox.start(content);
 			this.player.pause();

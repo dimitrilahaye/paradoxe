@@ -314,7 +314,8 @@ export default abstract class StartScreen extends Phaser.Scene {
 
 	protected startDialog(content: string) {
 		if (!this.isDialogLaunched) {
-			const { x, y } = this.getMiddleSceneCoordinates();
+			const x = this.cameras.main.worldView.x + 25;
+			const y = this.cameras.main.worldView.y + this.cameras.main.height / 2;
 			this.textBox = new MyTextBox(this, x, y);
 			this.textBox.start(content);
 			this.player.pause();

@@ -10,9 +10,9 @@ export default class MyTextBox {
 	public start (content) {
 		const COLOR_PRIMARY = 0xffffff;
 		const COLOR_LIGHT = 0x124E89;
-		const wrapWidth = 500;
-		const wrapHeight = 500;
-		const fixedWidth = 500;
+		const wrapWidth = 425;
+		const wrapHeight = 600;
+		const fixedWidth = 425;
 		const fixedHeight = 100;
 		this.textBox = this.scene['rexUI'].add.textBox({
 			x : this.x - 18,
