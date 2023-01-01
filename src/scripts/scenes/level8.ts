@@ -18,6 +18,10 @@ export default class Level8 extends BaseLevel {
 		if (corpse) {
 			this.add.sprite(corpse.x!, corpse.y!, 'player', 'death-5');
 		}
+
+		this.events.on('MyTextBox::complete', () => {
+			alert(this.translate.get(SceneKey.Level8, 1));
+		}, this);
 	}
 	
 	update() {
