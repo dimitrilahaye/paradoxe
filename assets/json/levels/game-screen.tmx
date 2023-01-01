@@ -1357,7 +1357,7 @@
   </tile>
  </tileset>
  <tileset firstgid="271" name="title" tilewidth="32" tileheight="32" tilecount="148" columns="37">
-  <image source="../../img/logo-1200-3.png" trans="ff00ff" width="1200" height="134"/>
+  <image source="../../img/logo.png" trans="ff00ff" width="1200" height="134"/>
  </tileset>
  <layer id="3" name="background" width="40" height="15">
   <data encoding="base64">
