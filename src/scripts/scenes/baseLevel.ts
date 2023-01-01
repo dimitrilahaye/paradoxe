@@ -50,7 +50,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	protected textBox: MyTextBox;
 	protected dialogs = new Map<string, string>();
 	protected isDialogLaunched = false;
-	private allowsTutorials: boolean;
+	protected allowsTutorials: boolean;
 	private hasFx: boolean;
 	private hasMusic: boolean;
 	private key: SceneKey;
@@ -635,7 +635,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	}
 
 	// utils
-	private intersect(obj1: Phaser.GameObjects.Sprite, obj2: Phaser.GameObjects.Sprite): boolean {
+	protected intersect(obj1: Phaser.GameObjects.Sprite, obj2: Phaser.GameObjects.Sprite): boolean {
 		const RectangleToRectangle = Phaser.Geom.Intersects.RectangleToRectangle;
 
 		return RectangleToRectangle(obj1.getBounds(), obj2.getBounds());

@@ -5,6 +5,9 @@ import { SceneKey } from './index';
 
 // todo: add dialogs
 export default class Level8 extends BaseLevel {
+	private corpse: Phaser.GameObjects.Sprite;
+	private endPlayed = false;
+
 	constructor() {
 		super(SceneKey.Level8, SceneKey.PreloadLevel1, 'level8');
 	}
@@ -16,7 +19,7 @@ export default class Level8 extends BaseLevel {
 
 		const corpse = this.tilemap.findObject(LayerName.PLAYER, obj => obj.name === ObjectName.CORPSE);
 		if (corpse) {
-			this.add.sprite(corpse.x!, corpse.y!, 'player', 'death-5');
+			this.corpse = this.add.sprite(corpse.x!, corpse.y!, 'player', 'death-5');
 		}
 
 		this.events.on('MyTextBox::complete', () => {
@@ -26,5 +29,9 @@ export default class Level8 extends BaseLevel {
 	
 	update() {
 		super.update();
+		if (this.intersect(this.corpse, this.player) && !this.allowsTutorials && !this.endPlayed) {
+			this.endPlayed = true;
+			alert(this.translate.get(SceneKey.Level8, 1));
+		}
 	}
 }
