@@ -9,6 +9,11 @@ To cross each room of this place, you will have to face travels in time and spac
 # TODO
 
 ## MPG (Minimum Playable Game)
+- [ ] **WIP:** :construction: TODOs
+- [ ] :bug: Bugs fixes
+  - [ ] Translations not working on start screen at the opening of the game
+  - [ ] Music does not quite if clicks too fast
+- [ ] Add game in itchi.io
 - [X] scenes creation
 - [X] anim player
 - [X] spatial teleporters
@@ -52,12 +57,7 @@ To cross each room of this place, you will have to face travels in time and spac
 - [X] make past player able to shot us
 - [X] player death
 - [X] Last level
-- [ ] :bug: Bugs fixes
-  - [ ] Translations not working on start screen at the opening of the game
-  - [ ] Music does not quite if clicks too fast
-- [ ] **WIP:** :construction: TODOs
 - [X] Add github page
-- [ ] Add game in itchi.io
 
 ## Future steps
 - [ ] bigger levels + minimap!!!
