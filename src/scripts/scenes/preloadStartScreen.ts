@@ -5,6 +5,69 @@ export default class PreloadStartScreen extends Phaser.Scene {
 	}
 
 	preload() {
+		// generic
+		const x = 140;
+		const y = 240;
+		const progressBar = this.add.graphics();
+		const progressBox = this.add.graphics();
+		progressBox.fillStyle(0x222222, 0.8);
+		progressBox.fillRect(x, y, 320, 50);
+		const width = this.cameras.main.width;
+		const height = this.cameras.main.height;
+		const loadingText = this.make.text({
+			x: width / 2,
+			y: height / 2 - 50,
+			text: 'Loading...',
+			style: {
+				font: '20px Pixels',
+				color: '#ffffff'
+			}
+		});
+		loadingText.setOrigin(0.5, 0.5);
+		const percentText = this.make.text({
+			x: width / 2,
+			y: height / 2 - 30,
+			text: '0%',
+			style: {
+				font: '18px Pixels',
+				color: '#ffffff'
+			}
+		});
+		percentText.setOrigin(0.5, 0.5);
+		const assetText = this.make.text({
+			x: width / 2,
+			y: height / 2 + 70,
+			text: '',
+			style: {
+				font: '18px Pixels',
+				color: '#ffffff'
+			}
+		});
+		assetText.setOrigin(0.5, 0.5);
+
+		this.load.on('progress', (value) => {
+			progressBar.clear();
+			progressBar.fillStyle(0xffffff, 1);
+			progressBar.fillRect(x, y, 300 * value, 30);
+			percentText.setText(parseInt(((value as number) * 100).toString()) + '%');
+		});
+					
+		this.load.on('fileprogress', (file: Phaser.Loader.File) => {
+			const arr = file.src.split('/');
+			const filename = arr[arr.length - 1];
+			assetText.setText('Loading asset: ' + filename);
+		});
+		this.load.on('complete', () => {
+			assetText.destroy();
+			percentText.destroy();
+			loadingText.destroy();
+			progressBar.destroy();
+			progressBox.destroy();
+			this.load.off('progress');
+			this.load.off('fileprogress');
+			this.load.off('complete');
+		});
+
 		this.load.json('translations', 'assets/json/options/translations.json');
 		this.load.scenePlugin({
 			key: 'rexUI',
@@ -26,8 +89,8 @@ export default class PreloadStartScreen extends Phaser.Scene {
 		this.load.bitmapFont('pixels', 'assets/fonts/pixels.png', 'assets/fonts/pixels.xml.fnt');
 
 		this.load.image('tileset', 'assets/img/tileset.png');
-		// todo change image name
-		this.load.image('title', 'assets/img/logo-1200-3.png');
+		this.load.image('title', 'assets/img/logo.png');
+		
 		this.load.image('door_start', 'assets/img/objects/door_start.png');
 		this.load.image('door_end_open', 'assets/img/objects/door_end_open.png');
 		this.load.image('door_end_close', 'assets/img/objects/door_end_close.png');

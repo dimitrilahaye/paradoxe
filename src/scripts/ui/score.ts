@@ -36,6 +36,6 @@ export default class Score {
 			{
 				fontFamily: 'Pixels',
 				align: 'left',
-			}).setScale(1).setFontSize(30).setResolution(10).setOrigin(0.5, 0.5).setColor('white');
+			}).setScale(1).setFontSize(30).setResolution(10).setOrigin(0.5, 0.5).setColor('white').setScrollFactor(0);
 	}
 }

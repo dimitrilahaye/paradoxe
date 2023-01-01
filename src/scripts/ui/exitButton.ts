@@ -6,6 +6,7 @@ export default class ExitButton extends Phaser.Physics.Arcade.Sprite {
     	super(scene, x, y, 'exit');
     	scene.add.existing(this);
 		this.setInteractive();
+		this.setScrollFactor(0);
 		this.setScale(0.5);
 		this.create();
 	}

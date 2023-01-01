@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { GameObjects } from 'phaser';
 import { LayerName, ObjectName } from '../objects';
@@ -14,12 +15,8 @@ import RedSpatialTeleporter from '../objects/redSpatialTeleporter';
 import SimpleSwitcher from '../objects/simpleSwitcher';
 import SimpleTimeTeleporter from '../objects/simpleTimeTeleporter';
 import SpatialTeleporter from '../objects/spatialTeleporter';
-import ExitButton from '../ui/exitButton';
-import FxButton from '../ui/fxButton';
-import MusicButton from '../ui/musicButton';
 import MyTextBox from '../ui/myTextBox';
-import ResetButton from '../ui/resetButton';
-import Score from '../ui/score';
+import TopUiContainer from '../ui/topUiContainer';
 import { SceneKey } from './index';
 
 export default abstract class BaseLevel extends Phaser.Scene {
@@ -112,14 +109,12 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		this.checkForLevelEnd();
 	}
 
+	// generic levels
 	private initTopBarUI() {
-		new ExitButton(this, 30, 60);
-		new ResetButton(this, 80, 60);
-		new MusicButton(this, 130, 60);
-		new FxButton(this, 180, 60);
-		new Score(this, 280, 94);
+		new TopUiContainer(this);
 	}
 
+	// generic
 	private removeEvents() {
 		this.events.off('DoubleSwitcher::activate');
 		this.events.off('DoubleTimeTeleporter::activate');
@@ -153,6 +148,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		this.events.off('StartScreen::switchTutorials');
 	}
 
+	// generic
 	private listenToMusicButtonEvents() {
 		this.events.on('Store::music', (isOn) => {
 			this.hasMusic = isOn;
@@ -170,12 +166,14 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		});
 	}
 
+	// generic
 	private listenToFxButtonEvents() {
 		this.events.on('Store::fx', (isOn) => {
 			this.hasFx = isOn;
 		});
 	}
 
+	// generic levels
 	private listenToResetButtonEvents() {
 		this.events.on('ResetButton::reset', () => {
 			this.store.set('score', this.currentScore);
@@ -184,13 +182,15 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		});
 	}
 
+	// generic levels
 	private listenToExitButtonEvents() {
 		this.events.on('ExitButton::exit', () => {
 			this.music.stop();
-			this.scene.start(SceneKey.PreloadStartScreen);
+			this.scene.start(SceneKey.StartScreen);
 		});
 	}
 
+	// generic
 	protected initPlayer() {
 		this.start = this.tilemap.findObject(LayerName.DOORS, obj => obj.name === ObjectName.START);
 		this.end = this.tilemap.findObject(LayerName.DOORS, obj => obj.name === ObjectName.END);
@@ -198,12 +198,14 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		this.player.create();
 		
 		this.cameras.main.startFollow(this.player);
+		this.cameras.main.setLerp(0.1, 0.1);
 
 		this.physics.add.collider(this.player, [this.groundLayer, this.platformsLayer]);
 	}
 	
+	// generic levels factories
 	protected createSimpleTimeTeleporter() {
-		const object = this.getObjectByLayerAndProperties(LayerName.TELEPORTERS_SIMPLE, { num: 0 });
+		const object = this.findObjectByLayerAndProperties(LayerName.TELEPORTERS_SIMPLE, { num: 0 });
 		if (object) {
 			const simpleTimeTeleporter = new SimpleTimeTeleporter(this, object?.x || 0, object?.y || 0);
 			simpleTimeTeleporter.setData('num', 0);
@@ -211,8 +213,9 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}
 	}
 	
+	// generic levels factories
 	protected createSimpleSwitcher() {
-		const object = this.getObjectByLayerAndProperties(LayerName.SWITCHERS_SIMPLE, { num: 0 });
+		const object = this.findObjectByLayerAndProperties(LayerName.SWITCHERS_SIMPLE, { num: 0 });
 		if (object) {
 			const simpleSwitcher = new SimpleSwitcher(this, object?.x || 0, object?.y || 0);
 			simpleSwitcher.setData('num', 0);
@@ -220,9 +223,10 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}
 	}
 
+	// generic levels factories
 	protected createDoubleTimeTeleporters() {
-		const doubleTimeTeleporter1Position = this.getObjectByLayerAndProperties(LayerName.TELEPORTERS_DOUBLE, { num: 0 });
-		const doubleTimeTeleporter2Position = this.getObjectByLayerAndProperties(LayerName.TELEPORTERS_DOUBLE, { num: 1 });
+		const doubleTimeTeleporter1Position = this.findObjectByLayerAndProperties(LayerName.TELEPORTERS_DOUBLE, { num: 0 });
+		const doubleTimeTeleporter2Position = this.findObjectByLayerAndProperties(LayerName.TELEPORTERS_DOUBLE, { num: 1 });
 		if (doubleTimeTeleporter1Position && doubleTimeTeleporter2Position) {
 			const doubleTimeTeleporter1 = new DoubleTimeTeleporter(this, doubleTimeTeleporter1Position?.x || 0, doubleTimeTeleporter1Position?.y || 0);
 			const doubleTimeTeleporter2 = new DoubleTimeTeleporter(this, doubleTimeTeleporter2Position?.x || 0, doubleTimeTeleporter2Position?.y || 0);
@@ -235,16 +239,18 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}
 	}
 
+	// generic levels factories
 	protected createDoubleSwitcher() {
-		const object = this.getObjectByLayerAndProperties(LayerName.SWITCHERS_DOUBLE, { num: 0 });
+		const object = this.findObjectByLayerAndProperties(LayerName.SWITCHERS_DOUBLE, { num: 0 });
 		if (object) {
 			const doubleSwitcher = new DoubleSwitcher(this, object?.x || 0, object?.y || 0);
 			this.doubleSwitchersGroup.add(doubleSwitcher);
 		}
 	}
 
+	// generic levels factories
 	protected createMultiTimeTeleporterByNum(num: number): void {
-		const object = this.getObjectByLayerAndProperties(LayerName.TELEPORTERS_MULTI, { num });
+		const object = this.findObjectByLayerAndProperties(LayerName.TELEPORTERS_MULTI, { num });
 		if (object) {
 			const objectProperties = this.getPropertiesAsObject(object);
 			const multiTimeTeleporter = new MultiTimeTeleporter(this, object?.x || 0, object?.y || 0, num);
@@ -254,16 +260,18 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}
 	}
 
+	// generic levels factories
 	protected createMultiSwitcherByNum(num: number) {
-		const object = this.getObjectByLayerAndProperties(LayerName.SWITCHERS_MULTI, { num });
+		const object = this.findObjectByLayerAndProperties(LayerName.SWITCHERS_MULTI, { num });
 		if (object) {
 			const multiSwitcher = new MultiSwitcher(this, object?.x || 0, object?.y || 0, num);
 			this.multiSwitchersGroup.add(multiSwitcher);
 		}
 	}
 
+	// generic levels factories
 	protected createSpatialTeleportersByColorAndNum(color: 'red' | 'green', num: number) {
-		const object = this.getObjectByLayerAndProperties(LayerName.TELEPORTERS_SPATIAL, { color, num });
+		const object = this.findObjectByLayerAndProperties(LayerName.TELEPORTERS_SPATIAL, { color, num });
 		if (object) {
 			if (color === 'green') {
 				const spatialTeleporter = new GreenSpatialTeleporter(this, object?.x || 0, object?.y || 0, num);
@@ -275,18 +283,22 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}
 	}
 
+	// generic levels factories
 	protected initSimpleTimeTeleporterWorldColliders(): void {
 		this.physics.add.collider(this.simpleTimeTeleporterGroup, [this.groundLayer, this.platformsLayer]);
 	}
 
+	// generic levels factories
 	protected initDoubleTimeTeleportersWorldColliders(): void {
 		this.physics.add.collider(this.doubleTimeTeleportersGroup, [this.groundLayer, this.platformsLayer]);
 	}
 
+	// generic levels factories
 	protected initMultiTimeTeleportersWorldColliders(): void {
 		this.physics.add.collider(this.multiTimeTeleportersGroup, [this.groundLayer, this.platformsLayer]);
 	}
 
+	// generic levels factories
 	protected closeMultiTimeTeleporters() {
 		this.iterateOnGroup(this.multiTimeTeleportersGroup, (teleporter: MultiTimeTeleporter) => {
 			if (teleporter.getData('close')) {
@@ -295,6 +307,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		});
 	}
 
+	// generic levels factories
 	protected initSimpleTimeTeleporterObjectsColliders() {
 		const simpleTimeTeleporter = this.findObjectOnGroupByData<SimpleTimeTeleporter>(this.simpleTimeTeleporterGroup, { num: 0 });
 		if (simpleTimeTeleporter) {
@@ -328,6 +341,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}
 	}
 
+	// generic levels factories
 	protected initMultiTimeTeleportersObjectsCollidersByNum(num: number) {
 		const multiTimeTeleporter = this.findObjectOnGroupByData<MultiTimeTeleporter>(this.multiTimeTeleportersGroup, { num });
 		if (multiTimeTeleporter) {
@@ -356,6 +370,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}
 	}
 
+	// generic levels factories
 	protected initMultiTimeTeleportersOpposites(): void {
 		const length = this.multiTimeTeleportersGroup.getLength();
 		const indexes = Array.from(Array(length).keys());
@@ -373,6 +388,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		});
 	}
 
+	// generic levels factories
 	protected initDoubleTimeTeleportersObjectsColliders() {
 		this.iterateOnGroup(this.doubleTimeTeleportersGroup, (teleporter: DoubleTimeTeleporter) => {
 			const playerCollider = this.physics.add.collider(this.player, teleporter, () => {
@@ -399,6 +415,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		});
 	}
 
+	// generic levels factories
 	protected checkForSpatialTeleportersActivation() {
 		this.iterateOnGroup(this.spatialTeleportersGroup, (teleporter: SpatialTeleporter) => {
 			if (this.intersect(this.player, teleporter)) {
@@ -409,6 +426,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		});
 	}
 
+	// generic levels factories
 	protected checkForSimpleSwitcherActivation() {
 		this.iterateOnGroup(this.simpleSwitcherGroup, (switcher: SimpleSwitcher) => {
 			if (this.intersect(this.player, switcher)) {
@@ -419,6 +437,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		});
 	}
 
+	// generic levels factories
 	protected checkForDoubleSwitcherActivation() {
 		this.iterateOnGroup(this.doubleSwitchersGroup, (switcher: SimpleSwitcher) => {
 			if (this.intersect(this.player, switcher)) {
@@ -429,6 +448,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		});
 	}
 
+	// generic levels factories
 	protected checkForMultiSwitchersActivation() {
 		this.iterateOnGroup(this.multiSwitchersGroup, (switcher: MultiSwitcher) => {
 			if (this.intersect(this.player, switcher)) {
@@ -439,17 +459,20 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		});
 	}
 
+	// generic levels factories
 	protected listenToMultiTimeTeleportersEvents() {
 		this.events.on('MultiTimeTeleporter::setToOpen', (num: number) => {
 			this.initMultiTimeTeleportersObjectsCollidersByNum(num);
 		});
 	}
 
+	// generic
 	protected addDialog(dialogNumber: number, content): void {
 		const { x, y } = this.tilemap.findObject('dialogs', obj => obj['properties'][0].value === dialogNumber);
 		this.dialogs.set(JSON.stringify({ x, y }), content);
 	}
 
+	// generic
 	protected startDialog(content: string) {
 		if (!this.isDialogLaunched && this.allowsTutorials) {
 			const { x, y } = this.getMiddleSceneCoordinates();
@@ -460,6 +483,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}
 	}
 
+	// generic levels
 	private checkForLevelEnd() {
 		if (this.player.x > (this.end?.x || 0) - 10 && this.player.x < (this.end?.x || 0) + 10 &&
 			this.player.y > (this.end?.y || 0) - 10 && this.player.y < (this.end?.y || 0) + 10) {
@@ -483,6 +507,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}
 	}
 
+	// generic levels
 	private listenToPastPlayersEvents() {
 		this.events.on('PastPlayer::init', () => {
 			this.time.delayedCall(200, () => {
@@ -506,6 +531,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}, this);
 	}
 
+	// generic
 	private listenToPlayerEvents() {
 		this.events.on('Player::shotBullet', (ball: Phaser.Physics.Arcade.Sprite) => {
 			this.events.emit('BaseLevel::firstShotGun');
@@ -523,6 +549,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		});
 	}
 
+	// generic
 	private listenToMyTextBoxEvents() {
 		this.events.on('MyTextBox::complete', () => {
 			this.isDialogLaunched = false;
@@ -532,10 +559,12 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}, this);
 	}
 
+	// utils
 	private shakeOnTpCollision() {
 		this.cameras.main.shake(50, 0.01);
 	}
 
+	// generic
 	private initDoors() {
 		const doorStart = this.tilemap.findObject(LayerName.DOORS, obj => obj.name === ObjectName.DOOR_START);
 		if (doorStart) {
@@ -553,6 +582,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}
 	}
 
+	// generic levels
 	private initPastPlayers() {
 		this.pastPlayersGroup = this.add.group();
 		this.physics.add.collider(this.pastPlayersGroup, [this.groundLayer, this.platformsLayer]);
@@ -575,8 +605,10 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		this.platformsLayer.setCollisionByProperty({ collides: true });
 
 		this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, this.tilemap.heightInPixels);
+		this.physics.world.setBounds(0, 0, this.tilemap.widthInPixels, this.tilemap.heightInPixels);
 	}
 
+	// utils
 	private findObjectOnGroupByData<T>(group: Phaser.GameObjects.Group, data: { [key: string]: any }): T | undefined {
 		if (group?.getLength() > 0) {
 			return group.children.getArray().find((child) => {
@@ -586,12 +618,14 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		throw new Error(`Object not found with data ${JSON.stringify(data)}`);
 	}
 
+	// utils
 	private iterateOnGroup(group: Phaser.GameObjects.Group, callback: (object, index?: number) => void) {
 		if (group?.getLength() > 0) {
 			group.children.iterate(callback);
 		}
 	}
 
+	// utils
 	private findObjectOnGroup(group: Phaser.GameObjects.Group, callback: (pastPlayer: Phaser.GameObjects.GameObject) => void) {
 		if (group?.getLength() > 0) {
 			return group.children.getArray().find(callback);
@@ -599,13 +633,15 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		return false;
 	}
 
+	// utils
 	private intersect(obj1: Phaser.GameObjects.Sprite, obj2: Phaser.GameObjects.Sprite): boolean {
 		const RectangleToRectangle = Phaser.Geom.Intersects.RectangleToRectangle;
 
 		return RectangleToRectangle(obj1.getBounds(), obj2.getBounds());
 	}
 
-	private getObjectByLayerAndProperties(layer: LayerName, properties: { [key: string]: any }): Phaser.Types.Tilemaps.TiledObject {
+	// utils
+	private findObjectByLayerAndProperties(layer: LayerName, properties: { [key: string]: any }): Phaser.Types.Tilemaps.TiledObject {
 		const object = this.tilemap.findObject(layer, (obj) => {
 			const objectProperties = this.getPropertiesAsObject(obj as unknown as Phaser.Types.Tilemaps.TiledObject);
 			return Object.keys(properties).every((k) => objectProperties[k] === properties[k]);
@@ -616,6 +652,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		return object;
 	}
 
+	// utils
 	private getMiddleSceneCoordinates(): { x: number, y: number } {
 		const x = this.cameras.main.worldView.x + this.cameras.main.width / 2;
 		const y = this.cameras.main.worldView.y + this.cameras.main.height / 2;
@@ -623,6 +660,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		return { x, y };
 	}
 
+	// generic
 	private checkForTutorials() {
 		if (this.allowsTutorials) {
 			this.dialogs.forEach((content, key) => {
@@ -638,6 +676,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}
 	}
 	
+	// generic
 	private launchMusic() {
 		this.music = this.sound.add('levels');
 		if (this.hasMusic && !this.music.isPlaying) {
@@ -649,6 +688,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}
 	}
 
+	// utils
 	private filterObjectsByLayerAndProperties(layer: LayerName, properties: { [key: string]: any }): Phaser.Types.Tilemaps.TiledObject[] {
 		const objects = this.tilemap.filterObjects(layer, (obj) => {
 			const objectProperties = this.getPropertiesAsObject(obj as unknown as Phaser.Types.Tilemaps.TiledObject);
@@ -663,6 +703,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		return objects;
 	}
 
+	// utils
 	private findObjectByLayerAndName(layer: LayerName, name: string): Phaser.Types.Tilemaps.TiledObject {
 		const object = this.tilemap.findObject(layer, (obj) => {
 			return obj.name === name;
@@ -673,6 +714,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		return object;
 	}
 
+	// utils
 	private filterObjectsByLayerAndName(layer: LayerName, name: string): Phaser.Types.Tilemaps.TiledObject[] {
 		const objects = this.tilemap.filterObjects(layer, (obj) => {
 			return obj.name === name;
@@ -683,6 +725,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		return objects;
 	}
 
+	// utils
 	private getPropertiesAsObject(obj: Phaser.Types.Tilemaps.TiledObject) {
 		if (!obj.properties) {
 			return null;
@@ -695,6 +738,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}, {});
 	}
 
+	// generic
 	private initAllowsTutorialsOption() {
 		const allowsTutorials = this.store.get<boolean>('tutorials');
 		if (allowsTutorials !== null) {
@@ -705,6 +749,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}
 	}
 
+	// specific start screen
 	private listenToTutorialsSwitcherEvents() {
 		this.events.on('TutorialsSwitcher::tutorials', (isOn) => {
 			this.allowsTutorials = isOn;

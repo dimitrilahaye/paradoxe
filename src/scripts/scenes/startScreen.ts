@@ -302,6 +302,7 @@ export default abstract class StartScreen extends Phaser.Scene {
 		this.player.create();
 		
 		this.cameras.main.startFollow(this.player);
+		this.cameras.main.setLerp(0.1, 0.1);
 
 		this.physics.add.collider(this.player, [this.groundLayer, this.platformsLayer]);
 	}
@@ -361,6 +362,7 @@ export default abstract class StartScreen extends Phaser.Scene {
 		this.platformsLayer.setCollisionByProperty({ collides: true });
 
 		this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, this.tilemap.heightInPixels);
+		this.physics.world.setBounds(0, 0, this.tilemap.widthInPixels, this.tilemap.heightInPixels);
 	}
 
 	private playerIsNearCoordinates(coordinates: Coordinates, offset = 10) {

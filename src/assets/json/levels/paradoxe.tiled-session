@@ -327,10 +327,10 @@
     "project": "paradoxe.tiled-project",
     "property.type": "string",
     "recentFiles": [
+        "game-screen.tmx",
         "level8.tmx",
         "title.json",
         "tileset.json",
-        "game-screen.tmx",
         "level1.tmx",
         "level2.tmx",
         "level3.tmx",

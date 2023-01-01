@@ -21,16 +21,16 @@ import TranslatePlugin from './plugins/translate';
 import PreloadLevel8 from './scenes/preloadLevel8';
 import Level8 from './scenes/level8';
 
-const DEFAULT_WIDTH = 1280;
+const DEFAULT_WIDTH = 600;
 const DEFAULT_HEIGHT = 480;
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
-	backgroundColor: '#ffffff',
+	backgroundColor: '#000',
 	antialias: false,
 	scale: {
 		parent: 'phaser-game',
-		mode: Phaser.Scale.FIT,
+		mode: Phaser.Scale.NONE,
 		autoCenter: Phaser.Scale.CENTER_BOTH,
 		width: DEFAULT_WIDTH,
 		height: DEFAULT_HEIGHT,

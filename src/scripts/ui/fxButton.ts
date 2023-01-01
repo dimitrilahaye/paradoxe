@@ -10,6 +10,7 @@ export default class FxButton extends Phaser.Physics.Arcade.Sprite {
     	super(scene, x, y, hasFx ? 'audio_on' : 'audio_off');
     	scene.add.existing(this);
 		this.setInteractive();
+		this.setScrollFactor(0);
 		this.setScale(0.5);
 		this.create();
 	}
