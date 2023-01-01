@@ -106,7 +106,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 
 	update() {
 		this.player.update();
-		this.iterateOnPastPlayers((pastPlayer: Phaser.GameObjects.GameObject) => pastPlayer.update());
+		this.iterateOnGroup(this.pastPlayersGroup, (pastPlayer: PastPlayer) => pastPlayer.update());
 		
 		this.checkForTutorials();
 		this.checkForLevelEnd();
@@ -464,7 +464,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		if (this.player.x > (this.end?.x || 0) - 10 && this.player.x < (this.end?.x || 0) + 10 &&
 			this.player.y > (this.end?.y || 0) - 10 && this.player.y < (this.end?.y || 0) + 10) {
 			if (this.player.enterActivate) {
-				const leftAlivePastPlayers = this.findPastPlayers((pastPlayer) => !(pastPlayer as PastPlayer).isDead);
+				const leftAlivePastPlayers = this.findObjectOnGroup(this.pastPlayersGroup, (pastPlayer) => !(pastPlayer as PastPlayer).isDead);
 				if (this.pastPlayersGroup?.getLength() > 0 && leftAlivePastPlayers) {
 					if (this.time.now > this.nextActivability) {
 						this.nextActivability = this.time.now + this.activabilityRate;
@@ -497,7 +497,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 			});
 		}, this);
 		this.events.on('PastPlayer::isDead', () => {
-			const leftAlivePastPlayers = this.findPastPlayers((pastPlayer) => !(pastPlayer as PastPlayer).isDead);
+			const leftAlivePastPlayers = this.findObjectOnGroup(this.pastPlayersGroup, (pastPlayer) => !(pastPlayer as PastPlayer).isDead);
 			if (!leftAlivePastPlayers) {
 				this.time.delayedCall(200, () => {
 					this.doorExit.open();
@@ -592,17 +592,9 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}
 	}
 
-	// todo: generic one
-	private iterateOnPastPlayers(callback: (pastPlayer: Phaser.GameObjects.GameObject) => void) {
-		if (this.pastPlayersGroup?.getLength() > 0) {
-			this.pastPlayersGroup.children.iterate(callback);
-		}
-	}
-
-	// todo: generic one
-	private findPastPlayers(callback: (pastPlayer: Phaser.GameObjects.GameObject) => void) {
-		if (this.pastPlayersGroup?.getLength() > 0) {
-			return this.pastPlayersGroup.children.getArray().find(callback);
+	private findObjectOnGroup(group: Phaser.GameObjects.Group, callback: (pastPlayer: Phaser.GameObjects.GameObject) => void) {
+		if (group?.getLength() > 0) {
+			return group.children.getArray().find(callback);
 		}
 		return false;
 	}
@@ -657,7 +649,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}
 	}
 
-	private getObjectsByLayerAndProperties(layer: LayerName, properties: { [key: string]: any }): Phaser.Types.Tilemaps.TiledObject[] {
+	private filterObjectsByLayerAndProperties(layer: LayerName, properties: { [key: string]: any }): Phaser.Types.Tilemaps.TiledObject[] {
 		const objects = this.tilemap.filterObjects(layer, (obj) => {
 			const objectProperties = this.getPropertiesAsObject(obj as unknown as Phaser.Types.Tilemaps.TiledObject);
 			if (!objectProperties) {
@@ -671,7 +663,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		return objects;
 	}
 
-	private getObjectByLayerAndName(layer: LayerName, name: string): Phaser.Types.Tilemaps.TiledObject {
+	private findObjectByLayerAndName(layer: LayerName, name: string): Phaser.Types.Tilemaps.TiledObject {
 		const object = this.tilemap.findObject(layer, (obj) => {
 			return obj.name === name;
 		});
@@ -681,7 +673,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		return object;
 	}
 
-	private getObjectsByLayerAndName(layer: LayerName, name: string): Phaser.Types.Tilemaps.TiledObject[] {
+	private filterObjectsByLayerAndName(layer: LayerName, name: string): Phaser.Types.Tilemaps.TiledObject[] {
 		const objects = this.tilemap.filterObjects(layer, (obj) => {
 			return obj.name === name;
 		});

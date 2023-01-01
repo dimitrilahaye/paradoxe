@@ -165,7 +165,7 @@ export default abstract class StartScreen extends Phaser.Scene {
 	}
 
 	private initContinueGame() {
-		const continueGame = this.getObjectByLayerAndName(LayerName.OPTIONS, 'continue');
+		const continueGame = this.findObjectByLayerAndName(LayerName.OPTIONS, 'continue');
 		if (continueGame) {
 			this.continueGameCoordinates = {
 				x: continueGame.x!,
@@ -176,7 +176,7 @@ export default abstract class StartScreen extends Phaser.Scene {
 	}
 
 	private initStartNewGame() {
-		const startNewGame = this.getObjectByLayerAndName(LayerName.OPTIONS, 'start');
+		const startNewGame = this.findObjectByLayerAndName(LayerName.OPTIONS, 'start');
 		if (startNewGame) {
 			this.startNewGameCoordinates = {
 				x: startNewGame.x!,
@@ -187,7 +187,7 @@ export default abstract class StartScreen extends Phaser.Scene {
 	}
 
 	private buildWhiteSwitchers() {
-		const objects = this.getObjectsByLayerAndName(LayerName.OPTIONS, 'bool-white');
+		const objects = this.filterObjectsByLayerAndName(LayerName.OPTIONS, 'bool-white');
 		if (objects.length > 0) {
 			for (const object of objects) {
 				const properties = this.getPropertiesAsObject(object);
@@ -397,7 +397,7 @@ export default abstract class StartScreen extends Phaser.Scene {
 		}
 	}
 
-	private getObjectByLayerAndName(layer: LayerName, name: string): Phaser.Types.Tilemaps.TiledObject {
+	private findObjectByLayerAndName(layer: LayerName, name: string): Phaser.Types.Tilemaps.TiledObject {
 		const object = this.tilemap.findObject(layer, (obj) => {
 			return obj.name === name;
 		});
@@ -407,7 +407,7 @@ export default abstract class StartScreen extends Phaser.Scene {
 		return object;
 	}
 
-	private getObjectsByLayerAndName(layer: LayerName, name: string): Phaser.Types.Tilemaps.TiledObject[] {
+	private filterObjectsByLayerAndName(layer: LayerName, name: string): Phaser.Types.Tilemaps.TiledObject[] {
 		const objects = this.tilemap.filterObjects(layer, (obj) => {
 			return obj.name === name;
 		});
