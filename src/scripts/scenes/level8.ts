@@ -29,7 +29,7 @@ export default class Level8 extends BaseLevel {
 	
 	update() {
 		super.update();
-		if (this.intersect(this.corpse, this.player) && !this.allowsTutorials && !this.endPlayed) {
+		if (this.intersectObjects(this.corpse, this.player) && !this.allowsTutorials && !this.endPlayed) {
 			this.endPlayed = true;
 			alert(this.translate.get(SceneKey.Level8, 1));
 		}

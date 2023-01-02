@@ -1,19 +1,20 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Coordinates, Direction } from '../types';
+import { Coordinates, PlayerDirection } from '../types';
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
+	public enterActivate: boolean;
+	public direction: PlayerDirection;
+
 	private bullets: Phaser.Physics.Arcade.Group;
 	private left: Phaser.Input.Keyboard.Key;
 	private right: Phaser.Input.Keyboard.Key;
 	private enter: Phaser.Input.Keyboard.Key;
 	private shot: Phaser.Input.Keyboard.Key;
-
 	private isMovable = true;
 	private goLeft: boolean;
 	private goRight: boolean;
 	private isShooting: boolean;
-	
-	private speedX = 180;
+	public speedX = 180;
 	private nextFire = 0;
 	private fireRate = 500;
 	private nextWalkSound = 0;
@@ -21,56 +22,40 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 	private nextActivability = 0;
 	private activabilityRate = 500;
 	private hasFx = true;
-	
-	public enterActivate: boolean;
-	public direction: Direction;
 	private isDeadEventEmitted = false;
-	isDead = false;
+	private isDead = false;
+	private isClimbing = false;
+	private currentStairsClimbing: Phaser.Math.Vector2[];
+	private currentstairsClimbingIndex = 0;
+	private stairs: Phaser.Types.Tilemaps.TiledObject[];
+	private stairsGroup: Phaser.Physics.Arcade.StaticGroup;
 
-	constructor(scene: Phaser.Scene, x: number, y: number) {
+	constructor(scene: Phaser.Scene, x: number, y: number, stairs?: Phaser.Types.Tilemaps.TiledObject[]) {
 		super(scene, x, y, 'player', 'idle-1');
+		this.stairsGroup = this.scene.physics.add.staticGroup();
+		this.stairs = stairs ?? [];
+		this.hasFx = this.scene.store.get('fx') ?? true;
 		scene.add.existing(this);
 		this.scene.physics.world.enable(this);
 		this.setCollideWorldBounds(true);
-		this.hasFx = this.scene.store.get('fx') ?? true;
 	}
 
 	create() {
 		this.initCharacs();
-
 		this.initKeyboardInputs();
+		this.initAnimations();
+		this.initBulletsGroups();
+		this.initStairs();
 
 		this.listenToSpatialTeleporterEvents();
-
 		this.listenToDoubleTimeTeleporterEvents();
-
 		this.listenToSimpleTimeTeleporterEvents();
-		
-		this.initAnimations();
-		
-		this.initBulletsGroups();
-
+		this.listenToPastPlayerEvents();
 		this.listenToStoreEvents();
-
-		this.scene.events.on('PastPlayer::shotBullet', (ball: Phaser.Physics.Arcade.Sprite, direction: Direction) => {
-			this.scene.physics.add.collider(this, ball, () => {
-				ball.destroy();
-				if (!this.isDead) {
-					this.isMovable = false;
-					this.flipX = direction !== 'right';
-					this.isDead = true;
-					this.body.enable = false;
-					if (this.hasFx) {
-						this.scene.sound.play('death');
-					}
-					this.anims.play('death', true);
-					this.setVelocity(0);
-				}
-			}, undefined, this);
-		}, this);
 	}
 
 	update() {
+		this.checkForStairsOverlapOut();
 		this.on('animationcomplete', () => {
 			if (this.isDead && !this.isDeadEventEmitted) {
 				this.anims.stop();
@@ -89,6 +74,77 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
 	resume() {
 		this.isMovable = true;
+	}
+
+	private listenToPastPlayerEvents() {
+		this.scene.events.on('PastPlayer::shotBullet', (ball: Phaser.Physics.Arcade.Sprite, direction: PlayerDirection) => {
+			this.scene.physics.add.collider(this, ball, () => {
+				ball.destroy();
+				if (!this.isDead) {
+					this.isMovable = false;
+					this.flipX = direction !== 'right';
+					this.isDead = true;
+					this.body.enable = false;
+					if (this.hasFx) {
+						this.scene.sound.play('death');
+					}
+					this.anims.play('death', true);
+					this.setVelocity(0);
+				}
+			}, undefined, this);
+		}, this);
+	}
+
+	private checkForStairsOverlapOut() {
+		this.stairsGroup.children.entries.forEach(() => {
+			if (this.isClimbing) {
+				if (this.body.touching.none) {
+					this.isClimbing = false;
+					this.currentStairsClimbing = [];
+					this.currentstairsClimbingIndex = 0;
+				}
+			}
+		});
+	}
+
+	private initStairs() {
+		this.scene.physics.add.overlap(this, this.stairsGroup, this.overlapStairs, undefined, this);
+
+		if (this.stairs!.length > 0) {
+			for (const stair of this.stairs!) {
+				const start = { x: stair!.x, y: stair!.y };
+				const poly = stair!.polyline![1];
+				const end = { x: stair!.x! + poly.x!, y: stair!.y! + poly.y! };
+				const curve = new Phaser.Curves.Line(
+					new Phaser.Math.Vector2(start.x, start.y),
+					new Phaser.Math.Vector2(end.x, end.y)
+				);
+
+				// utils
+				// if (this.scene.game.config.physics.arcade?.debug) {
+				// 	const graphics = this.scene.add.graphics();
+				// 	graphics.lineStyle(1, 0xffffff, 1);
+				// 	curve.draw(graphics);
+				// }
+
+				const oneStair = this.stairsGroup.create(curve.getBounds().x, curve.getBounds().y, undefined, undefined, false);
+				oneStair.setScale(curve.getBounds().width / 32, curve.getBounds().height / 32);
+				oneStair.setOrigin(0);
+				oneStair.setDataEnabled();
+				oneStair.setData('curve', curve);
+				oneStair.body.width = curve.getBounds().width;
+				oneStair.body.height = curve.getBounds().height;
+				this.stairsGroup.refresh();
+			}
+		}
+	}
+
+	private overlapStairs(_, stair): void {
+		if (!this.isClimbing) {
+			const curve = stair.getData('curve');
+			this.currentStairsClimbing = curve.getSpacedPoints(curve.getLength() / 7);
+			this.isClimbing = true;
+		}
 	}
 
 	private listenToStoreEvents() {
@@ -244,6 +300,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 		);
 	}
 
+	protected intersectObjects(obj1: Phaser.GameObjects.Sprite, obj2: Phaser.Geom.Line): boolean {
+		const LineToRectangle = Phaser.Geom.Intersects.LineToRectangle;
+
+		return LineToRectangle(obj2, obj1.getBounds());
+	}
+
 	private movePlayer() {
 		if (this.isMovable) {
 			if (this.left.isDown) {
@@ -259,27 +321,27 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 		
 			if (!this.isShooting) {
 				if (this.goLeft || this.goRight) {
-					this.anims.play('walk', true);
-					if (this.scene.time.now > this.nextWalkSound) {
-						this.nextWalkSound = this.scene.time.now + this.walkSoundRate;
-						if (this.hasFx) {
-							this.scene.sound.play('walk');
-						}
-					}
+					this.playWalk();
 				} else {
 					if (!this.isDead) {
-						this.anims.stop();
-						this.setTexture('player', 'idle-1');
+						this.playIdle();
 					}
 				}
 				if (this.goLeft) {
-					this.flipX = true;
-					this.setVelocityX(-this.speedX);
-					this.direction = 'left';
+					this.flipLeft();
+					if (this.isClimbing) {
+						this.climbOnLeftDirection();
+					} else {
+						this.setVelocityX(-this.speedX);
+					}
+
 				} else if (this.goRight) {
-					this.flipX = false;
-					this.setVelocityX(this.speedX);
-					this.direction = 'right';
+					this.flipRight();
+					if (this.isClimbing) {
+						this.climbOnRightDirection();
+					} else {
+						this.setVelocityX(this.speedX);
+					}
 				} else {
 					this.setVelocityX(0);
 				}
@@ -288,9 +350,51 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 			}
 		} else {
 			if (!this.isDead) {
-				this.setVelocityX(0);
-				this.anims.stop();
-				this.setTexture('player', 'idle-1');
+				this.playIdle();
+			}
+		}
+	}
+
+	private climbOnRightDirection() {
+		this.setVelocityX(this.speedX / 2);
+		if (this.currentstairsClimbingIndex + 1 <= this.currentStairsClimbing?.length) {
+			const currentPosition = this.currentStairsClimbing[this.currentstairsClimbingIndex];
+			this.currentstairsClimbingIndex++;
+			this.setPosition(currentPosition.x, currentPosition.y);
+		}
+	}
+
+	private climbOnLeftDirection() {
+		this.setVelocityX(-this.speedX / 2);
+		if (this.currentstairsClimbingIndex + 1 <= this.currentStairsClimbing?.length) {
+			const currentPosition = this.currentStairsClimbing[this.currentStairsClimbing.length - 1 - this.currentstairsClimbingIndex];
+			this.currentstairsClimbingIndex++;
+			this.setPosition(currentPosition.x, currentPosition.y);
+		}
+	}
+
+	private flipRight() {
+		this.flipX = false;
+		this.direction = 'right';
+	}
+
+	private flipLeft() {
+		this.flipX = true;
+		this.direction = 'left';
+	}
+
+	private playIdle() {
+		this.setVelocityX(0);
+		this.anims.stop();
+		this.setTexture('player', 'idle-1');
+	}
+
+	private playWalk() {
+		this.anims.play('walk', true);
+		if (this.scene.time.now > this.nextWalkSound) {
+			this.nextWalkSound = this.scene.time.now + this.walkSoundRate;
+			if (this.hasFx) {
+				this.scene.sound.play('walk');
 			}
 		}
 	}

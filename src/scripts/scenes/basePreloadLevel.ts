@@ -76,6 +76,7 @@ export default abstract class BasePreloadLevel extends Phaser.Scene {
 			key: 'rexUI',
 			sceneKey: 'rexUI'
 		});
+
 		this.load.image('nextPage', 'assets/img/ui/arrow-down-left.png');
 		this.load.image('dialogEnd', 'assets/img/ui/cancel.png');
  

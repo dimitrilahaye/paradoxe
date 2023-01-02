@@ -1,4 +1,4 @@
-import { Direction } from '../types';
+import { PlayerDirection } from '../types';
 import Player from './player';
 
 export default class PastPlayer extends Phaser.Physics.Arcade.Sprite {
@@ -8,7 +8,7 @@ export default class PastPlayer extends Phaser.Physics.Arcade.Sprite {
 	private nextFire = 0;
 	private fireRate = 500;
 	private hasFx = true;
-	private direction: Direction;
+	private direction: PlayerDirection;
 	private turnRight = true;
 	private turnLeft = false;
 	private canDetectPlayer = false;

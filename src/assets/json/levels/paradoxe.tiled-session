@@ -169,11 +169,11 @@
                 19,
                 17
             ],
-            "scale": 0.5,
-            "selectedLayer": 11,
+            "scale": 1.5,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 363,
-                "y": 367
+                "x": 216.66666666666666,
+                "y": 412.3333333333333
             }
         },
         "game-screen.tmx#tileset": {
@@ -349,7 +349,7 @@
         "level4.tmx"
     ],
     "project": "paradoxe.tiled-project",
-    "property.type": "string",
+    "property.type": "Direction",
     "recentFiles": [
         "level8.tmx",
         "level7.tmx",

@@ -5,6 +5,8 @@ export enum ObjectName {
     START = 'start',
     END = 'end',
     DIALOG = 'dialog',
+    STAIRS_DETECTION = 'stairs_detection',
+    STAIRS_LINE = 'stairs_line',
     DOOR_TP_GREEN_1 = 'door_tp_green_1',
     DOOR_TP_GREEN_2 = 'door_tp_green_2',
     DOOR_TP_RED_1 = 'door_tp_red_1',
@@ -28,6 +30,7 @@ export enum LayerName {
     TELEPORTERS_SPATIAL = 'teleporters_spatial',
     PLAYER = 'player',
     DOORS = 'doors',
+    STAIRS_DETECTION = 'stairs_detection',
     TELEPORTERS_MULTI = 'teleporters_multi',
     SWITCHERS_MULTI = 'switchers_multi',
     TELEPORTERS_SIMPLE = 'teleporters_simple',
@@ -45,5 +48,6 @@ export enum LayerName {
     TP = 'tp',
     GROUND = 'ground',
     BACKGROUND = 'background',
+    STAIRS = 'stairs',
     TITLE = 'title',
 }

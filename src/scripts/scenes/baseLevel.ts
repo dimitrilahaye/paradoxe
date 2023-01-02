@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { GameObjects } from 'phaser';
 import { LayerName, ObjectName } from '../objects';
 import DoorEntrance from '../objects/doorEntrance';
 import DoorExit from '../objects/doorExit';
@@ -15,6 +14,7 @@ import RedSpatialTeleporter from '../objects/redSpatialTeleporter';
 import SimpleSwitcher from '../objects/simpleSwitcher';
 import SimpleTimeTeleporter from '../objects/simpleTimeTeleporter';
 import SpatialTeleporter from '../objects/spatialTeleporter';
+import { Coordinates } from '../types';
 import MyTextBox from '../ui/myTextBox';
 import TopUiContainer from '../ui/topUiContainer';
 import { SceneKey } from './index';
@@ -23,6 +23,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	protected music: Phaser.Sound.BaseSound;
 	protected tilemap: Phaser.Tilemaps.Tilemap;
 	protected tileset: Phaser.Tilemaps.Tileset;
+	protected stairsLayer: Phaser.Tilemaps.TilemapLayer;
 	protected bckgLayer: Phaser.Tilemaps.TilemapLayer;
 	protected groundLayer: Phaser.Tilemaps.TilemapLayer;
 	protected wallLayer: Phaser.Tilemaps.TilemapLayer;
@@ -104,7 +105,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	update() {
 		this.player.update();
 		this.iterateOnGroup(this.pastPlayersGroup, (pastPlayer: PastPlayer) => pastPlayer.update());
-		
+
 		this.checkForTutorials();
 		this.checkForLevelEnd();
 	}
@@ -192,15 +193,19 @@ export default abstract class BaseLevel extends Phaser.Scene {
 
 	// generic
 	protected initPlayer() {
+		const stairs = this.tilemap.filterObjects(LayerName.STAIRS_DETECTION, obj => obj.name === ObjectName.STAIRS_LINE);
 		this.start = this.tilemap.findObject(LayerName.DOORS, obj => obj.name === ObjectName.START);
 		this.end = this.tilemap.findObject(LayerName.DOORS, obj => obj.name === ObjectName.END);
-		this.player = new Player(this, this.start?.x || 0, this.start?.y || 0);
+		this.player = new Player(this, this.start?.x || 0, this.start?.y || 0, stairs);
 		this.player.create();
 		
 		this.cameras.main.startFollow(this.player);
 		this.cameras.main.setLerp(0.1, 0.1);
 
 		this.physics.add.collider(this.player, [this.groundLayer, this.platformsLayer]);
+		if (this.stairsLayer) {
+			this.physics.add.collider(this.player, this.stairsLayer);
+		}
 	}
 	
 	// generic levels factories
@@ -418,7 +423,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	// generic levels factories
 	protected checkForSpatialTeleportersActivation() {
 		this.iterateOnGroup(this.spatialTeleportersGroup, (teleporter: SpatialTeleporter) => {
-			if (this.intersect(this.player, teleporter)) {
+			if (this.intersectObjects(this.player, teleporter)) {
 				if (this.player.enterActivate) {
 					teleporter.activate();
 				}
@@ -429,7 +434,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	// generic levels factories
 	protected checkForSimpleSwitcherActivation() {
 		this.iterateOnGroup(this.simpleSwitcherGroup, (switcher: SimpleSwitcher) => {
-			if (this.intersect(this.player, switcher)) {
+			if (this.intersectObjects(this.player, switcher)) {
 				if (this.player.enterActivate) {
 					switcher.activate();
 				}
@@ -440,7 +445,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	// generic levels factories
 	protected checkForDoubleSwitcherActivation() {
 		this.iterateOnGroup(this.doubleSwitchersGroup, (switcher: SimpleSwitcher) => {
-			if (this.intersect(this.player, switcher)) {
+			if (this.intersectObjects(this.player, switcher)) {
 				if (this.player.enterActivate) {
 					switcher.activate();
 				}
@@ -451,7 +456,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	// generic levels factories
 	protected checkForMultiSwitchersActivation() {
 		this.iterateOnGroup(this.multiSwitchersGroup, (switcher: MultiSwitcher) => {
-			if (this.intersect(this.player, switcher)) {
+			if (this.intersectObjects(this.player, switcher)) {
 				if (this.player.enterActivate) {
 					switcher.activate();
 				}
@@ -601,7 +606,11 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		this.platformsLayer = this.tilemap.createLayer(LayerName.PLATFORMS, this.tileset, 0, 0);
 		this.ceilingLayer = this.tilemap.createLayer(LayerName.CEILING, this.tileset, 0, 0);
 		this.lightsLayer = this.tilemap.createLayer(LayerName.LIGHTS, this.tileset, 0, 0);
+		this.stairsLayer = this.tilemap.createLayer(LayerName.STAIRS, this.tileset, 0, 0);
 
+		if (this.stairsLayer) {
+			this.stairsLayer.setCollisionByProperty({ collides: true });
+		}
 		this.groundLayer.setCollisionByProperty({ collides: true });
 		this.platformsLayer.setCollisionByProperty({ collides: true });
 
@@ -635,7 +644,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	}
 
 	// utils
-	protected intersect(obj1: Phaser.GameObjects.Sprite, obj2: Phaser.GameObjects.Sprite): boolean {
+	protected intersectObjects(obj1: Phaser.GameObjects.Sprite, obj2: Phaser.GameObjects.Sprite): boolean {
 		const RectangleToRectangle = Phaser.Geom.Intersects.RectangleToRectangle;
 
 		return RectangleToRectangle(obj1.getBounds(), obj2.getBounds());
@@ -737,6 +746,15 @@ export default abstract class BaseLevel extends Phaser.Scene {
 				[prop.name]: prop.value,
 			};
 		}, {});
+	}
+
+	// utils
+	private playerIsNearCoordinates(coordinates: Coordinates, offset = 10) {
+		const dx = coordinates.x - this.player.x;
+		const dy = coordinates.y - this.player.y;
+		const distance = Math.sqrt(dx * dx + dy * dy);
+
+		return Math.abs(distance) < offset;
 	}
 
 	// generic
