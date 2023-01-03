@@ -1,7 +1,6 @@
 import BaseLevel from './baseLevel';
 import { SceneKey } from './index';
 
-// todo: add dialogs
 export default class Level6 extends BaseLevel {
 	constructor() {
 		super(SceneKey.Level6, SceneKey.PreloadLevel7, 'level6');

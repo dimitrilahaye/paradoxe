@@ -9,13 +9,13 @@ To cross each room of this place, you will have to face travels in time and spac
 # TODO
 
 ## MPG (Minimum Playable Game)
-- [ ] **WIP:** :construction: TODOs
 - [ ] :bug: Bugs fixes
   - [ ] Translations not working on start screen at the opening of the game
   - [ ] Music does not quite if clicks too fast
-- [ ] Add tutorial room
+- [ ] **WIP:** :construction: Add tutorial room
 - [ ] "Tutorial option" becomes "Dialogs option"
 - [ ] Re-do levels
+- [X] TODOs
 - [ ] Add game in itchi.io
 - [X] scenes creation
 - [X] anim player

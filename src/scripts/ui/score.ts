@@ -1,6 +1,3 @@
-// todo ActivableButton abstract class
-// todo Store:: events instead of switchers...
-
 export default class Score {
 	private text: Phaser.GameObjects.Text;
 	private score: number;

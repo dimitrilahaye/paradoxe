@@ -1,6 +1,3 @@
-// todo ActivableButton abstract class
-// todo Store:: events instead of switchers...
-
 export default class FxButton extends Phaser.Physics.Arcade.Sprite {
 	private nextActivability = 0;
 	private activabilityRate = 500;
