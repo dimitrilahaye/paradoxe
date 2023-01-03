@@ -13,6 +13,9 @@ To cross each room of this place, you will have to face travels in time and spac
 - [ ] :bug: Bugs fixes
   - [ ] Translations not working on start screen at the opening of the game
   - [ ] Music does not quite if clicks too fast
+- [ ] Add tutorial room
+- [ ] "Tutorial option" becomes "Dialogs option"
+- [ ] Re-do levels
 - [ ] Add game in itchi.io
 - [X] scenes creation
 - [X] anim player
@@ -61,6 +64,8 @@ To cross each room of this place, you will have to face travels in time and spac
 
 ## Future steps
 - [ ] bigger levels + minimap!!!
+- [ ] level selection
+- [ ] success
 - [ ] sprites titles level
 - [ ] time gardians (wtf???)
 - [ ] tps with arrows

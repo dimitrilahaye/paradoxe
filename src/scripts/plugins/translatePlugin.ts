@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-this-alias */
-
-import { SceneKey } from '../scenes';
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import * as scenes from '../scenes';
+
 export type Translations = {
 	[scene: string]: {
 		'fr': string[],
@@ -15,10 +14,10 @@ export default class TranslatePlugin extends Phaser.Plugins.ScenePlugin {
 	private translations: Translations;
 
 	constructor (scene: Phaser.Scene, pluginManager: Phaser.Plugins.PluginManager) {
-		super(scene, pluginManager, 'store');
+		super(scene, pluginManager, 'translate');
 	}
 	
-	get(key: SceneKey, index: number): string {
+	get(key: scenes.SceneKey, index: number): string {
 		if (!this.translations) {
 			this.translations = this.scene.cache.json.get('translations');
 		}

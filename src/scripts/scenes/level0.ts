@@ -16,7 +16,7 @@ export default class Level0 extends BaseLevel {
 		this.initPlayer();
 	}
 	
-	update() {
-		super.update();
+	update(time: number, delta: number) {
+		super.update(time, delta);
 	}
 }

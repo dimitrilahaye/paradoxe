@@ -14,7 +14,6 @@ import RedSpatialTeleporter from '../objects/redSpatialTeleporter';
 import SimpleSwitcher from '../objects/simpleSwitcher';
 import SimpleTimeTeleporter from '../objects/simpleTimeTeleporter';
 import SpatialTeleporter from '../objects/spatialTeleporter';
-import { Coordinates } from '../types';
 import MyTextBox from '../ui/myTextBox';
 import TopUiContainer from '../ui/topUiContainer';
 import { SceneKey } from './index';
@@ -102,9 +101,9 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		this.listenToMusicButtonEvents();
 	}
 
-	update() {
+	update(time: number, delta: number) {
 		this.player.update();
-		this.iterateOnGroup(this.pastPlayersGroup, (pastPlayer: PastPlayer) => pastPlayer.update());
+		this.pastPlayersGroup.preUpdate(time, delta);
 
 		this.checkForTutorials();
 		this.checkForLevelEnd();
@@ -210,7 +209,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	
 	// generic levels factories
 	protected createSimpleTimeTeleporter() {
-		const object = this.findObjectByLayerAndProperties(LayerName.TELEPORTERS_SIMPLE, { num: 0 });
+		const object = this.utils.findObjectByLayerAndProperties(LayerName.TELEPORTERS_SIMPLE, { num: 0 });
 		if (object) {
 			const simpleTimeTeleporter = new SimpleTimeTeleporter(this, object?.x || 0, object?.y || 0);
 			simpleTimeTeleporter.setData('num', 0);
@@ -220,7 +219,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	
 	// generic levels factories
 	protected createSimpleSwitcher() {
-		const object = this.findObjectByLayerAndProperties(LayerName.SWITCHERS_SIMPLE, { num: 0 });
+		const object = this.utils.findObjectByLayerAndProperties(LayerName.SWITCHERS_SIMPLE, { num: 0 });
 		if (object) {
 			const simpleSwitcher = new SimpleSwitcher(this, object?.x || 0, object?.y || 0);
 			simpleSwitcher.setData('num', 0);
@@ -230,8 +229,8 @@ export default abstract class BaseLevel extends Phaser.Scene {
 
 	// generic levels factories
 	protected createDoubleTimeTeleporters() {
-		const doubleTimeTeleporter1Position = this.findObjectByLayerAndProperties(LayerName.TELEPORTERS_DOUBLE, { num: 0 });
-		const doubleTimeTeleporter2Position = this.findObjectByLayerAndProperties(LayerName.TELEPORTERS_DOUBLE, { num: 1 });
+		const doubleTimeTeleporter1Position = this.utils.findObjectByLayerAndProperties(LayerName.TELEPORTERS_DOUBLE, { num: 0 });
+		const doubleTimeTeleporter2Position = this.utils.findObjectByLayerAndProperties(LayerName.TELEPORTERS_DOUBLE, { num: 1 });
 		if (doubleTimeTeleporter1Position && doubleTimeTeleporter2Position) {
 			const doubleTimeTeleporter1 = new DoubleTimeTeleporter(this, doubleTimeTeleporter1Position?.x || 0, doubleTimeTeleporter1Position?.y || 0);
 			const doubleTimeTeleporter2 = new DoubleTimeTeleporter(this, doubleTimeTeleporter2Position?.x || 0, doubleTimeTeleporter2Position?.y || 0);
@@ -246,7 +245,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 
 	// generic levels factories
 	protected createDoubleSwitcher() {
-		const object = this.findObjectByLayerAndProperties(LayerName.SWITCHERS_DOUBLE, { num: 0 });
+		const object = this.utils.findObjectByLayerAndProperties(LayerName.SWITCHERS_DOUBLE, { num: 0 });
 		if (object) {
 			const doubleSwitcher = new DoubleSwitcher(this, object?.x || 0, object?.y || 0);
 			this.doubleSwitchersGroup.add(doubleSwitcher);
@@ -255,9 +254,9 @@ export default abstract class BaseLevel extends Phaser.Scene {
 
 	// generic levels factories
 	protected createMultiTimeTeleporterByNum(num: number): void {
-		const object = this.findObjectByLayerAndProperties(LayerName.TELEPORTERS_MULTI, { num });
+		const object = this.utils.findObjectByLayerAndProperties(LayerName.TELEPORTERS_MULTI, { num });
 		if (object) {
-			const objectProperties = this.getPropertiesAsObject(object);
+			const objectProperties = this.utils.getPropertiesAsObject(object);
 			const multiTimeTeleporter = new MultiTimeTeleporter(this, object?.x || 0, object?.y || 0, num);
 			multiTimeTeleporter.setData('num', num);
 			multiTimeTeleporter.setData('close', objectProperties.close);
@@ -267,7 +266,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 
 	// generic levels factories
 	protected createMultiSwitcherByNum(num: number) {
-		const object = this.findObjectByLayerAndProperties(LayerName.SWITCHERS_MULTI, { num });
+		const object = this.utils.findObjectByLayerAndProperties(LayerName.SWITCHERS_MULTI, { num });
 		if (object) {
 			const multiSwitcher = new MultiSwitcher(this, object?.x || 0, object?.y || 0, num);
 			this.multiSwitchersGroup.add(multiSwitcher);
@@ -276,7 +275,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 
 	// generic levels factories
 	protected createSpatialTeleportersByColorAndNum(color: 'red' | 'green', num: number) {
-		const object = this.findObjectByLayerAndProperties(LayerName.TELEPORTERS_SPATIAL, { color, num });
+		const object = this.utils.findObjectByLayerAndProperties(LayerName.TELEPORTERS_SPATIAL, { color, num });
 		if (object) {
 			if (color === 'green') {
 				const spatialTeleporter = new GreenSpatialTeleporter(this, object?.x || 0, object?.y || 0, num);
@@ -305,7 +304,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 
 	// generic levels factories
 	protected closeMultiTimeTeleporters() {
-		this.iterateOnGroup(this.multiTimeTeleportersGroup, (teleporter: MultiTimeTeleporter) => {
+		this.utils.iterateOnGroup(this.multiTimeTeleportersGroup, (teleporter: MultiTimeTeleporter) => {
 			if (teleporter.getData('close')) {
 				teleporter.setToClose();
 			}
@@ -314,10 +313,10 @@ export default abstract class BaseLevel extends Phaser.Scene {
 
 	// generic levels factories
 	protected initSimpleTimeTeleporterObjectsColliders() {
-		const simpleTimeTeleporter = this.findObjectOnGroupByData<SimpleTimeTeleporter>(this.simpleTimeTeleporterGroup, { num: 0 });
+		const simpleTimeTeleporter = this.utils.findObjectOnGroupByData<SimpleTimeTeleporter>(this.simpleTimeTeleporterGroup, { num: 0 });
 		if (simpleTimeTeleporter) {
 			const playerCollider = this.physics.add.collider(this.player, this.simpleTimeTeleporterGroup, (_, teleporter) => {
-				this.shakeOnTpCollision();
+				this.utils.shakeOnTpCollision();
 				const t = teleporter as SimpleTimeTeleporter;
 				t.activate();
 				this.events.emit('BaseLevel::firstTp');
@@ -348,10 +347,10 @@ export default abstract class BaseLevel extends Phaser.Scene {
 
 	// generic levels factories
 	protected initMultiTimeTeleportersObjectsCollidersByNum(num: number) {
-		const multiTimeTeleporter = this.findObjectOnGroupByData<MultiTimeTeleporter>(this.multiTimeTeleportersGroup, { num });
+		const multiTimeTeleporter = this.utils.findObjectOnGroupByData<MultiTimeTeleporter>(this.multiTimeTeleportersGroup, { num });
 		if (multiTimeTeleporter) {
 			const playerCollider = this.physics.add.collider(this.player, multiTimeTeleporter, (p, tp) => {
-				this.shakeOnTpCollision();
+				this.utils.shakeOnTpCollision();
 
 				(tp as MultiTimeTeleporter).activate();
 
@@ -379,10 +378,10 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	protected initMultiTimeTeleportersOpposites(): void {
 		const length = this.multiTimeTeleportersGroup.getLength();
 		const indexes = Array.from(Array(length).keys());
-		this.iterateOnGroup(this.multiTimeTeleportersGroup, (teleporter: MultiTimeTeleporter) => {
+		this.utils.iterateOnGroup(this.multiTimeTeleportersGroup, (teleporter: MultiTimeTeleporter) => {
 			indexes.forEach((num) => {
 				if (num !== teleporter.num) {
-					const opposite = this.findObjectOnGroupByData<MultiTimeTeleporter>(this.multiTimeTeleportersGroup, { num });
+					const opposite = this.utils.findObjectOnGroupByData<MultiTimeTeleporter>(this.multiTimeTeleportersGroup, { num });
 					if (opposite) {
 						teleporter.addOpposites(opposite);
 					} else {
@@ -395,9 +394,9 @@ export default abstract class BaseLevel extends Phaser.Scene {
 
 	// generic levels factories
 	protected initDoubleTimeTeleportersObjectsColliders() {
-		this.iterateOnGroup(this.doubleTimeTeleportersGroup, (teleporter: DoubleTimeTeleporter) => {
+		this.utils.iterateOnGroup(this.doubleTimeTeleportersGroup, (teleporter: DoubleTimeTeleporter) => {
 			const playerCollider = this.physics.add.collider(this.player, teleporter, () => {
-				this.shakeOnTpCollision();
+				this.utils.shakeOnTpCollision();
 
 				teleporter.activate();
 
@@ -422,8 +421,8 @@ export default abstract class BaseLevel extends Phaser.Scene {
 
 	// generic levels factories
 	protected checkForSpatialTeleportersActivation() {
-		this.iterateOnGroup(this.spatialTeleportersGroup, (teleporter: SpatialTeleporter) => {
-			if (this.intersectObjects(this.player, teleporter)) {
+		this.utils.iterateOnGroup(this.spatialTeleportersGroup, (teleporter: SpatialTeleporter) => {
+			if (this.utils.intersectObjects(this.player, teleporter)) {
 				if (this.player.enterActivate) {
 					teleporter.activate();
 				}
@@ -433,8 +432,8 @@ export default abstract class BaseLevel extends Phaser.Scene {
 
 	// generic levels factories
 	protected checkForSimpleSwitcherActivation() {
-		this.iterateOnGroup(this.simpleSwitcherGroup, (switcher: SimpleSwitcher) => {
-			if (this.intersectObjects(this.player, switcher)) {
+		this.utils.iterateOnGroup(this.simpleSwitcherGroup, (switcher: SimpleSwitcher) => {
+			if (this.utils.intersectObjects(this.player, switcher)) {
 				if (this.player.enterActivate) {
 					switcher.activate();
 				}
@@ -444,8 +443,8 @@ export default abstract class BaseLevel extends Phaser.Scene {
 
 	// generic levels factories
 	protected checkForDoubleSwitcherActivation() {
-		this.iterateOnGroup(this.doubleSwitchersGroup, (switcher: SimpleSwitcher) => {
-			if (this.intersectObjects(this.player, switcher)) {
+		this.utils.iterateOnGroup(this.doubleSwitchersGroup, (switcher: SimpleSwitcher) => {
+			if (this.utils.intersectObjects(this.player, switcher)) {
 				if (this.player.enterActivate) {
 					switcher.activate();
 				}
@@ -455,8 +454,8 @@ export default abstract class BaseLevel extends Phaser.Scene {
 
 	// generic levels factories
 	protected checkForMultiSwitchersActivation() {
-		this.iterateOnGroup(this.multiSwitchersGroup, (switcher: MultiSwitcher) => {
-			if (this.intersectObjects(this.player, switcher)) {
+		this.utils.iterateOnGroup(this.multiSwitchersGroup, (switcher: MultiSwitcher) => {
+			if (this.utils.intersectObjects(this.player, switcher)) {
 				if (this.player.enterActivate) {
 					switcher.activate();
 				}
@@ -494,7 +493,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		if (this.player.x > (this.end?.x || 0) - 10 && this.player.x < (this.end?.x || 0) + 10 &&
 			this.player.y > (this.end?.y || 0) - 10 && this.player.y < (this.end?.y || 0) + 10) {
 			if (this.player.enterActivate) {
-				const leftAlivePastPlayers = this.findObjectOnGroup(this.pastPlayersGroup, (pastPlayer) => !(pastPlayer as PastPlayer).isDead);
+				const leftAlivePastPlayers = this.utils.findObjectOnGroup(this.pastPlayersGroup, (pastPlayer) => !(pastPlayer as PastPlayer).isDead);
 				if (this.pastPlayersGroup?.getLength() > 0 && leftAlivePastPlayers) {
 					if (this.time.now > this.nextActivability) {
 						this.nextActivability = this.time.now + this.activabilityRate;
@@ -528,7 +527,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 			});
 		}, this);
 		this.events.on('PastPlayer::isDead', () => {
-			const leftAlivePastPlayers = this.findObjectOnGroup(this.pastPlayersGroup, (pastPlayer) => !(pastPlayer as PastPlayer).isDead);
+			const leftAlivePastPlayers = this.utils.findObjectOnGroup(this.pastPlayersGroup, (pastPlayer) => !(pastPlayer as PastPlayer).isDead);
 			if (!leftAlivePastPlayers) {
 				this.time.delayedCall(200, () => {
 					this.doorExit.open();
@@ -565,11 +564,6 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}, this);
 	}
 
-	// utils
-	private shakeOnTpCollision() {
-		this.cameras.main.shake(50, 0.01);
-	}
-
 	// generic
 	private initDoors() {
 		const doorStart = this.tilemap.findObject(LayerName.DOORS, obj => obj.name === ObjectName.DOOR_START);
@@ -591,6 +585,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	// generic levels
 	private initPastPlayers() {
 		this.pastPlayersGroup = this.add.group();
+		this.pastPlayersGroup.runChildUpdate = true;
 		this.physics.add.collider(this.pastPlayersGroup, [this.groundLayer, this.platformsLayer]);
 	}
 
@@ -616,58 +611,8 @@ export default abstract class BaseLevel extends Phaser.Scene {
 
 		this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, this.tilemap.heightInPixels);
 		this.physics.world.setBounds(0, 0, this.tilemap.widthInPixels, this.tilemap.heightInPixels);
-	}
 
-	// utils
-	private findObjectOnGroupByData<T>(group: Phaser.GameObjects.Group, data: { [key: string]: any }): T | undefined {
-		if (group?.getLength() > 0) {
-			return group.children.getArray().find((child) => {
-				return Object.keys(data).every((d) => child.getData(d) === data[d]);
-			}) as unknown as T;
-		}
-		throw new Error(`Object not found with data ${JSON.stringify(data)}`);
-	}
-
-	// utils
-	private iterateOnGroup(group: Phaser.GameObjects.Group, callback: (object, index?: number) => void) {
-		if (group?.getLength() > 0) {
-			group.children.iterate(callback);
-		}
-	}
-
-	// utils
-	private findObjectOnGroup(group: Phaser.GameObjects.Group, callback: (pastPlayer: Phaser.GameObjects.GameObject) => void) {
-		if (group?.getLength() > 0) {
-			return group.children.getArray().find(callback);
-		}
-		return false;
-	}
-
-	// utils
-	protected intersectObjects(obj1: Phaser.GameObjects.Sprite, obj2: Phaser.GameObjects.Sprite): boolean {
-		const RectangleToRectangle = Phaser.Geom.Intersects.RectangleToRectangle;
-
-		return RectangleToRectangle(obj1.getBounds(), obj2.getBounds());
-	}
-
-	// utils
-	private findObjectByLayerAndProperties(layer: LayerName, properties: { [key: string]: any }): Phaser.Types.Tilemaps.TiledObject {
-		const object = this.tilemap.findObject(layer, (obj) => {
-			const objectProperties = this.getPropertiesAsObject(obj as unknown as Phaser.Types.Tilemaps.TiledObject);
-			return Object.keys(properties).every((k) => objectProperties[k] === properties[k]);
-		});
-		if (!object) {
-			throw new Error(`Object with properties ${JSON.stringify(properties)} not found in layer ${layer}`);
-		}
-		return object;
-	}
-
-	// utils
-	private getMiddleSceneCoordinates(): { x: number, y: number } {
-		const x = this.cameras.main.worldView.x + this.cameras.main.width / 2;
-		const y = this.cameras.main.worldView.y + this.cameras.main.height / 2;
-
-		return { x, y };
+		this.utils.init(this.tilemap);
 	}
 
 	// generic
@@ -696,65 +641,6 @@ export default abstract class BaseLevel extends Phaser.Scene {
 				volume: 0.1,
 			});
 		}
-	}
-
-	// utils
-	private filterObjectsByLayerAndProperties(layer: LayerName, properties: { [key: string]: any }): Phaser.Types.Tilemaps.TiledObject[] {
-		const objects = this.tilemap.filterObjects(layer, (obj) => {
-			const objectProperties = this.getPropertiesAsObject(obj as unknown as Phaser.Types.Tilemaps.TiledObject);
-			if (!objectProperties) {
-				return false;
-			}
-			return Object.keys(properties).every((k) => objectProperties[k] === properties[k]);
-		});
-		if (!objects) {
-			throw new Error(`Objects with properties ${JSON.stringify(properties)} not found in layer ${layer}`);
-		}
-		return objects;
-	}
-
-	// utils
-	private findObjectByLayerAndName(layer: LayerName, name: string): Phaser.Types.Tilemaps.TiledObject {
-		const object = this.tilemap.findObject(layer, (obj) => {
-			return obj.name === name;
-		});
-		if (!object) {
-			throw new Error(`Object with name ${name} not found in layer ${layer}`);
-		}
-		return object;
-	}
-
-	// utils
-	private filterObjectsByLayerAndName(layer: LayerName, name: string): Phaser.Types.Tilemaps.TiledObject[] {
-		const objects = this.tilemap.filterObjects(layer, (obj) => {
-			return obj.name === name;
-		});
-		if (!objects) {
-			throw new Error(`Objects with name ${name} not found in layer ${layer}`);
-		}
-		return objects;
-	}
-
-	// utils
-	private getPropertiesAsObject(obj: Phaser.Types.Tilemaps.TiledObject) {
-		if (!obj.properties) {
-			return null;
-		}
-		return obj.properties.reduce((o, prop) => {
-			return {
-				...o,
-				[prop.name]: prop.value,
-			};
-		}, {});
-	}
-
-	// utils
-	private playerIsNearCoordinates(coordinates: Coordinates, offset = 10) {
-		const dx = coordinates.x - this.player.x;
-		const dy = coordinates.y - this.player.y;
-		const distance = Math.sqrt(dx * dx + dy * dy);
-
-		return Math.abs(distance) < offset;
 	}
 
 	// generic

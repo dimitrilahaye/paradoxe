@@ -42,8 +42,8 @@ export default class Level3 extends BaseLevel {
 		this.addDialog(0,this.translate.get(SceneKey.Level3, 2));
 	}
 
-	update() {
-		super.update();
+	update(time: number, delta: number) {
+		super.update(time, delta);
 
 		this.checkForSpatialTeleportersActivation();
 

@@ -16,12 +16,13 @@ import PreloadLevel7 from './scenes/preloadLevel7';
 import Level7 from './scenes/level7';
 import PreloadStartScreen from './scenes/preloadStartScreen';
 import StartScreen from './scenes/startScreen';
-import StorePlugin from './plugins/store';
-import TranslatePlugin from './plugins/translate';
 import PreloadLevel8 from './scenes/preloadLevel8';
 import Level8 from './scenes/level8';
 import PreloadLevel0 from './scenes/preloadLevel0';
 import Level0 from './scenes/level0';
+import UtilsPlugin from './plugins/utilsPlugin';
+import StorePlugin from './plugins/storePlugin';
+import TranslatePlugin from './plugins/translatePlugin';
 
 const DEFAULT_WIDTH = 600;
 const DEFAULT_HEIGHT = 480;
@@ -79,6 +80,10 @@ const config: Phaser.Types.Core.GameConfig = {
 			key: 'translate',
 			plugin: TranslatePlugin,
 			mapping: 'translate',
+		},{
+			key: 'utils',
+			plugin: UtilsPlugin,
+			mapping: 'utils',
 		}]
 	},
 };

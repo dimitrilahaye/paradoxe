@@ -165,7 +165,7 @@ export default abstract class StartScreen extends Phaser.Scene {
 	}
 
 	private initContinueGame() {
-		const continueGame = this.findObjectByLayerAndName(LayerName.OPTIONS, 'continue');
+		const continueGame = this.utils.findObjectByLayerAndName(LayerName.OPTIONS, 'continue');
 		if (continueGame) {
 			this.continueGameCoordinates = {
 				x: continueGame.x!,
@@ -176,7 +176,7 @@ export default abstract class StartScreen extends Phaser.Scene {
 	}
 
 	private initStartNewGame() {
-		const startNewGame = this.findObjectByLayerAndName(LayerName.OPTIONS, 'start');
+		const startNewGame = this.utils.findObjectByLayerAndName(LayerName.OPTIONS, 'start');
 		if (startNewGame) {
 			this.startNewGameCoordinates = {
 				x: startNewGame.x!,
@@ -187,10 +187,10 @@ export default abstract class StartScreen extends Phaser.Scene {
 	}
 
 	private buildWhiteSwitchers() {
-		const objects = this.filterObjectsByLayerAndName(LayerName.OPTIONS, 'bool-white');
+		const objects = this.utils.filterObjectsByLayerAndName(LayerName.OPTIONS, 'bool-white');
 		if (objects.length > 0) {
 			for (const object of objects) {
-				const properties = this.getPropertiesAsObject(object);
+				const properties = this.utils.getPropertiesAsObject(object);
 				switch (properties.name) {
 				case 'music':
 					this.musicSwitcherCoordinates = {
@@ -233,7 +233,7 @@ export default abstract class StartScreen extends Phaser.Scene {
 	}
 
 	private checkStartNewGame() {
-		if (this.playerIsNearCoordinates(this.startNewGameCoordinates)) {
+		if (this.utils.coordinatesAreNear(this.startNewGameCoordinates, this.player)) {
 			if (this.player.enterActivate) {
 				if (this.hasFx) {
 					this.sound.play('door_tp');
@@ -247,7 +247,7 @@ export default abstract class StartScreen extends Phaser.Scene {
 
 	private checkContinueGame() {
 		const level = this.store.get<SceneKey>('level');
-		if (this.playerIsNearCoordinates(this.continueGameCoordinates)) {
+		if (this.utils.coordinatesAreNear(this.continueGameCoordinates, this.player)) {
 			if (this.player.enterActivate) {
 				if (this.time.now > this.nextActivability) {
 					this.nextActivability = this.time.now + this.activabilityRate;
@@ -269,27 +269,27 @@ export default abstract class StartScreen extends Phaser.Scene {
 	}
 
 	private checkForOptions() {
-		if (this.playerIsNearCoordinates(this.musicSwitcherCoordinates)) {
+		if (this.utils.coordinatesAreNear(this.musicSwitcherCoordinates, this.player)) {
 			if (this.player.enterActivate) {
 				this.events.emit('StartScreen::switchMusic');
 			}
 		}
-		if (this.playerIsNearCoordinates(this.soundSwitcherCoordinates)) {
+		if (this.utils.coordinatesAreNear(this.soundSwitcherCoordinates, this.player)) {
 			if (this.player.enterActivate) {
 				this.events.emit('StartScreen::switchFx');
 			}
 		}
-		if (this.playerIsNearCoordinates(this.frSwitcherCoordinates)) {
+		if (this.utils.coordinatesAreNear(this.frSwitcherCoordinates, this.player)) {
 			if (this.player.enterActivate) {
 				this.events.emit('StartScreen::switchFr');
 			}
 		}
-		if (this.playerIsNearCoordinates(this.enSwitcherCoordinates)) {
+		if (this.utils.coordinatesAreNear(this.enSwitcherCoordinates, this.player)) {
 			if (this.player.enterActivate) {
 				this.events.emit('StartScreen::switchEn');
 			}
 		}
-		if (this.playerIsNearCoordinates(this.tutorialsSwitcherCoordinates)) {
+		if (this.utils.coordinatesAreNear(this.tutorialsSwitcherCoordinates, this.player)) {
 			if (this.player.enterActivate) {
 				this.events.emit('StartScreen::switchTutorials');
 			}
@@ -364,14 +364,8 @@ export default abstract class StartScreen extends Phaser.Scene {
 
 		this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, this.tilemap.heightInPixels);
 		this.physics.world.setBounds(0, 0, this.tilemap.widthInPixels, this.tilemap.heightInPixels);
-	}
 
-	private playerIsNearCoordinates(coordinates: Coordinates, offset = 10) {
-		const dx = coordinates.x - this.player.x;
-		const dy = coordinates.y - this.player.y;
-		const distance = Math.sqrt(dx * dx + dy * dy);
-
-		return Math.abs(distance) < offset;
+		this.utils.init(this.tilemap);
 	}
 
 	private checkForTutorials() {
@@ -398,38 +392,6 @@ export default abstract class StartScreen extends Phaser.Scene {
 				volume: 0.1,
 			});
 		}
-	}
-
-	private findObjectByLayerAndName(layer: LayerName, name: string): Phaser.Types.Tilemaps.TiledObject {
-		const object = this.tilemap.findObject(layer, (obj) => {
-			return obj.name === name;
-		});
-		if (!object) {
-			throw new Error(`Object with name ${name} not found in layer ${layer}`);
-		}
-		return object;
-	}
-
-	private filterObjectsByLayerAndName(layer: LayerName, name: string): Phaser.Types.Tilemaps.TiledObject[] {
-		const objects = this.tilemap.filterObjects(layer, (obj) => {
-			return obj.name === name;
-		});
-		if (!objects) {
-			throw new Error(`Objects with name ${name} not found in layer ${layer}`);
-		}
-		return objects;
-	}
-
-	private getPropertiesAsObject(obj: Phaser.Types.Tilemaps.TiledObject) {
-		if (!obj.properties) {
-			return null;
-		}
-		return obj.properties.reduce((o, prop) => {
-			return {
-				...o,
-				[prop.name]: prop.value,
-			};
-		}, {});
 	}
 
 	private listenToMusicSwitcherEvents() {
@@ -463,12 +425,5 @@ export default abstract class StartScreen extends Phaser.Scene {
 		this.events.on('TutorialsSwitcher::tutorials', (isOn) => {
 			this.allowsTutorials = isOn;
 		});
-	}
-
-	private getMiddleSceneCoordinates(): { x: number, y: number } {
-		const x = this.cameras.main.worldView.x + this.cameras.main.width / 2;
-		const y = this.cameras.main.worldView.y + this.cameras.main.height / 2;
-
-		return { x, y };
 	}
 }

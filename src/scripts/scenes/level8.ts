@@ -3,7 +3,6 @@ import { LayerName, ObjectName } from '../objects';
 import BaseLevel from './baseLevel';
 import { SceneKey } from './index';
 
-// todo: add dialogs
 export default class Level8 extends BaseLevel {
 	private corpse: Phaser.GameObjects.Sprite;
 	private endPlayed = false;
@@ -27,9 +26,9 @@ export default class Level8 extends BaseLevel {
 		}, this);
 	}
 	
-	update() {
-		super.update();
-		if (this.intersectObjects(this.corpse, this.player) && !this.allowsTutorials && !this.endPlayed) {
+	update(time: number, delta: number) {
+		super.update(time, delta);
+		if (this.utils.intersectObjects(this.corpse, this.player) && !this.allowsTutorials && !this.endPlayed) {
 			this.endPlayed = true;
 			alert(this.translate.get(SceneKey.Level8, 1));
 		}

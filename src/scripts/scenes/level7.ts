@@ -47,8 +47,8 @@ export default class Level7 extends BaseLevel {
 		
 	}
 	
-	update() {
-		super.update();
+	update(time: number, delta: number) {
+		super.update(time, delta);
 
 		this.checkForSpatialTeleportersActivation();
 

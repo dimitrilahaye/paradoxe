@@ -28,8 +28,8 @@ export default class Level4 extends BaseLevel {
 		
 	}
 
-	update() {
-		super.update();
+	update(time: number, delta: number) {
+		super.update(time, delta);
 
 		this.checkForSpatialTeleportersActivation();
 
