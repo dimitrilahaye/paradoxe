@@ -13,6 +13,8 @@ import MyTextBox from '../ui/myTextBox';
 import { SceneKey } from './index';
 import StartNewGame from '../objects/startNewGame';
 import ContinueGame from '../objects/continueGame';
+import Tutorials from './tutorials';
+import TutorialsGame from '../objects/tutorialsGame';
 
 export default abstract class StartScreen extends Phaser.Scene {
 	protected music: Phaser.Sound.BaseSound;
@@ -50,6 +52,7 @@ export default abstract class StartScreen extends Phaser.Scene {
 	private tutorialsSwitcherCoordinates: Coordinates;
 	private startNewGameCoordinates: Coordinates;
 	private continueGameCoordinates: Coordinates;
+	private tutorialsCoordinates: Coordinates;
 	private allowsTutorials: boolean;
 	private musicHasBeenPlayed: boolean;
 	private hasMusic: boolean;
@@ -72,6 +75,7 @@ export default abstract class StartScreen extends Phaser.Scene {
 
 		this.buildWhiteSwitchers();
 
+		this.initTutorialsGame();
 		this.initStartNewGame();
 		this.initContinueGame();
 		
@@ -84,6 +88,7 @@ export default abstract class StartScreen extends Phaser.Scene {
 
 		this.addDialog(0, this.translate.get(SceneKey.StartScreen, 0));
 
+		this.listenToTutorialsGameEvents();
 		this.listenToStartNewGameEvents();
 		this.listenToContinueGameEvents();
 		this.initAllowsTutorialsOption();
@@ -97,6 +102,7 @@ export default abstract class StartScreen extends Phaser.Scene {
 		this.checkForTutorials();
 		this.checkForOptions();
 
+		this.checkTutorialsGame();
 		this.checkStartNewGame();
 		this.checkContinueGame();
 	}
@@ -109,25 +115,19 @@ export default abstract class StartScreen extends Phaser.Scene {
 
 	private listenToStartNewGameEvents() {
 		this.events.on('StartNewGame::go', () => {
-			if (this.hasFx) {
-				this.sound.play('door_tp');
-			}
-			this.music.stop();
-			this.store.set('score', 0);
-			this.scene.start(SceneKey.PreloadLevel1);
+			this.goLevel1();
+		});
+	}
+
+	private listenToTutorialsGameEvents() {
+		this.events.on('TutorialsGame::go', () => {
+			this.goTutorials();
 		});
 	}
 
 	private listenToContinueGameEvents() {
 		this.events.on('ContinueGame::go', () => {
-			const level = this.store.get<SceneKey>('level');
-			if (level) {
-				if (this.hasFx) {
-					this.sound.play('door_tp');
-				}
-				this.music.stop();
-				this.scene.start(level);
-			}
+			this.goContinue();
 		});
 	}
 
@@ -137,9 +137,12 @@ export default abstract class StartScreen extends Phaser.Scene {
 		this.events.off('StartScreen::switchFr');
 		this.events.off('StartScreen::switchEn');
 		this.events.off('SpatialTeleporter::teleport');
-		this.events.off('GreenSpatialTeleporter::activate');
+		this.events.off('SpatialTeleporter::activate');
 		this.events.off('MultiSwitcher::activate');
 		this.events.off('MultiTimeTeleporter::setToOpen');
+		this.events.off('TutorialsGame::go');
+		this.events.off('StartNewGame::go');
+		this.events.off('ContinueGame::go');
 		this.events.off('PastPlayer::init');
 		this.events.off('PastPlayer::isDead');
 		this.events.off('Player::isDead');
@@ -172,6 +175,17 @@ export default abstract class StartScreen extends Phaser.Scene {
 				y: continueGame.y!,
 			};
 			this.continueGameDoor = new ContinueGame(this, this.continueGameCoordinates.x, this.continueGameCoordinates.y);
+		}
+	}
+
+	private initTutorialsGame() {
+		const tutorials = this.utils.findObjectByLayerAndName(LayerName.OPTIONS, 'tutorials');
+		if (tutorials) {
+			this.tutorialsCoordinates = {
+				x: tutorials.x!,
+				y: tutorials.y!,
+			};
+			new TutorialsGame(this, this.tutorialsCoordinates.x, this.tutorialsCoordinates.y);
 		}
 	}
 
@@ -235,18 +249,20 @@ export default abstract class StartScreen extends Phaser.Scene {
 	private checkStartNewGame() {
 		if (this.utils.coordinatesAreNear(this.startNewGameCoordinates, this.player)) {
 			if (this.player.enterActivate) {
-				if (this.hasFx) {
-					this.sound.play('door_tp');
-				}
-				this.music.stop();
-				this.store.set('score', 0);
-				this.scene.start(SceneKey.PreloadLevel1);
+				this.goLevel1();
+			}
+		}
+	}
+
+	private checkTutorialsGame() {
+		if (this.utils.coordinatesAreNear(this.tutorialsCoordinates, this.player)) {
+			if (this.player.enterActivate) {
+				this.goTutorials();
 			}
 		}
 	}
 
 	private checkContinueGame() {
-		const level = this.store.get<SceneKey>('level');
 		if (this.utils.coordinatesAreNear(this.continueGameCoordinates, this.player)) {
 			if (this.player.enterActivate) {
 				if (this.time.now > this.nextActivability) {
@@ -256,16 +272,38 @@ export default abstract class StartScreen extends Phaser.Scene {
 							this.sound.play('door_close');
 						}
 					}
-					if (level) {
-						if (this.hasFx) {
-							this.sound.play('door_tp');
-						}
-						this.music.stop();
-						this.scene.start(level);
-					}
+					this.goContinue();
 				}
 			}
 		}
+	}
+
+	private goLevel1() {
+		if (this.hasFx) {
+			this.sound.play('door_tp');
+		}
+		this.music.stop();
+		this.store.set('score', 0);
+		this.scene.start(SceneKey.PreloadLevel1);
+	}
+
+	private goContinue() {
+		const level = this.store.get<SceneKey>('level');
+		if (level) {
+			if (this.hasFx) {
+				this.sound.play('door_tp');
+			}
+			this.music.stop();
+			this.scene.start(level);
+		}
+	}
+
+	private goTutorials() {
+		if (this.hasFx) {
+			this.sound.play('door_tp');
+		}
+		this.music.stop();
+		this.scene.start(SceneKey.PreloadTutorials);
 	}
 
 	private checkForOptions() {

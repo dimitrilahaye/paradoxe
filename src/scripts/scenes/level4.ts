@@ -14,8 +14,8 @@ export default class Level4 extends BaseLevel {
 		this.createDoubleSwitcher();
 
 		// create spatial teleporters
-		this.createSpatialTeleportersByColorAndNum('green', 0);
-		this.createSpatialTeleportersByColorAndNum('green', 1);
+		// this.createSpatialTeleportersByColorAndNum('green', 0);
+		// this.createSpatialTeleportersByColorAndNum('green', 1);
 		
 		this.initPlayer();
 		

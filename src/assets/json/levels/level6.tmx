@@ -1473,7 +1473,7 @@
     <property name="num" type="int" value="1"/>
    </properties>
   </object>
-  <object id="27" name="dialog" x="110" y="400.667">
+  <object id="27" name="dialog" class="Dialog" x="110" y="400.667">
    <properties>
     <property name="num" type="int" value="0"/>
    </properties>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="left-down" width="40" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="21" nextobjectid="15">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="left-down" width="40" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="21" nextobjectid="16">
  <editorsettings>
   <export target="game-screen.json" format="json"/>
  </editorsettings>
@@ -1415,40 +1415,41 @@
   </object>
  </objectgroup>
  <objectgroup id="19" name="options">
-  <object id="8" name="bool-white" class="BoolWhite" x="304.583" y="402.917">
+  <object id="8" name="bool-white" class="BoolWhite" x="432.583" y="402.917">
    <properties>
     <property name="name" value="music"/>
     <property name="on" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="9" name="bool-white" class="BoolWhite" x="369.25" y="402.833">
+  <object id="9" name="bool-white" class="BoolWhite" x="497.25" y="402.833">
    <properties>
     <property name="name" value="sound"/>
     <property name="on" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="10" name="bool-white" class="BoolWhite" x="432.667" y="402.667">
+  <object id="10" name="bool-white" class="BoolWhite" x="560.667" y="402.667">
    <properties>
     <property name="name" value="fr"/>
     <property name="on" type="bool" value="true"/>
     <property name="type" value="lang"/>
    </properties>
   </object>
-  <object id="11" name="bool-white" class="BoolWhite" x="464.667" y="403">
+  <object id="11" name="bool-white" class="BoolWhite" x="592.667" y="403">
    <properties>
     <property name="name" value="en"/>
     <property name="on" type="bool" value="false"/>
     <property name="type" value="lang"/>
    </properties>
   </object>
-  <object id="12" name="start" x="129" y="397.25"/>
-  <object id="13" name="continue" x="225.5" y="397"/>
-  <object id="14" name="bool-white" class="BoolWhite" x="528.5" y="402.5">
+  <object id="12" name="tutorials" x="143" y="397.25"/>
+  <object id="13" name="continue" x="335.5" y="397"/>
+  <object id="14" name="bool-white" class="BoolWhite" x="656.5" y="402.5">
    <properties>
     <property name="name" value="tutorials"/>
     <property name="on" type="bool" value="true"/>
    </properties>
   </object>
+  <object id="15" name="start" x="241" y="397.333"/>
  </objectgroup>
  <layer id="18" name="title" width="40" height="15">
   <data encoding="base64">

@@ -21,10 +21,10 @@ export default class Level7 extends BaseLevel {
 		this.createMultiSwitcherByNum(1);
 		this.createMultiSwitcherByNum(2);
 		
-		this.createSpatialTeleportersByColorAndNum('green', 0);
-		this.createSpatialTeleportersByColorAndNum('green', 1);
-		this.createSpatialTeleportersByColorAndNum('red', 0);
-		this.createSpatialTeleportersByColorAndNum('red', 1);
+		// this.createSpatialTeleportersByColorAndNum('green', 0);
+		// this.createSpatialTeleportersByColorAndNum('green', 1);
+		// this.createSpatialTeleportersByColorAndNum('red', 0);
+		// this.createSpatialTeleportersByColorAndNum('red', 1);
 		this.initPlayer();
 		
 		this.initMultiTimeTeleportersObjectsCollidersByNum(0);

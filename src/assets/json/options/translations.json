@@ -3,6 +3,30 @@
     "fr": ["Vous êtes mort, détective."],
     "en": ["You're dead, detective."]
   },
+  "Tutorials": {
+    "fr": [
+      "Dans Paradoxe, vous devez traverser une série de salles.\nMais vous allez devoir vous heurter à quelques bizzareries pour vous en sortir.",
+      "Cliquez sur ENTRÉE pour vous téléporter à la porte opposée.",
+      "En traversant ce portail vert, vous allez être téléporté de l'autre côté. Allez-y, avancez, tout simplement...",
+      "Alors... le type que vous voyez de l'autre côté du portail, à l'endroit où vous vous teniez il y a quelques secondes, c'est... vous... Ce genre de portail vous a fait voyager de 2 secondes dans le futur. Cet autre type en face de vous est votre émanation du passé.\n...\nLa porte de sortie de cette salle sera désormais fermée jusqu'à ce que vous résolviez cette paradoxe temporelle.\nVous allez donc devoir tuer cette émanation...\nAvancez vers l'interrupteur sur votre droite.",
+      "En cliquant sur ENTRÉE, vous allez activer l'interrupteur ce qui va refermer le portail.\nQuand ça sera fait, dépêchez-vous d'appuyer sur ESPACE pour tirer sur votre émanation, avant qu'elle ne le fasse.",
+      "Au passage, vous avez vu, votre score a été augmenté de 1 point. Ce n'est pas bon signe. Vous gagnez un point à chaque fois que vous avez créé une émanation. Moins vous en créerez, moins vous aurez de points, et ça, c'est bon pour votre classement !",
+      "En traversant ce portail rouge, vous allez être téléporté de l'autre côté du portail rouge opposés.",
+      "Vous voyez ces portails orange ?\n...\n...\nParfait, vous avez une excellente vue.\nSi vous activez un des boutons orange, vous désactiverez les autres portails en alternance.",
+      "Félicitations, tu as fini ce tutoriel!"
+    ],
+    "en": [
+      "In Paradox, you have to go through a series of rooms.\nBut you'll have to run into some oddities to get out.",
+      "Click ENTER to teleport to the opposite door.",
+      "As you pass through this green portal, you will be teleported to the other side. Go ahead, just move forward...",
+      "So...the guy you see on the other side of the portal, where you were standing a few seconds ago, is...you...This kind of portal took you on a journey 2 seconds into the future. That other guy in front of you is your emanation from the past.\n...\nThe exit door to this room will now be closed until you resolve this time paradox.\nYou will therefore having to kill this emanation...\nMove towards the switch on your right.",
+      "Clicking ENTER will activate the switch which will close the portal.\nWhen that's done, hurry up and press SPACE to shoot your emanation, before it does.",
+      "By the way, you have seen, your score has been increased by 1 point. This is not a good sign. You earn a point each time you have created an emanation. The less you create, the fewer points you will have, and that's good for your ranking!",
+      "While passing through this red portal, you will be teleported to the other side of the opposing red portal.",
+      "See those orange portals?\n...\n...\nPerfect, you have excellent eyesight.\nIf you activate one of the orange buttons, you will alternately deactivate the other portals.",
+      "Congratulations, you have finished this tutorial!"
+    ]
+  },
   "StartScreen": {
     "fr": [
       "Bienvenue dans mon super jeu :) Pour activer ou désactiver une option, positionnez-vous devant l'interrupteur et appuyez sur ENTRÉE.\nVous pouvez aussi simplement cliquer sur les différentes options pour les activer ou les désactiver."

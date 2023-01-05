@@ -69,6 +69,12 @@
         font-family: "Pixels";
         src: url('./assets/fonts/SquaredanceFontV1-Regular.ttf') format("truetype");
       }
+      img {
+        position: relative;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
     </style>
 
     <noscript
@@ -86,6 +92,7 @@
   </head>
   <body>
     <span style="font-family:'Pixels'"></span>
+    <img src="./assets/img/logo.png" width="450px"/>
     <div id="phaser-game"></div>
   </body>
 </html>

@@ -23,8 +23,10 @@ import Level0 from './scenes/level0';
 import UtilsPlugin from './plugins/utilsPlugin';
 import StorePlugin from './plugins/storePlugin';
 import TranslatePlugin from './plugins/translatePlugin';
+import PreloadTutorials from './scenes/preloadTutorials';
+import Tutorials from './scenes/tutorials';
 
-const DEFAULT_WIDTH = 600;
+const DEFAULT_WIDTH = 700;
 const DEFAULT_HEIGHT = 480;
 
 const config: Phaser.Types.Core.GameConfig = {
@@ -40,6 +42,7 @@ const config: Phaser.Types.Core.GameConfig = {
 	},
 	scene: [
 		PreloadStartScreen, // start screen
+		PreloadTutorials, // tutorials
 		PreloadLevel0, // tests stairs
 		PreloadLevel1, // simple exit door
 		PreloadLevel2, // spatial doors
@@ -50,6 +53,7 @@ const config: Phaser.Types.Core.GameConfig = {
 		PreloadLevel7, // mix all teleporters
 		PreloadLevel8, // final stage
 		StartScreen,
+		Tutorials,
 		Level0,
 		Level1,
 		Level2,

@@ -42,16 +42,15 @@
         },
         {
             "color": "#ffa0a0a4",
-            "id": 2,
+            "id": 8,
             "members": [
                 {
-                    "name": "direction",
-                    "propertyType": "StairsDirection",
-                    "type": "string",
-                    "value": "DOWN"
+                    "name": "num",
+                    "type": "int",
+                    "value": 0
                 }
             ],
-            "name": "Stairs",
+            "name": "Dialog",
             "type": "class",
             "useAs": [
                 "property",
@@ -65,15 +64,51 @@
             ]
         },
         {
-            "id": 3,
-            "name": "StairsDirection",
+            "id": 6,
+            "name": "DoorsSprite",
             "storageType": "string",
             "type": "enum",
             "values": [
-                "DOWN",
-                "UP"
+                "door_tp_green",
+                "door_tp_red",
+                "door_tp_full_green",
+                "door_tp_full_red"
             ],
             "valuesAsFlags": false
+        },
+        {
+            "color": "#ffa0a0a4",
+            "id": 7,
+            "members": [
+                {
+                    "name": "group",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "num",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "sprite",
+                    "propertyType": "DoorsSprite",
+                    "type": "string",
+                    "value": "door_tp_green"
+                }
+            ],
+            "name": "SpatialDoor",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset"
+            ]
         }
     ]
 }

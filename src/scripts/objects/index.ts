@@ -26,6 +26,7 @@ export enum ObjectName {
 
 export enum LayerName {
     // objects
+    EVENTS = 'events',
     DIALOGS = 'dialogs',
     TELEPORTERS_SPATIAL = 'teleporters_spatial',
     PLAYER = 'player',

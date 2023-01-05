@@ -9,8 +9,8 @@ export default class Level2 extends BaseLevel {
 	create() {
 		super.create();
 
-		this.createSpatialTeleportersByColorAndNum('green', 0);
-		this.createSpatialTeleportersByColorAndNum('green', 1);
+		// this.createSpatialTeleportersByColorAndNum('green', 0);
+		// this.createSpatialTeleportersByColorAndNum('green', 1);
 
 		this.addDialog(0, this.translate.get(SceneKey.Level2, 0));
 		this.addDialog(1, this.translate.get(SceneKey.Level2, 1));

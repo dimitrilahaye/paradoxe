@@ -94,9 +94,10 @@ export default class PreloadStartScreen extends Phaser.Scene {
 		this.load.image('door_start', 'assets/img/objects/door_start.png');
 		this.load.image('door_end_open', 'assets/img/objects/door_end_open.png');
 		this.load.image('door_end_close', 'assets/img/objects/door_end_close.png');
-		this.load.image('door_tp', 'assets/img/objects/door_tp.png');
 		this.load.image('door_tp_red', 'assets/img/objects/door_tp_red.png');
 		this.load.image('door_tp_green', 'assets/img/objects/door_tp_green.png');
+		this.load.image('door_tp_full_red', 'assets/img/objects/door_tp_full_red.png');
+		this.load.image('door_tp_full_green', 'assets/img/objects/door_tp_full_green.png');
 		this.load.image('tp_red', 'assets/img/objects/tp_red.png');
 		this.load.image('tp_red_close', 'assets/img/objects/tp_red_close.png');
 		this.load.image('tp_orange', 'assets/img/objects/tp_orange.png');

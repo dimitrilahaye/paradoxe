@@ -5,15 +5,13 @@ import DoorEntrance from '../objects/doorEntrance';
 import DoorExit from '../objects/doorExit';
 import DoubleSwitcher from '../objects/doubleSwitcher';
 import DoubleTimeTeleporter from '../objects/doubleTimeTeleporter';
-import GreenSpatialTeleporter from '../objects/greenSpatialTeleporter';
 import MultiSwitcher from '../objects/multiSwitcher';
 import MultiTimeTeleporter from '../objects/multiTimeTeleporter';
+import SpatialTeleporter from '../objects/spatialTeleporter';
 import PastPlayer from '../objects/pastPlayer';
 import Player from '../objects/player';
-import RedSpatialTeleporter from '../objects/redSpatialTeleporter';
 import SimpleSwitcher from '../objects/simpleSwitcher';
 import SimpleTimeTeleporter from '../objects/simpleTimeTeleporter';
-import SpatialTeleporter from '../objects/spatialTeleporter';
 import MyTextBox from '../ui/myTextBox';
 import TopUiContainer from '../ui/topUiContainer';
 import { SceneKey } from './index';
@@ -121,9 +119,12 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		this.events.off('StartScreen::switchFr');
 		this.events.off('StartScreen::switchEn');
 		this.events.off('SpatialTeleporter::teleport');
-		this.events.off('GreenSpatialTeleporter::activate');
+		this.events.off('SpatialTeleporter::activate');
 		this.events.off('MultiSwitcher::activate');
 		this.events.off('MultiTimeTeleporter::setToOpen');
+		this.events.off('TutorialsGame::go');
+		this.events.off('StartNewGame::go');
+		this.events.off('ContinueGame::go');
 		this.events.off('PastPlayer::init');
 		this.events.off('PastPlayer::isDead');
 		this.events.off('Player::isDead');
@@ -193,8 +194,8 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	// generic
 	protected initPlayer() {
 		const stairs = this.tilemap.filterObjects(LayerName.STAIRS_DETECTION, obj => obj.name === ObjectName.STAIRS_LINE);
-		this.start = this.tilemap.findObject(LayerName.DOORS, obj => obj.name === ObjectName.START);
-		this.end = this.tilemap.findObject(LayerName.DOORS, obj => obj.name === ObjectName.END);
+		this.start = this.tilemap.findObject(LayerName.PLAYER, obj => obj.name === ObjectName.START);
+		this.end = this.tilemap.findObject(LayerName.PLAYER, obj => obj.name === ObjectName.END);
 		this.player = new Player(this, this.start?.x || 0, this.start?.y || 0, stairs);
 		this.player.create();
 		
@@ -272,18 +273,13 @@ export default abstract class BaseLevel extends Phaser.Scene {
 			this.multiSwitchersGroup.add(multiSwitcher);
 		}
 	}
-
-	// generic levels factories
-	protected createSpatialTeleportersByColorAndNum(color: 'red' | 'green', num: number) {
-		const object = this.utils.findObjectByLayerAndProperties(LayerName.TELEPORTERS_SPATIAL, { color, num });
-		if (object) {
-			if (color === 'green') {
-				const spatialTeleporter = new GreenSpatialTeleporter(this, object?.x || 0, object?.y || 0, num);
-				this.spatialTeleportersGroup.add(spatialTeleporter);
-			} else if (color === 'red') {
-				const spatialTeleporter = new RedSpatialTeleporter(this, object?.x || 0, object?.y || 0, num);
-				this.spatialTeleportersGroup.add(spatialTeleporter);
-			}
+	
+	protected createSpatialTeleporters() {
+		const tpDoors = this.utils.filterObjectsByLayerAndName(LayerName.TELEPORTERS_SPATIAL, 'spatial_door');
+		for (const tpDoor of tpDoors) {
+			const { num, group, sprite } = this.utils.getPropertiesAsObject(tpDoor);
+			const spatialTeleporter = new SpatialTeleporter(this, tpDoor?.x || 0, tpDoor?.y || 0, sprite, group, num);
+			this.spatialTeleportersGroup.add(spatialTeleporter);
 		}
 	}
 

@@ -1,8 +1,8 @@
-export default abstract class SpatialTeleporter extends Phaser.Physics.Arcade.Sprite {
+export default class SpatialTeleporter extends Phaser.Physics.Arcade.Sprite {
     private _nextTp = 0;
     private _tpRate = 500;
+    private hasFx: boolean;
     protected oppositeSpatialTeleporter: SpatialTeleporter;
-    protected num: number;
 
     get nextTp(): number {
     	return this._nextTp;
@@ -16,17 +16,42 @@ export default abstract class SpatialTeleporter extends Phaser.Physics.Arcade.Sp
     	return this._tpRate;
     }
     
-    constructor(scene: Phaser.Scene, x: number, y: number, key: string, num: number) {
+    constructor(
+    	scene: Phaser.Scene,
+    	x: number,
+    	y: number,
+    	key: string,
+        private readonly group: number,
+        private readonly num: number,
+    ) {
     	super(scene, x, y, key);
     	scene.add.existing(this);
-    	this.num = num;
+    	this.create();
     }
 
-    // create() {
-    // }
+    create() {
+    	this.scene.events.on('SpatialTeleporter::activate', (targetGroup: number, targetNum: number, nextTp: number) => {
+    		if (this.num === targetNum && this.group === targetGroup) {
+    			this.nextTp = nextTp;
+    			this.scene.events.emit('SpatialTeleporter::teleport', { x: this.x, y: this.y });
+    		}
+    	});
+    	this.scene.events.on('Store::fx', (isOn) => {
+    		this.hasFx = isOn;
+    	});
+    }
 
     // update() {
     // }
 
-    public abstract activate(): void;
+    public activate(): void {
+    	if (this.scene.time.now > this.nextTp) {
+    		this.nextTp = this.scene.time.now + this.tpRate;
+    		const targetNum = this.num === 0 ? 1 : 0;
+    		if (this.hasFx) {
+    			this.scene.sound.play('door_tp');
+    		}
+    		this.scene.events.emit('SpatialTeleporter::activate', this.group, targetNum, this.nextTp);
+    	}
+    }
 }

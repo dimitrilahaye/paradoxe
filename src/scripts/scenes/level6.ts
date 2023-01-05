@@ -22,10 +22,10 @@ export default class Level6 extends BaseLevel {
 		
 		// todo: init spatial teleporters in one function
 		// create spatial teleporters
-		this.createSpatialTeleportersByColorAndNum('green', 0);
-		this.createSpatialTeleportersByColorAndNum('green', 1);
-		this.createSpatialTeleportersByColorAndNum('red', 0);
-		this.createSpatialTeleportersByColorAndNum('red', 1);
+		// this.createSpatialTeleportersByColorAndNum('green', 0);
+		// this.createSpatialTeleportersByColorAndNum('green', 1);
+		// this.createSpatialTeleportersByColorAndNum('red', 0);
+		// this.createSpatialTeleportersByColorAndNum('red', 1);
 		this.initPlayer();
 		
 		// todo: init multi colliders in one function
