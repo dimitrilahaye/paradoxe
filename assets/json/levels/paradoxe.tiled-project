@@ -39,6 +39,76 @@
                 "wangcolor",
                 "wangset"
             ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "id": 8,
+            "members": [
+                {
+                    "name": "num",
+                    "type": "int",
+                    "value": 0
+                }
+            ],
+            "name": "Dialog",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset"
+            ]
+        },
+        {
+            "id": 6,
+            "name": "DoorsSprite",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "door_tp_green",
+                "door_tp_red",
+                "door_tp_full_green",
+                "door_tp_full_red"
+            ],
+            "valuesAsFlags": false
+        },
+        {
+            "color": "#ffa0a0a4",
+            "id": 7,
+            "members": [
+                {
+                    "name": "group",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "num",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "sprite",
+                    "propertyType": "DoorsSprite",
+                    "type": "string",
+                    "value": "door_tp_green"
+                }
+            ],
+            "name": "SpatialDoor",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset"
+            ]
         }
     ]
 }

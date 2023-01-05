@@ -11,7 +11,7 @@
     "fileStates": {
         "": {
             "scaleInDock": 1,
-            "scaleInEditor": 3
+            "scaleInEditor": 1
         },
         "/home/dimitrilahaye/Documents/projets/games/paradoxe/game/paradox_tileset.tsx": {
             "dynamicWrapping": true,
@@ -169,11 +169,11 @@
                 19,
                 17
             ],
-            "scale": 0.5,
+            "scale": 1.5,
             "selectedLayer": 11,
             "viewCenter": {
-                "x": 363,
-                "y": 367
+                "x": 437.3333333333333,
+                "y": 411
             }
         },
         "game-screen.tmx#tileset": {
@@ -182,6 +182,22 @@
         "game-screen.tmx#title": {
             "scaleInDock": 1,
             "scaleInEditor": 1
+        },
+        "level0.tmx": {
+            "expandedObjectLayers": [
+                11,
+                14,
+                17
+            ],
+            "scale": 0.5,
+            "selectedLayer": 12,
+            "viewCenter": {
+                "x": 460,
+                "y": 183
+            }
+        },
+        "level0.tmx#tileset": {
+            "scaleInDock": 1
         },
         "level1.tmx": {
             "expandedObjectLayers": [
@@ -201,11 +217,17 @@
             "scaleInEditor": 3
         },
         "level2.tmx": {
-            "scale": 0.75,
-            "selectedLayer": 2,
+            "expandedObjectLayers": [
+                11,
+                15,
+                14,
+                17
+            ],
+            "scale": 8,
+            "selectedLayer": 10,
             "viewCenter": {
-                "x": 491.99999999999994,
-                "y": 383.3333333333333
+                "x": 421,
+                "y": 211.8125
             }
         },
         "level2.tmx#tileset": {
@@ -214,13 +236,15 @@
         },
         "level3.tmx": {
             "expandedObjectLayers": [
-                19
+                19,
+                18,
+                17
             ],
             "scale": 1,
-            "selectedLayer": 2,
+            "selectedLayer": 11,
             "viewCenter": {
-                "x": 257,
-                "y": 419.5
+                "x": 333,
+                "y": 463.5
             }
         },
         "level3.tmx#tileset": {
@@ -228,11 +252,16 @@
             "scaleInEditor": 2
         },
         "level4.tmx": {
+            "expandedObjectLayers": [
+                11,
+                14,
+                17
+            ],
             "scale": 1.5,
-            "selectedLayer": 2,
+            "selectedLayer": 10,
             "viewCenter": {
-                "x": 228,
-                "y": 246.33333333333331
+                "x": 249.33333333333331,
+                "y": 360.3333333333333
             }
         },
         "level4.tmx#tileset": {
@@ -240,11 +269,11 @@
             "scaleInEditor": 1
         },
         "level5.tmx": {
-            "scale": 0.75,
-            "selectedLayer": 2,
+            "scale": 1.5,
+            "selectedLayer": 11,
             "viewCenter": {
-                "x": 418.66666666666663,
-                "y": 335.3333333333333
+                "x": 408,
+                "y": 280.3333333333333
             }
         },
         "level5.tmx#tileset": {
@@ -254,13 +283,14 @@
         "level6.tmx": {
             "expandedObjectLayers": [
                 15,
-                14
+                14,
+                16
             ],
-            "scale": 0.75,
-            "selectedLayer": 2,
+            "scale": 1.5,
+            "selectedLayer": 13,
             "viewCenter": {
-                "x": 434.66666666666663,
-                "y": 311.3333333333333
+                "x": 233.33333333333334,
+                "y": 276.99999999999994
             }
         },
         "level6.tmx#tileset": {
@@ -276,7 +306,7 @@
             "scale": 1,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 272,
+                "x": 283,
                 "y": 225.5
             }
         },
@@ -326,6 +356,28 @@
         "title.json": {
             "scaleInDock": 1,
             "scaleInEditor": 1
+        },
+        "tutorials.tmx": {
+            "expandedObjectLayers": [
+                20,
+                27,
+                11,
+                24,
+                14,
+                28,
+                19,
+                17,
+                23
+            ],
+            "scale": 1.5,
+            "selectedLayer": 21,
+            "viewCenter": {
+                "x": 2798,
+                "y": 517
+            }
+        },
+        "tutorials.tmx#tileset": {
+            "scaleInDock": 1
         }
     },
     "last.exportedFilePath": "/home/dimitrilahaye/Documents/projets/games/paradoxe/game/src/assets/json/levels",
@@ -349,21 +401,22 @@
         "level4.tmx"
     ],
     "project": "paradoxe.tiled-project",
-    "property.type": "string",
+    "property.type": "int",
     "recentFiles": [
-        "level8.tmx",
-        "level7.tmx",
-        "level6.tmx",
-        "level5.tmx",
-        "level4.tmx",
-        "level3.tmx",
-        "level2.tmx",
         "game-screen.tmx",
+        "level6.tmx",
+        "level7.tmx",
+        "level0.tmx",
+        "level2.tmx",
+        "level3.tmx",
+        "level4.tmx",
+        "level5.tmx",
+        "level8.tmx",
         "level1.tmx",
         "game-screen.json",
-        "title.json",
-        "tileset.json"
+        "title.json"
     ],
+    "resizeMap.removeObjects": false,
     "tileset.embedInMap": true,
     "tileset.lastUsedFilter": "JSON tileset files (*.tsj *.json)",
     "tileset.lastUsedFormat": "tsx",
