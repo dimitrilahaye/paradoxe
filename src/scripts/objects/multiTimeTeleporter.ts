@@ -3,7 +3,6 @@ import { Coordinates } from '../types';
 export default class MultiTimeTeleporter extends Phaser.Physics.Arcade.Sprite {
 	private collidersGroup: Phaser.Physics.Arcade.Collider[] = [];
 	private oppositeMultiTimeTeleporters: MultiTimeTeleporter[] = [];
-	private _num: number;
 	private _alive = true;
 	private hasFx: boolean;
 
@@ -14,27 +13,18 @@ export default class MultiTimeTeleporter extends Phaser.Physics.Arcade.Sprite {
     	this._alive = alive;
 	}
     
-	get num(): number {
-    	return this._num;
-	}
-	set num(num: number) {
-    	this._num = num;
-	}
-    
-	constructor(scene: Phaser.Scene, x: number, y: number, num: number) {
+	constructor(scene: Phaser.Scene, x: number, y: number, public readonly group: number, public readonly num: number, public readonly close: boolean) {
     	super(scene, x, y, 'tp_orange');
     	scene.add.existing(this);
     	this.scene.physics.world.enable(this);
     	this.setImmovable(true);
-    	this.num = num;
 		this.hasFx = this.scene.store.get<boolean>('fx') ?? true;
     	this.create();
 	}
     
 	create() {
-    	this.scene.events.on('MultiSwitcher::activate', (num: number) => {
-    		if (num === this.num) {
-				
+    	this.scene.events.on('MultiSwitcher::activate', (group: number, num: number) => {
+    		if (group === this.group && num === this.num) {
 				const firstOpenedOpposite = this.oppositeMultiTimeTeleporters.find((teleporter) => teleporter.alive);
     			const firstClosedOpposite = this.oppositeMultiTimeTeleporters.find((teleporter) => !teleporter.alive);
 				
@@ -62,7 +52,7 @@ export default class MultiTimeTeleporter extends Phaser.Physics.Arcade.Sprite {
 	public setToOpen() {
     	this.alive = true;
     	this.setTexture('tp_orange');
-    	this.scene.events.emit('MultiTimeTeleporter::setToOpen', this.num);
+    	this.scene.events.emit('MultiTimeTeleporter::setToOpen', this.group, this.num);
 	}
 	
 	public setToClose() {

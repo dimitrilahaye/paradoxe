@@ -282,6 +282,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
 	private initCharacs() {
 		this.body.setSize(2);
+		this.setDepth(1);
 		this.direction = 'right';
 	}
 

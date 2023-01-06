@@ -21,6 +21,7 @@ export default class PastPlayer extends Phaser.Physics.Arcade.Sprite {
 		this.setCollideWorldBounds(true);
 		this.hasFx = this.scene.store.get('fx') ?? true;
 		this.direction = 'left';
+		this.setDepth(1);
 		this.create();
 	}
 	

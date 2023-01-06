@@ -3,7 +3,7 @@ export default class SimpleSwitcher extends Phaser.Physics.Arcade.Sprite {
 	private activabilityRate = 500;
 	private hasFx: boolean;
 	
-	constructor(scene: Phaser.Scene, x: number, y: number) {
+	constructor(scene: Phaser.Scene, x: number, y: number, public readonly group: number, public readonly num: number) {
     	super(scene, x, y, 'switcher_green');
     	scene.add.existing(this);
 		this.hasFx = this.scene.store.get<boolean>('fx') ?? true;
@@ -25,7 +25,7 @@ export default class SimpleSwitcher extends Phaser.Physics.Arcade.Sprite {
 			if (this.hasFx) {
     			this.scene.sound.play('switcher');
 			}
-    		this.scene.events.emit('SimpleSwitcher::activate');
+    		this.scene.events.emit('SimpleSwitcher::activate', this.group);
 		}
 	}
 }

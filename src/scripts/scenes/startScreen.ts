@@ -76,8 +76,8 @@ export default abstract class StartScreen extends Phaser.Scene {
 		this.buildWhiteSwitchers();
 
 		this.initTutorialsGame();
-		this.initStartNewGame();
-		this.initContinueGame();
+		// this.initStartNewGame();
+		// this.initContinueGame();
 		
 		this.listenToPlayerEvents();
 		this.listenToMyTextBoxEvents();
@@ -89,8 +89,8 @@ export default abstract class StartScreen extends Phaser.Scene {
 		this.addDialog(0, this.translate.get(SceneKey.StartScreen, 0));
 
 		this.listenToTutorialsGameEvents();
-		this.listenToStartNewGameEvents();
-		this.listenToContinueGameEvents();
+		// this.listenToStartNewGameEvents();
+		// this.listenToContinueGameEvents();
 		this.initAllowsTutorialsOption();
 		this.listenToMusicSwitcherEvents();
 		this.listenToTutorialsSwitcherEvents();
@@ -103,8 +103,8 @@ export default abstract class StartScreen extends Phaser.Scene {
 		this.checkForOptions();
 
 		this.checkTutorialsGame();
-		this.checkStartNewGame();
-		this.checkContinueGame();
+		// this.checkStartNewGame();
+		// this.checkContinueGame();
 	}
 
 	private listenToFxButtonEvents() {

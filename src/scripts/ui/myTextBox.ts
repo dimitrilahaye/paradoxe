@@ -55,6 +55,7 @@ export default class MyTextBox {
 		});
 	
 		this.textBox
+			.setDepth(2)
 			.setInteractive()
 			.on('pageend', () => {
 				const icon = (ctx.getElement('action') as Phaser.GameObjects.Sprite);

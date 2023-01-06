@@ -81,7 +81,7 @@ export default class UtilsPlugin extends Phaser.Plugins.ScenePlugin {
     	}
 	}
 
-	findObjectOnGroup(group: Phaser.GameObjects.Group, callback: (pastPlayer: Phaser.GameObjects.GameObject) => void) {
+	findObjectOnGroup(group: Phaser.GameObjects.Group, callback: (object: Phaser.GameObjects.GameObject) => void) {
     	if (group?.getLength() > 0) {
     		return group.children.getArray().find(callback);
     	}

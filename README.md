@@ -15,6 +15,7 @@ To cross each room of this place, you will have to face travels in time and spac
   - [ ] Translations not working on start screen at the opening of the game
   - [ ] Music does not quite if clicks too fast
 - [ ] Add game in itchi.io
+- [ ] Alert signal during paradoxs phases
 - [X] Add tutorial room
 - [X] TODOs
 - [X] scenes creation

@@ -364,20 +364,21 @@
                 11,
                 24,
                 14,
+                29,
                 28,
                 19,
                 17,
                 23
             ],
-            "scale": 1.5,
-            "selectedLayer": 21,
+            "scale": 5.5,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 2798,
-                "y": 517
+                "x": 528.6363636363637,
+                "y": 623.1818181818182
             }
         },
         "tutorials.tmx#tileset": {
-            "scaleInDock": 1
+            "scaleInDock": 1.5
         }
     },
     "last.exportedFilePath": "/home/dimitrilahaye/Documents/projets/games/paradoxe/game/src/assets/json/levels",
@@ -401,7 +402,7 @@
         "level4.tmx"
     ],
     "project": "paradoxe.tiled-project",
-    "property.type": "int",
+    "property.type": "TimePortalType",
     "recentFiles": [
         "game-screen.tmx",
         "level6.tmx",

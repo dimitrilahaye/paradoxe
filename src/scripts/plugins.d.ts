@@ -19,7 +19,7 @@ declare namespace Phaser {
         coordinatesAreNear(coordinatesA: Coordinates, coordinatesB: Coordinates, offset = 10);
         findObjectOnGroupByData<T>(group: Phaser.GameObjects.Group, data: { [key: string]: any }): T | undefined;
         iterateOnGroup(group: Phaser.GameObjects.Group, callback: (object, index?: number) => void);
-        findObjectOnGroup(group: Phaser.GameObjects.Group, callback: (pastPlayer: Phaser.GameObjects.GameObject) => void);
+        findObjectOnGroup(group: Phaser.GameObjects.Group, callback: (object: Phaser.GameObjects.GameObject) => void);
         intersectObjects(obj1: Phaser.GameObjects.Sprite, obj2: Phaser.GameObjects.Sprite): boolean;
         findObjectByLayerAndProperties(layer: LayerName, properties: { [key: string]: any }): Phaser.Types.Tilemaps.TiledObject;
         getMiddleSceneCoordinates(): { x: number, y: number };

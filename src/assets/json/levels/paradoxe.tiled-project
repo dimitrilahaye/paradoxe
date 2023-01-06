@@ -109,6 +109,91 @@
                 "wangcolor",
                 "wangset"
             ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "id": 9,
+            "members": [
+                {
+                    "name": "close",
+                    "type": "bool",
+                    "value": false
+                },
+                {
+                    "name": "group",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "num",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "type",
+                    "propertyType": "TimePortalType",
+                    "type": "string",
+                    "value": "simple"
+                }
+            ],
+            "name": "TimePortal",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset"
+            ]
+        },
+        {
+            "id": 10,
+            "name": "TimePortalType",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "simple",
+                "double",
+                "multi"
+            ],
+            "valuesAsFlags": false
+        },
+        {
+            "color": "#ffa0a0a4",
+            "id": 11,
+            "members": [
+                {
+                    "name": "group",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "num",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "type",
+                    "propertyType": "TimePortalType",
+                    "type": "string",
+                    "value": "simple"
+                }
+            ],
+            "name": "TimeSwitcher",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset"
+            ]
         }
     ]
 }

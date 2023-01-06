@@ -1,25 +1,7 @@
 import 'phaser';
 import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
-import PreloadLevel1 from './scenes/preloadLevel1';
-import Level1 from './scenes/level1';
-import PreloadLevel2 from './scenes/preloadLevel2';
-import Level2 from './scenes/level2';
-import PreloadLevel3 from './scenes/preloadLevel3';
-import Level3 from './scenes/level3';
-import PreloadLevel4 from './scenes/preloadLevel4';
-import Level4 from './scenes/level4';
-import PreloadLevel5 from './scenes/preloadLevel5';
-import Level5 from './scenes/level5';
-import PreloadLevel6 from './scenes/preloadLevel6';
-import Level6 from './scenes/level6';
-import PreloadLevel7 from './scenes/preloadLevel7';
-import Level7 from './scenes/level7';
 import PreloadStartScreen from './scenes/preloadStartScreen';
 import StartScreen from './scenes/startScreen';
-import PreloadLevel8 from './scenes/preloadLevel8';
-import Level8 from './scenes/level8';
-import PreloadLevel0 from './scenes/preloadLevel0';
-import Level0 from './scenes/level0';
 import UtilsPlugin from './plugins/utilsPlugin';
 import StorePlugin from './plugins/storePlugin';
 import TranslatePlugin from './plugins/translatePlugin';
@@ -43,26 +25,8 @@ const config: Phaser.Types.Core.GameConfig = {
 	scene: [
 		PreloadStartScreen, // start screen
 		PreloadTutorials, // tutorials
-		PreloadLevel0, // tests stairs
-		PreloadLevel1, // simple exit door
-		PreloadLevel2, // spatial doors
-		PreloadLevel3, // simple time teleporter
-		PreloadLevel4, // double time teleporters
-		PreloadLevel5, // mix simple / double teleporters
-		PreloadLevel6, // WIP: multi time teleporters
-		PreloadLevel7, // mix all teleporters
-		PreloadLevel8, // final stage
 		StartScreen,
 		Tutorials,
-		Level0,
-		Level1,
-		Level2,
-		Level3,
-		Level4,
-		Level5,
-		Level6,
-		Level7,
-		Level8,
 	],
 	physics: {
 		default: 'arcade',
