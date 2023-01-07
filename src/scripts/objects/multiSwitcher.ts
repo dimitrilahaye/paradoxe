@@ -1,6 +1,6 @@
+import frameRate from '../decorators/frameRate';
+
 export default class MultiSwitcher extends Phaser.Physics.Arcade.Sprite {
-	private nextActivability = 0;
-	private activabilityRate = 500;
 	private hasFx: boolean;
 
 	constructor(scene: Phaser.Scene, x: number, y: number, public readonly group: number, public readonly num: number) {
@@ -19,13 +19,11 @@ export default class MultiSwitcher extends Phaser.Physics.Arcade.Sprite {
 	// update() {
 	// }
 
+	@frameRate(500)
 	public activate(): void {
-		if (this.scene.time.now > this.nextActivability) {
-			this.nextActivability = this.scene.time.now + this.activabilityRate;
-			if (this.hasFx) {
+		if (this.hasFx) {
     			this.scene.sound.play('switcher');
-			}
-    		this.scene.events.emit('MultiSwitcher::activate', this.group, this.num);
 		}
+		this.scene.events.emit('MultiSwitcher::activate', this.group, this.num);
 	}
 }

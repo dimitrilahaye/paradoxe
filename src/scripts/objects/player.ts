@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import frameRate from '../decorators/frameRate';
 import { Coordinates, PlayerDirection } from '../types';
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
@@ -15,12 +16,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 	private goRight: boolean;
 	private isShooting: boolean;
 	public speedX = 180;
-	private nextFire = 0;
-	private fireRate = 500;
-	private nextWalkSound = 0;
-	private walkSoundRate = 500;
-	private nextActivability = 0;
-	private activabilityRate = 500;
 	private hasFx = true;
 	private isDeadEventEmitted = false;
 	private isDead = false;
@@ -40,6 +35,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 		this.setCollideWorldBounds(true);
 	}
 
+	getScene(): Phaser.Scene {
+		return this.scene;
+	}
+	
 	create() {
 		this.initCharacs();
 		this.initKeyboardInputs();
@@ -225,10 +224,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 	private checkActions() {
 		if (this.isMovable) {
 			if (this.enter.isDown) {
-				if (this.scene.time.now > this.nextActivability) {
-					this.nextActivability = this.scene.time.now + this.activabilityRate;
-					this.enterActivate = true;
-				}
+				this.enterActivateToTrue();
 			} else {
 				this.enterActivate = false;
 			}
@@ -239,19 +235,26 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 			}
 			if (this.isShooting) {
 				this.anims.play('shot');
-				if (this.scene.time.now > this.nextFire) {
-					this.nextFire = this.scene.time.now + this.fireRate;
-					if (this.direction === 'left') {
-						this.shotBullet(-500);
-					}
-					if (this.direction === 'right') {
-						this.shotBullet(500);
-					}
-				}
+				this.shotBulletWithRate();
 			}
 		} else {
 			this.enterActivate = false;
 			this.isShooting = false;
+		}
+	}
+
+	@frameRate(500)
+	private enterActivateToTrue() {
+		this.enterActivate = true;
+	}
+
+	@frameRate(500)
+	private shotBulletWithRate() {
+		if (this.direction === 'left') {
+			this.shotBullet(-500);
+		}
+		if (this.direction === 'right') {
+			this.shotBullet(500);
 		}
 	}
 
@@ -390,13 +393,14 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 		this.setTexture('player', 'idle-1');
 	}
 
+	@frameRate(500)
+	private playWalkWithRate() {
+		if (this.hasFx) {
+			this.scene.sound.play('walk');
+		}
+	}
 	private playWalk() {
 		this.anims.play('walk', true);
-		if (this.scene.time.now > this.nextWalkSound) {
-			this.nextWalkSound = this.scene.time.now + this.walkSoundRate;
-			if (this.hasFx) {
-				this.scene.sound.play('walk');
-			}
-		}
+		this.playWalkWithRate();
 	}
 }

@@ -114,6 +114,24 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		this.checkForTeleportersActivation();
 	}
 
+	// generic
+	protected addDialog(dialogNumber: number, content): void {
+		const { x, y } = this.tilemap.findObject(LayerName.DIALOGS, obj => obj['properties'][0].value === dialogNumber);
+		this.dialogs.set(JSON.stringify({ x, y }), content);
+	}
+
+	// generic
+	protected startDialog(content: string) {
+		if (!this.isDialogLaunched && this.allowsTutorials) {
+			const x = this.cameras.main.worldView.x + 25;
+			const y = this.cameras.main.worldView.y + this.cameras.main.height / 2;
+			this.textBox = new MyTextBox(this, x, y);
+			this.textBox.start(content);
+			this.player.pause();
+			this.isDialogLaunched = true;
+		}
+	}
+
 	// generic levels
 	private initTopBarUI() {
 		new TopUiContainer(this);
@@ -199,7 +217,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	}
 
 	// generic
-	protected initPlayer() {
+	private initPlayer() {
 		const stairs = this.tilemap.filterObjects(LayerName.STAIRS_DETECTION, obj => obj.name === ObjectName.STAIRS_LINE);
 		this.start = this.tilemap.findObject(LayerName.PLAYER, obj => obj.name === ObjectName.START);
 		this.end = this.tilemap.findObject(LayerName.PLAYER, obj => obj.name === ObjectName.END);
@@ -216,7 +234,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	}
 
 	// new build for all time teleporters
-	protected createTimeTeleporters() {
+	private createTimeTeleporters() {
 		const timeTeleportersLayer = this.tilemap.getObjectLayer(LayerName.TIME_TELEPORTERS);
 		if (!timeTeleportersLayer) {
 			return;
@@ -350,7 +368,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	}
 
 	// new build for all time switchers
-	protected createTimeSwitchers() {
+	private createTimeSwitchers() {
 		const timeSwitchersLayer = this.tilemap.getObjectLayer(LayerName.TIME_SWITCHERS);
 		if (!timeSwitchersLayer) {
 			return;
@@ -384,7 +402,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		}
 	}
 
-	protected createSpatialTeleporters() {
+	private createSpatialTeleporters() {
 		const tpDoors = this.utils.filterObjectsByLayerAndName(LayerName.SPATIAL_TELEPORTERS, ObjectName.SPATIAL_DOOR);
 		for (const tpDoor of tpDoors) {
 			const { num, group, sprite } = this.utils.getPropertiesAsObject(tpDoor);
@@ -457,7 +475,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 			}
 		});
 		// double switcher activation
-		this.utils.iterateOnGroup(this.doubleSwitchersGroup, (switcher: SimpleSwitcher) => {
+		this.utils.iterateOnGroup(this.doubleSwitchersGroup, (switcher: DoubleSwitcher) => {
 			if (this.utils.intersectObjects(this.player, switcher)) {
 				if (this.player.enterActivate) {
 					switcher.activate();
@@ -479,24 +497,6 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		this.events.on('MultiTimeTeleporter::setToOpen', (group: number, num: number) => {
 			this.initMultiTimeTeleportersObjectsColliders(group, num);
 		});
-	}
-
-	// generic
-	protected addDialog(dialogNumber: number, content): void {
-		const { x, y } = this.tilemap.findObject(LayerName.DIALOGS, obj => obj['properties'][0].value === dialogNumber);
-		this.dialogs.set(JSON.stringify({ x, y }), content);
-	}
-
-	// generic
-	protected startDialog(content: string) {
-		if (!this.isDialogLaunched && this.allowsTutorials) {
-			const x = this.cameras.main.worldView.x + 25;
-			const y = this.cameras.main.worldView.y + this.cameras.main.height / 2;
-			this.textBox = new MyTextBox(this, x, y);
-			this.textBox.start(content);
-			this.player.pause();
-			this.isDialogLaunched = true;
-		}
 	}
 
 	// generic levels

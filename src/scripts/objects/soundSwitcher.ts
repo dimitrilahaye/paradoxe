@@ -1,3 +1,4 @@
+import frameRate from '../decorators/frameRate';
 import WhiteSwitcher from './whiteSwitcher';
 
 export default class SoundSwitcher extends WhiteSwitcher {
@@ -10,13 +11,11 @@ export default class SoundSwitcher extends WhiteSwitcher {
 	create() {
 		super.create();
 		this.scene.events.on('StartScreen::switchFx', () => {
-			if (this.scene.time.now > this.nextActivability) {
-				this.nextActivability = this.scene.time.now + this.activabilityRate;
-				this.activate();
-			}
+			this.activate();
 		}, this);
 	}
 	
+	@frameRate(500)
 	activate(): void {
 		this.switch();
 		this.scene.store.set('fx', this.isOn);

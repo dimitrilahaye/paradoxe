@@ -1,6 +1,4 @@
 export default abstract class WhiteSwitcher extends Phaser.Physics.Arcade.Sprite {
-	protected nextActivability = 0;
-	protected activabilityRate = 500;
     protected isOn: boolean;
     private text: Phaser.GameObjects.Text;
 
@@ -13,10 +11,7 @@ export default abstract class WhiteSwitcher extends Phaser.Physics.Arcade.Sprite
     
     create() {
     	this.on('pointerdown', () => {
-    		if (this.scene.time.now > this.nextActivability) {
-    			this.nextActivability = this.scene.time.now + this.activabilityRate;
-    			this.activate();
-    		}
+    		this.activate();
     	});
     	this.on('pointerover', () => {
     		this.scene.sys.canvas.style.cursor = 'pointer';

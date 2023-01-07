@@ -1,3 +1,4 @@
+import frameRate from '../decorators/frameRate';
 import { PlayerDirection } from '../types';
 import Player from './player';
 
@@ -5,8 +6,6 @@ export default class PastPlayer extends Phaser.Physics.Arcade.Sprite {
 	isDead = false;
 	private bullets: Phaser.Physics.Arcade.Group;
 	private isDeadEventEmitted = false;
-	private nextFire = 0;
-	private fireRate = 500;
 	private hasFx = true;
 	private direction: PlayerDirection;
 	private turnRight = true;
@@ -150,15 +149,17 @@ export default class PastPlayer extends Phaser.Physics.Arcade.Sprite {
 	private shoot(): void {
 		if (!this.isDead) {
 			this.anims.play('shot');
-			if (this.scene.time.now > this.nextFire) {
-				this.nextFire = this.scene.time.now + this.fireRate;
-				if (this.direction === 'right') {
-					this.shotBullet(-500);
-				}
-				if (this.direction === 'left') {
-					this.shotBullet(500);
-				}
-			}
+			this.shotBullnetWithFrameRate();
+		}
+	}
+
+	@frameRate(500)
+	private shotBullnetWithFrameRate() {
+		if (this.direction === 'right') {
+			this.shotBullet(-500);
+		}
+		if (this.direction === 'left') {
+			this.shotBullet(500);
 		}
 	}
 
