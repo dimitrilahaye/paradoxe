@@ -1,3 +1,4 @@
+import { Depth } from './../types';
 export default class Score {
 	private text: Phaser.GameObjects.Text;
 	private score: number;
@@ -33,6 +34,13 @@ export default class Score {
 			{
 				fontFamily: 'Pixels',
 				align: 'left',
-			}).setScale(1).setFontSize(30).setResolution(10).setOrigin(0.5, 0.5).setColor('white').setScrollFactor(0);
+			})
+			.setScale(1)
+			.setFontSize(30)
+			.setResolution(10)
+			.setOrigin(0.5, 0.5)
+			.setColor('white')
+			.setScrollFactor(0)
+			.setDepth(Depth.UI);
 	}
 }

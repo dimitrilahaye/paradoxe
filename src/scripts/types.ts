@@ -69,5 +69,6 @@ export enum LayerName {
 export enum Depth {
     PLAYER = 1,
     BRIDGES = 2,
-    TEXT_BOX = 3,
+    UI = 3,
+    TEXT_BOX = 4,
 }

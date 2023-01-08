@@ -1,4 +1,5 @@
 import frameRate from '../decorators/frameRate';
+import { Depth } from '../types';
 
 export default class MusicButton extends Phaser.Physics.Arcade.Sprite {
 	constructor(scene: Phaser.Scene, x: number, y: number) {
@@ -8,6 +9,7 @@ export default class MusicButton extends Phaser.Physics.Arcade.Sprite {
 		this.setInteractive();
 		this.setScrollFactor(0);
 		this.setScale(0.5);
+		this.setDepth(Depth.UI);
 		this.create();
 	}
     
