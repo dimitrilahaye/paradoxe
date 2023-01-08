@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "level7.tmx",
+    "activeFile": "level2.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -201,19 +201,20 @@
         },
         "level1.tmx": {
             "expandedObjectLayers": [
+                33,
                 20,
-                11,
+                19,
+                17,
+                14,
                 31,
                 30,
-                14,
-                19,
-                17
+                11
             ],
-            "scale": 0.75,
-            "selectedLayer": 8,
+            "scale": 1.5,
+            "selectedLayer": 12,
             "viewCenter": {
-                "x": 351.33333333333337,
-                "y": 248.66666666666669
+                "x": 318.33333333333337,
+                "y": 125.66666666666669
             }
         },
         "level1.tmx#tileset": {
@@ -222,16 +223,18 @@
         },
         "level2.tmx": {
             "expandedObjectLayers": [
-                11,
-                15,
+                20,
+                17,
                 14,
-                17
+                31,
+                30,
+                11
             ],
-            "scale": 8,
-            "selectedLayer": 10,
+            "scale": 0.75,
+            "selectedLayer": 18,
             "viewCenter": {
-                "x": 421,
-                "y": 211.8125
+                "x": 59.333333333333314,
+                "y": 476.6666666666666
             }
         },
         "level2.tmx#tileset": {
@@ -364,18 +367,20 @@
         "tutorials.tmx": {
             "expandedObjectLayers": [
                 20,
-                11,
+                32,
+                19,
+                17,
+                14,
                 31,
                 30,
-                14,
                 29,
-                17
+                11
             ],
-            "scale": 1.5,
-            "selectedLayer": 17,
+            "scale": 2,
+            "selectedLayer": 10,
             "viewCenter": {
-                "x": 2016.3333333333333,
-                "y": 553.6666666666666
+                "x": 1199.75,
+                "y": 176
             }
         },
         "tutorials.tmx#tileset": {
@@ -395,28 +400,25 @@
     "map.tileWidth": 32,
     "map.width": 40,
     "openFiles": [
+        "tutorials.tmx",
         "level1.tmx",
-        "level2.tmx",
-        "level3.tmx",
-        "level5.tmx",
-        "level7.tmx",
-        "level4.tmx"
+        "level2.tmx"
     ],
     "project": "paradoxe.tiled-project",
     "property.type": "TimePortalType",
     "recentFiles": [
+        "tutorials.tmx",
         "level1.tmx",
+        "level2.tmx",
         "game-screen.tmx",
         "level6.tmx",
         "level7.tmx",
         "level0.tmx",
-        "level2.tmx",
         "level3.tmx",
         "level4.tmx",
         "level5.tmx",
         "level8.tmx",
-        "game-screen.json",
-        "title.json"
+        "game-screen.json"
     ],
     "resizeMap.removeObjects": false,
     "tileset.embedInMap": true,
