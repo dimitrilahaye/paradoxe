@@ -34,7 +34,6 @@ export enum ObjectName {
     START = 'start',
     END = 'end',
     DIALOG = 'dialog',
-    STAIRS_DETECTION = 'stairs_detection',
     STAIRS_LINE = 'stairs_line',
     SPATIAL_DOOR = 'spatial_door',
 }
@@ -63,6 +62,7 @@ export enum LayerName {
     GROUND = 'ground',
     BACKGROUND = 'background',
     STAIRS = 'stairs',
+    PLATFORM_COLLIDERS = 'platform_colliders',
     TITLE = 'title',
 }
 

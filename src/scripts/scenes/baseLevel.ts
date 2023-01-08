@@ -43,6 +43,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	protected doubleSwitchersGroup: Phaser.GameObjects.Group;
 	protected multiTimeTeleportersGroup: Phaser.GameObjects.Group;
 	protected multiSwitchersGroup: Phaser.GameObjects.Group;
+	private platformCollidersGroup: Phaser.Physics.Arcade.StaticGroup;
 	
 	protected player: Player;
 	protected doorEntrance: DoorEntrance;
@@ -71,6 +72,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		this.hasMusic = this.store.get<boolean>('music') ?? true;
 		this.currentScore = this.store.get<number>('score') ?? 0;
 		this.musicHasBeenPlayed = false;
+		this.platformCollidersGroup = this.physics.add.staticGroup();
 		this.ballGroup = this.add.group();
 		this.spatialTeleportersGroup = this.add.group();
 		this.simpleTimeTeleporterGroup = this.add.group();
@@ -232,6 +234,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		this.cameras.main.setLerp(0.1, 0.1);
 
 		this.physics.add.collider(this.player, [this.groundLayer, this.platformsLayer]);
+		this.physics.add.collider(this.player, this.platformCollidersGroup);
 		if (this.stairsLayer) {
 			this.physics.add.collider(this.player, this.stairsLayer);
 		}
@@ -638,6 +641,21 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		this.physics.world.setBounds(0, 0, this.tilemap.widthInPixels, this.tilemap.heightInPixels);
 
 		this.utils.init(this.tilemap);
+
+		const platformCollidersLayer = this.tilemap.getObjectLayer(LayerName.PLATFORM_COLLIDERS);
+		if (platformCollidersLayer) {
+			const colliders = platformCollidersLayer.objects;
+			if (colliders.length > 0) {
+				for (const collider of colliders) {
+					const colliderObject = this.platformCollidersGroup.create(collider.x, collider.y, undefined, undefined, false);
+					colliderObject.setScale(1);
+					colliderObject.setOrigin(0.5);
+					colliderObject.body.width = 32;
+					colliderObject.body.height = 32;
+					this.platformCollidersGroup.refresh();
+				}
+			}
+		}
 	}
 
 	// generic
