@@ -187,11 +187,6 @@
                  "name":"collides",
                  "type":"bool",
                  "value":true
-                }, 
-                {
-                 "name":"stairs",
-                 "type":"bool",
-                 "value":true
                 }]
         }, 
         {
@@ -282,11 +277,6 @@
                  "name":"collides",
                  "type":"bool",
                  "value":true
-                }, 
-                {
-                 "name":"stairs",
-                 "type":"bool",
-                 "value":true
                 }]
         }, 
         {
@@ -332,11 +322,6 @@
                  "name":"collides",
                  "type":"bool",
                  "value":true
-                }, 
-                {
-                 "name":"stairs",
-                 "type":"bool",
-                 "value":true
                 }]
         }, 
         {
@@ -344,11 +329,6 @@
          "properties":[
                 {
                  "name":"collides",
-                 "type":"bool",
-                 "value":true
-                }, 
-                {
-                 "name":"stairs",
                  "type":"bool",
                  "value":true
                 }]
@@ -746,7 +726,7 @@
                 {
                  "name":"collides",
                  "type":"bool",
-                 "value":false
+                 "value":true
                 }]
         }, 
         {
@@ -836,7 +816,7 @@
                 {
                  "name":"collides",
                  "type":"bool",
-                 "value":false
+                 "value":true
                 }]
         }, 
         {

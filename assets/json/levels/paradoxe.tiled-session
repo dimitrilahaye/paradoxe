@@ -11,7 +11,7 @@
     "fileStates": {
         "": {
             "scaleInDock": 1,
-            "scaleInEditor": 1
+            "scaleInEditor": 3
         },
         "/home/dimitrilahaye/Documents/projets/games/paradoxe/game/paradox_tileset.tsx": {
             "dynamicWrapping": true,
@@ -201,15 +201,19 @@
         },
         "level1.tmx": {
             "expandedObjectLayers": [
+                20,
                 11,
+                31,
+                30,
                 14,
+                19,
                 17
             ],
-            "scale": 1,
-            "selectedLayer": 2,
+            "scale": 0.75,
+            "selectedLayer": 8,
             "viewCenter": {
-                "x": 312,
-                "y": 399.5
+                "x": 351.33333333333337,
+                "y": 248.66666666666669
             }
         },
         "level1.tmx#tileset": {
@@ -360,21 +364,18 @@
         "tutorials.tmx": {
             "expandedObjectLayers": [
                 20,
-                27,
                 11,
-                24,
+                31,
+                30,
                 14,
                 29,
-                28,
-                19,
-                17,
-                23
+                17
             ],
-            "scale": 5.5,
-            "selectedLayer": 1,
+            "scale": 1.5,
+            "selectedLayer": 17,
             "viewCenter": {
-                "x": 528.6363636363637,
-                "y": 623.1818181818182
+                "x": 2016.3333333333333,
+                "y": 553.6666666666666
             }
         },
         "tutorials.tmx#tileset": {
@@ -404,6 +405,7 @@
     "project": "paradoxe.tiled-project",
     "property.type": "TimePortalType",
     "recentFiles": [
+        "level1.tmx",
         "game-screen.tmx",
         "level6.tmx",
         "level7.tmx",
@@ -413,7 +415,6 @@
         "level4.tmx",
         "level5.tmx",
         "level8.tmx",
-        "level1.tmx",
         "game-screen.json",
         "title.json"
     ],
