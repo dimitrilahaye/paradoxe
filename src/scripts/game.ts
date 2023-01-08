@@ -1,14 +1,18 @@
 import 'phaser';
+
 import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
-import PreloadStartScreen from './scenes/preloadStartScreen';
-import StartScreen from './scenes/startScreen';
 import UtilsPlugin from './plugins/utilsPlugin';
 import StorePlugin from './plugins/storePlugin';
 import TranslatePlugin from './plugins/translatePlugin';
-import PreloadTutorials from './scenes/preloadTutorials';
-import Tutorials from './scenes/tutorials';
-import Level1 from './scenes/level1';
-import PreloadLevel1 from './scenes/preloadLevel1';
+
+import PreloadStartScreen from './scenes/startScreen/preload';
+import StartScreen from './scenes/startScreen/scene';
+import PreloadTutorials from './scenes/tutorials/preload';
+import Tutorials from './scenes/tutorials/scene';
+import PreloadLevel1 from './scenes/level2/preload';
+import Level1 from './scenes/level2/scene';
+import PreloadLevel2 from './scenes/level1/preload';
+import Level2 from './scenes/level1/scene';
 
 const DEFAULT_WIDTH = 608;
 const DEFAULT_HEIGHT = 352;
@@ -26,16 +30,18 @@ const config: Phaser.Types.Core.GameConfig = {
 	},
 	scene: [
 		PreloadStartScreen,
+		StartScreen,
 		PreloadTutorials,
+		Tutorials,
 		PreloadLevel1,
 		Level1,
-		StartScreen,
-		Tutorials,
+		PreloadLevel2,
+		Level2,
 	],
 	physics: {
 		default: 'arcade',
 		arcade: {
-			debug: true,
+			debug: false,
 			gravity: { y: 500 },
 		},
 	},

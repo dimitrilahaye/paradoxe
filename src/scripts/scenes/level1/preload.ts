@@ -1,7 +1,7 @@
-import BasePreloadLevel from './basePreloadLevel';
-import { SceneKey } from '../types';
+import BasePreloadLevel from '../basePreloadLevel';
+import { SceneKey } from '../../types';
 
-export default class PreloadLevel1 extends BasePreloadLevel {
+export default class Preload extends BasePreloadLevel {
 	constructor() {
 		super(SceneKey.PreloadLevel1, SceneKey.Level1, 'level1');
 	}

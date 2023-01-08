@@ -292,16 +292,16 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
 	private initKeyboardInputs() {
 		this.left = this.scene.input.keyboard.addKey(
-			Phaser.Input.Keyboard.KeyCodes.LEFT
+			Phaser.Input.Keyboard.KeyCodes.Q
 		);
 		this.right = this.scene.input.keyboard.addKey(
-			Phaser.Input.Keyboard.KeyCodes.RIGHT
+			Phaser.Input.Keyboard.KeyCodes.S
 		);
 		this.enter = this.scene.input.keyboard.addKey(
 			Phaser.Input.Keyboard.KeyCodes.ENTER
 		);
 		this.shot = this.scene.input.keyboard.addKey(
-			Phaser.Input.Keyboard.KeyCodes.SPACE
+			Phaser.Input.Keyboard.KeyCodes.SHIFT
 		);
 	}
 

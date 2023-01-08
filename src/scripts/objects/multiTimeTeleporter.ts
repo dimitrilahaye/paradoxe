@@ -24,22 +24,7 @@ export default class MultiTimeTeleporter extends Phaser.Physics.Arcade.Sprite {
     
 	create() {
     	this.scene.events.on('MultiSwitcher::activate', (group: number, num: number) => {
-    		if (group === this.group && num === this.num) {
-				const firstOpenedOpposite = this.oppositeMultiTimeTeleporters.find((teleporter) => teleporter.alive);
-    			const firstClosedOpposite = this.oppositeMultiTimeTeleporters.find((teleporter) => !teleporter.alive);
-				
-				if (firstOpenedOpposite) {
-					firstOpenedOpposite.setToClose();
-				}
-				if (!this.alive) {
-					this.setToOpen();
-				} else if (firstClosedOpposite) {
-					firstClosedOpposite.setToOpen();
-				}
-    			
-				const firstOpposite = this.oppositeMultiTimeTeleporters.shift();
-    			this.oppositeMultiTimeTeleporters.push(firstOpposite as MultiTimeTeleporter);
-    		}
+			this.switch(group, num);
     	});
 		this.scene.events.on('Store::fx', (isOn) => {
 			this.hasFx = isOn;
@@ -48,6 +33,25 @@ export default class MultiTimeTeleporter extends Phaser.Physics.Arcade.Sprite {
 	
 	// update() {
 	// }
+
+	private switch(group: number, num: number) {
+		if (group === this.group && num === this.num) {
+			const firstOpenedOpposite = this.oppositeMultiTimeTeleporters.find((teleporter) => teleporter.alive);
+			const firstClosedOpposite = this.oppositeMultiTimeTeleporters.find((teleporter) => !teleporter.alive);
+			
+			if (firstOpenedOpposite) {
+				firstOpenedOpposite.setToClose();
+			}
+			if (!this.alive) {
+				this.setToOpen();
+			} else if (firstClosedOpposite) {
+				firstClosedOpposite.setToOpen();
+			}
+			
+			const firstOpposite = this.oppositeMultiTimeTeleporters.shift();
+			this.oppositeMultiTimeTeleporters.push(firstOpposite as MultiTimeTeleporter);
+		}
+	}
 	
 	public setToOpen() {
     	this.alive = true;

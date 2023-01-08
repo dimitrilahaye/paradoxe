@@ -1,7 +1,6 @@
 import { Coordinates } from '../types';
 
 export default class DoubleTimeTeleporter extends Phaser.Physics.Arcade.Sprite {
-	private collidersGroup: Phaser.Physics.Arcade.Collider[] = [];
 	private oppositeDoubleTimeTeleporter: DoubleTimeTeleporter;
 	private alive = true;
 	private hasFx: boolean;
@@ -29,21 +28,17 @@ export default class DoubleTimeTeleporter extends Phaser.Physics.Arcade.Sprite {
 			if (this.alive) {
 				this.alive = false;
 				this.setTexture('tp_red_close');
-				this.collidersGroup.forEach((collider) => this.scene.physics.world.removeCollider(collider));
+				this.scene.events.emit('DoubleTimeTeleporter::isClosed', this);
 			} else {
 				this.alive = true;
 				this.setTexture('tp_red');
-				this.scene.events.emit('DoubleTimeTeleporter::isAlive', this);
+				this.scene.events.emit('DoubleTimeTeleporter::isOpen', this);
 			}
 		}
 	}
 
 	// update() {
 	// }
-	
-	public addColliders(...collider: Phaser.Physics.Arcade.Collider[]) {
-    	this.collidersGroup.push(...collider);
-	}
     
 	public addOpposite(opposite: DoubleTimeTeleporter): void {
     	this.oppositeDoubleTimeTeleporter = opposite;

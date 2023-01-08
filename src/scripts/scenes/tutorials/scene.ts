@@ -1,7 +1,7 @@
-import { LayerName, SceneKey } from '../types';
-import BaseLevel from './baseLevel';
+import { LayerName, SceneKey } from '../../types';
+import BaseLevel from '../baseLevel';
 
-export default class Tutorials extends BaseLevel {
+export default class Scene extends BaseLevel {
 	private endTutorialsMessagePlayed = false;
 	constructor() {
 		super(SceneKey.Tutorials, SceneKey.StartScreen, 'tutorials');

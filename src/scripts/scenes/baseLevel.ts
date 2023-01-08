@@ -163,8 +163,9 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		this.events.off('RedSpatialTeleporter::activate');
 		this.events.off('SimpleSwitcher::activate');
 		this.events.off('SimpleTimeTeleporter::activate');
-		this.events.off('SimpleTimeTeleporter::isAlive');
-		this.events.off('DoubleTimeTeleporter::isAlive');
+		this.events.off('SimpleTimeTeleporter::isOpen');
+		this.events.off('SimpleTimeTeleporter::::isClosed');
+		this.events.off('DoubleTimeTeleporter::isOpen');
 		this.events.off('SoundSwitcher::fx');
 		this.events.off('TutorialsSwitcher::tutorials');
 		this.events.off('Store::lang');
@@ -259,12 +260,14 @@ export default abstract class BaseLevel extends Phaser.Scene {
 			case 'simple': {
 				const simpleTimeTeleporter = new SimpleTimeTeleporter(this, object?.x || 0, object?.y || 0, group);
 				this.simpleTimeTeleporterGroup.add(simpleTimeTeleporter);
+				this.physics.add.collider(simpleTimeTeleporter, [this.groundLayer, this.platformsLayer]);
 				break;
 			}
 			case 'double': {
 				// create portal
 				const doubleTimeTeleporter = new DoubleTimeTeleporter(this, object?.x || 0, object?.y || 0, group, num);
 				this.doubleTimeTeleportersGroup.add(doubleTimeTeleporter);
+				this.physics.add.collider(doubleTimeTeleporter, [this.groundLayer, this.platformsLayer]);
 				
 				// search for opposite
 				const opposite = this.utils.findObjectOnGroup(this.doubleTimeTeleportersGroup, (tp) => {
@@ -282,24 +285,14 @@ export default abstract class BaseLevel extends Phaser.Scene {
 				const { close } = properties;
 				const multiTimeTeleporter = new MultiTimeTeleporter(this, object?.x || 0, object?.y || 0, group, num, close);
 				this.multiTimeTeleportersGroup.add(multiTimeTeleporter);
+				this.physics.add.collider(multiTimeTeleporter, [this.groundLayer, this.platformsLayer]);
 				break;
 			}
 			}
 		}
 
-		this.physics.add.collider([
-			this.simpleTimeTeleporterGroup,
-			this.doubleTimeTeleportersGroup,
-			this.multiTimeTeleportersGroup
-		], [this.groundLayer, this.platformsLayer]);
-
-		this.utils.iterateOnGroup(this.simpleTimeTeleporterGroup, (simpleTimeTeleporter: SimpleTimeTeleporter) => {
-			this.initCollidersForSimpleTimeTeleporter(simpleTimeTeleporter);
-		});
-
-		this.utils.iterateOnGroup(this.doubleTimeTeleportersGroup, (teleporter: DoubleTimeTeleporter) => {
-			this.initCollidersForDoubleTimeTeleporter(teleporter);
-		});
+		this.initCollidersForSimpleTimeTeleporters();
+		this.initCollidersForDoubleTimeTeleporters();
 
 		this.utils.iterateOnGroup(this.multiTimeTeleportersGroup, (tp: MultiTimeTeleporter) => {
 			this.initCollidersForMultiTimeTeleporter(tp.group, tp.num);
@@ -307,13 +300,21 @@ export default abstract class BaseLevel extends Phaser.Scene {
 
 		this.initMultiTimeTeleportersOpposites();
 		this.closeMultiTimeTeleporters();
-		this.listenToMultiTimeTeleportersEvents();
 
-		this.events.on('SimpleTimeTeleporter::isAlive', (teleporter: SimpleTimeTeleporter) => {
-			this.initCollidersForSimpleTimeTeleporter(teleporter);
+		this.events.on('SimpleTimeTeleporter::isOpen', (teleporter: SimpleTimeTeleporter) => {
+			this.simpleTimeTeleporterGroup.add(teleporter);
 		});
-		this.events.on('DoubleTimeTeleporter::isAlive', (teleporter: DoubleTimeTeleporter) => {
-			this.initCollidersForDoubleTimeTeleporter(teleporter);
+		this.events.on('SimpleTimeTeleporter::::isClosed', (teleporter: SimpleTimeTeleporter) => {
+			this.simpleTimeTeleporterGroup.remove(teleporter);
+		});
+		this.events.on('DoubleTimeTeleporter::isOpen', (teleporter: DoubleTimeTeleporter) => {
+			this.doubleTimeTeleportersGroup.add(teleporter);
+		});
+		this.events.on('DoubleTimeTeleporter::isClosed', (teleporter: DoubleTimeTeleporter) => {
+			this.doubleTimeTeleportersGroup.remove(teleporter);
+		});
+		this.events.on('MultiTimeTeleporter::setToOpen', (group: number, num: number) => {
+			this.initCollidersForMultiTimeTeleporter(group, num);
 		});
 	}
 	
@@ -328,32 +329,30 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		});
 	}
 
-	private initCollidersForDoubleTimeTeleporter(teleporter: DoubleTimeTeleporter) {
-		const playerCollider = this.physics.add.collider(this.player, teleporter, () => {
+	private initCollidersForDoubleTimeTeleporters() {
+		this.physics.add.collider(this.player, this.doubleTimeTeleportersGroup, (_, teleporter) => {
 			this.utils.shakeOnTpCollision();
-
-			teleporter.activate();
+			const t = teleporter as DoubleTimeTeleporter;
+			t.activate();
 
 			const dirX = this.player.direction === 'left' ? -20 : +20;
-			const pastPlayer = new PastPlayer(this, teleporter.x - dirX, teleporter.y, this.player);
+			const pastPlayer = new PastPlayer(this, t.x - dirX, t.y, this.player);
 			this.pastPlayersGroup.add(pastPlayer);
 		});
 
-		const ballsCollider = this.physics.add.collider(teleporter, this.ballGroup, (_, ball) => {
+		this.physics.add.collider(this.doubleTimeTeleportersGroup, this.ballGroup, (_, ball) => {
 			ball.destroy();
 		});
 
-		this.physics.add.collider(teleporter, this.pastPlayersGroup, (_, pp) => {
+		this.physics.add.collider(this.doubleTimeTeleportersGroup, this.pastPlayersGroup, (_, pp) => {
 			const currentX = (pp.body.gameObject as PastPlayer).x;
 			const dirX = this.player.direction === 'left' ? -20 : +20;
 			(pp.body.gameObject as PastPlayer).setX(currentX - dirX);
 		});
-
-		teleporter.addColliders(ballsCollider, playerCollider);
 	}
 
-	private initCollidersForSimpleTimeTeleporter(simpleTimeTeleporter: SimpleTimeTeleporter) {
-		const playerCollider = this.physics.add.collider(this.player, this.simpleTimeTeleporterGroup, (_, teleporter) => {
+	private initCollidersForSimpleTimeTeleporters() {
+		this.physics.add.collider(this.player, this.simpleTimeTeleporterGroup, (_, teleporter) => {
 			this.utils.shakeOnTpCollision();
 			const t = teleporter as SimpleTimeTeleporter;
 			t.activate();
@@ -364,7 +363,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 			this.pastPlayersGroup.add(pastPlayer);
 		});
 
-		const ballsCollider = this.physics.add.collider(this.simpleTimeTeleporterGroup, this.ballGroup, (_, ball) => {
+		this.physics.add.collider(this.simpleTimeTeleporterGroup, this.ballGroup, (_, ball) => {
 			ball.destroy();
 		});
 
@@ -378,8 +377,6 @@ export default abstract class BaseLevel extends Phaser.Scene {
 				(pp.body.gameObject as PastPlayer).setX(currentPastPlayerX + 20);
 			}
 		});
-
-		simpleTimeTeleporter.addColliders(playerCollider, ballsCollider);
 	}
 
 	// new build for all time switchers
@@ -463,13 +460,13 @@ export default abstract class BaseLevel extends Phaser.Scene {
 			}
 		});
 
-		this.physics.add.collider(multiTimeTeleporter, this.pastPlayersGroup, (_, pp) => {
+		const pastPlayersCollider = this.physics.add.collider(multiTimeTeleporter, this.pastPlayersGroup, (_, pp) => {
 			const currentX = (pp.body.gameObject as PastPlayer).x;
 			const dirX = this.player.direction === 'left' ? -20 : +20;
 			(pp.body.gameObject as PastPlayer).setX(currentX - dirX);
 		});
 
-		multiTimeTeleporter.addColliders(ballsCollider, playerCollider);
+		multiTimeTeleporter.addColliders(ballsCollider, playerCollider, pastPlayersCollider);
 	}
 
 	private checkForTeleportersActivation() {
@@ -504,13 +501,6 @@ export default abstract class BaseLevel extends Phaser.Scene {
 					switcher.activate();
 				}
 			}
-		});
-	}
-
-	// generic levels factories
-	private listenToMultiTimeTeleportersEvents() {
-		this.events.on('MultiTimeTeleporter::setToOpen', (group: number, num: number) => {
-			this.initCollidersForMultiTimeTeleporter(group, num);
 		});
 	}
 

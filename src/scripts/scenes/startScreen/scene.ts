@@ -1,20 +1,20 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Coordinates } from './../types';
-import { LayerName, ObjectName, SceneKey } from '../types';
-import DoorEntrance from '../objects/doorEntrance';
-import DoorExit from '../objects/doorExit';
-import EnSwitcher from '../objects/enSwitcher';
-import FrSwitcher from '../objects/frSwitcher';
-import MusicSwitcher from '../objects/musicSwitcher';
-import Player from '../objects/player';
-import SoundSwitcher from '../objects/soundSwitcher';
-import TutorialsSwitcher from '../objects/tutorialsSwitcher';
-import MyTextBox from '../ui/myTextBox';
-import StartNewGame from '../objects/startNewGame';
-import ContinueGame from '../objects/continueGame';
-import TutorialsGame from '../objects/tutorialsGame';
+import { Coordinates } from '../../types';
+import { LayerName, ObjectName, SceneKey } from '../../types';
+import DoorEntrance from '../../objects/doorEntrance';
+import DoorExit from '../../objects/doorExit';
+import EnSwitcher from '../../objects/enSwitcher';
+import FrSwitcher from '../../objects/frSwitcher';
+import MusicSwitcher from '../../objects/musicSwitcher';
+import Player from '../../objects/player';
+import SoundSwitcher from '../../objects/soundSwitcher';
+import TutorialsSwitcher from '../../objects/tutorialsSwitcher';
+import MyTextBox from '../../ui/myTextBox';
+import StartNewGame from '../../objects/startNewGame';
+import ContinueGame from '../../objects/continueGame';
+import TutorialsGame from '../../objects/tutorialsGame';
 
-export default abstract class StartScreen extends Phaser.Scene {
+export default abstract class Scene extends Phaser.Scene {
 	protected music: Phaser.Sound.BaseSound;
 	protected tilemap: Phaser.Tilemaps.Tilemap;
 	protected tileset: Phaser.Tilemaps.Tileset;
@@ -151,8 +151,8 @@ export default abstract class StartScreen extends Phaser.Scene {
 		this.events.off('RedSpatialTeleporter::activate');
 		this.events.off('SimpleSwitcher::activate');
 		this.events.off('SimpleTimeTeleporter::activate');
-		this.events.off('SimpleTimeTeleporter::isAlive');
-		this.events.off('DoubleTimeTeleporter::isAlive');
+		this.events.off('SimpleTimeTeleporter::isOpen');
+		this.events.off('DoubleTimeTeleporter::isOpen');
 		this.events.off('SoundSwitcher::fx');
 		this.events.off('TutorialsSwitcher::tutorials');
 		this.events.off('Store::lang');

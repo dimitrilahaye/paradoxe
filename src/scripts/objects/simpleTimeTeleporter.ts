@@ -1,5 +1,4 @@
 export default class SimpleTimeTeleporter extends Phaser.Physics.Arcade.Sprite {
-	private collidersGroup: Phaser.Physics.Arcade.Collider[] = [];
     private alive = true;
 	private hasFx: boolean;
 
@@ -14,7 +13,7 @@ export default class SimpleTimeTeleporter extends Phaser.Physics.Arcade.Sprite {
     
 	create() {
     	this.scene.events.on('SimpleSwitcher::activate', (group: number) => {
-    		this.switch(group);
+			this.switch(group);
     	});
 		this.scene.events.on('Store::fx', (isOn) => {
 			this.hasFx = isOn;
@@ -26,17 +25,13 @@ export default class SimpleTimeTeleporter extends Phaser.Physics.Arcade.Sprite {
 			if (this.alive) {
 				this.alive = false;
 				this.setTexture('tp_green_close');
-				this.collidersGroup.forEach((collider) => this.scene.physics.world.removeCollider(collider));
+				this.scene.events.emit('SimpleTimeTeleporter::::isClosed', this);
 			} else {
 				this.alive = true;
 				this.setTexture('tp_green');
-				this.scene.events.emit('SimpleTimeTeleporter::isAlive', this);
+				this.scene.events.emit('SimpleTimeTeleporter::isOpen', this);
 			}
 		}
-	}
-
-	public addColliders(...collider: Phaser.Physics.Arcade.Collider[]) {
-    	this.collidersGroup.push(...collider);
 	}
 
 	public activate(): void {
