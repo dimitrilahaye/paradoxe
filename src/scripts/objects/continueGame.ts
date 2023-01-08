@@ -1,4 +1,4 @@
-import { SceneKey } from './../scenes/index';
+import { SceneKey } from '../types';
 export default class ContinueGame extends Phaser.Physics.Arcade.Sprite {
 	private _isOpen: boolean;
 	private hasFx: boolean;

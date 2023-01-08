@@ -6,10 +6,10 @@ import Score from './score';
 
 export default class TopUiContainer {
 	constructor(scene: Phaser.Scene) {
-		new ExitButton(scene, 30, 60);
-		new ResetButton(scene, 80, 60);
-		new MusicButton(scene, 130, 60);
-		new FxButton(scene, 180, 60);
-		new Score(scene, 280, 94);
+		new ExitButton(scene, 30, 30);
+		new ResetButton(scene, 80, 30);
+		new MusicButton(scene, 130, 30);
+		new FxButton(scene, 180, 30);
+		new Score(scene, 280, 64);
 	}
 }

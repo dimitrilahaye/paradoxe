@@ -1,4 +1,4 @@
-import { SceneKey } from './index';
+import { SceneKey } from '../types';
 export default abstract class BasePreloadLevel extends Phaser.Scene {
 	private key: SceneKey;
 

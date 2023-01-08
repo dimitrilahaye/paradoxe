@@ -28,6 +28,7 @@ export default class SpatialTeleporter extends Phaser.Physics.Arcade.Sprite {
     ) {
     	super(scene, x, y, key);
     	scene.add.existing(this);
+    	this.hasFx = this.scene.store.get<boolean>('fx') ?? true;
     	this.create();
     }
 

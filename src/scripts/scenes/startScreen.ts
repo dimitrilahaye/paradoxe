@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Coordinates } from './../types';
-import { LayerName, ObjectName } from '../objects';
+import { LayerName, ObjectName, SceneKey } from '../types';
 import DoorEntrance from '../objects/doorEntrance';
 import DoorExit from '../objects/doorExit';
 import EnSwitcher from '../objects/enSwitcher';
@@ -10,10 +10,8 @@ import Player from '../objects/player';
 import SoundSwitcher from '../objects/soundSwitcher';
 import TutorialsSwitcher from '../objects/tutorialsSwitcher';
 import MyTextBox from '../ui/myTextBox';
-import { SceneKey } from './index';
 import StartNewGame from '../objects/startNewGame';
 import ContinueGame from '../objects/continueGame';
-import Tutorials from './tutorials';
 import TutorialsGame from '../objects/tutorialsGame';
 
 export default abstract class StartScreen extends Phaser.Scene {
@@ -76,8 +74,8 @@ export default abstract class StartScreen extends Phaser.Scene {
 		this.buildWhiteSwitchers();
 
 		this.initTutorialsGame();
-		// this.initStartNewGame();
-		// this.initContinueGame();
+		this.initStartNewGame();
+		this.initContinueGame();
 		
 		this.listenToPlayerEvents();
 		this.listenToMyTextBoxEvents();
@@ -89,8 +87,8 @@ export default abstract class StartScreen extends Phaser.Scene {
 		this.addDialog(0, this.translate.get(SceneKey.StartScreen, 0));
 
 		this.listenToTutorialsGameEvents();
-		// this.listenToStartNewGameEvents();
-		// this.listenToContinueGameEvents();
+		this.listenToStartNewGameEvents();
+		this.listenToContinueGameEvents();
 		this.initAllowsTutorialsOption();
 		this.listenToMusicSwitcherEvents();
 		this.listenToTutorialsSwitcherEvents();
@@ -103,8 +101,8 @@ export default abstract class StartScreen extends Phaser.Scene {
 		this.checkForOptions();
 
 		this.checkTutorialsGame();
-		// this.checkStartNewGame();
-		// this.checkContinueGame();
+		this.checkStartNewGame();
+		this.checkContinueGame();
 	}
 
 	private listenToFxButtonEvents() {
@@ -152,6 +150,8 @@ export default abstract class StartScreen extends Phaser.Scene {
 		this.events.off('RedSpatialTeleporter::activate');
 		this.events.off('SimpleSwitcher::activate');
 		this.events.off('SimpleTimeTeleporter::activate');
+		this.events.off('SimpleTimeTeleporter::isAlive');
+		this.events.off('DoubleTimeTeleporter::isAlive');
 		this.events.off('SoundSwitcher::fx');
 		this.events.off('TutorialsSwitcher::tutorials');
 		this.events.off('Store::lang');

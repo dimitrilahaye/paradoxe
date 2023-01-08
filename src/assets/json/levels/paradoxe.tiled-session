@@ -205,11 +205,11 @@
                 14,
                 17
             ],
-            "scale": 1,
-            "selectedLayer": 2,
+            "scale": 1.5,
+            "selectedLayer": 7,
             "viewCenter": {
-                "x": 312,
-                "y": 399.5
+                "x": 303.6666666666667,
+                "y": 877
             }
         },
         "level1.tmx#tileset": {
@@ -360,21 +360,18 @@
         "tutorials.tmx": {
             "expandedObjectLayers": [
                 20,
-                27,
                 11,
-                24,
+                31,
+                30,
                 14,
                 29,
-                28,
-                19,
-                17,
-                23
+                17
             ],
-            "scale": 5.5,
-            "selectedLayer": 1,
+            "scale": 1.5,
+            "selectedLayer": 17,
             "viewCenter": {
-                "x": 528.6363636363637,
-                "y": 623.1818181818182
+                "x": 2016.3333333333333,
+                "y": 553.6666666666666
             }
         },
         "tutorials.tmx#tileset": {

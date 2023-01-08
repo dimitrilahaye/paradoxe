@@ -1,3 +1,4 @@
+import { Depth } from './../types';
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import frameRate from '../decorators/frameRate';
 import { Coordinates, PlayerDirection } from '../types';
@@ -285,7 +286,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
 	private initCharacs() {
 		this.body.setSize(2);
-		this.setDepth(1);
+		this.setDepth(Depth.PLAYER);
 		this.direction = 'right';
 	}
 

@@ -11,11 +11,14 @@ To cross each room of this place, you will have to face travels in time and spac
 ## MPG (Minimum Playable Game)
 - [ ] **WIP:** :construction: Re-do levels
 - [ ] "Tutorial option" becomes "Dialogs option"
+- [ ] Alert signal during paradoxs phases
+- [ ] level selection
+  - [ ] selection screen
+  - [ ] success
 - [ ] :bug: Bugs fixes
   - [ ] Translations not working on start screen at the opening of the game
   - [ ] Music does not quite if clicks too fast
 - [ ] Add game in itchi.io
-- [ ] Alert signal during paradoxs phases
 - [X] Add tutorial room
 - [X] TODOs
 - [X] scenes creation
@@ -65,8 +68,6 @@ To cross each room of this place, you will have to face travels in time and spac
 
 ## Future steps
 - [ ] bigger levels + minimap!!!
-- [ ] level selection
-- [ ] success
 - [ ] sprites titles level
 - [ ] time gardians (wtf???)
 - [ ] tps with arrows

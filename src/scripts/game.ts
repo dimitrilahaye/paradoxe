@@ -7,9 +7,11 @@ import StorePlugin from './plugins/storePlugin';
 import TranslatePlugin from './plugins/translatePlugin';
 import PreloadTutorials from './scenes/preloadTutorials';
 import Tutorials from './scenes/tutorials';
+import Level1 from './scenes/level1';
+import PreloadLevel1 from './scenes/preloadLevel1';
 
-const DEFAULT_WIDTH = 700;
-const DEFAULT_HEIGHT = 480;
+const DEFAULT_WIDTH = 608;
+const DEFAULT_HEIGHT = 352;
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
@@ -23,15 +25,17 @@ const config: Phaser.Types.Core.GameConfig = {
 		height: DEFAULT_HEIGHT,
 	},
 	scene: [
-		PreloadStartScreen, // start screen
-		PreloadTutorials, // tutorials
+		PreloadStartScreen,
+		PreloadTutorials,
+		PreloadLevel1,
+		Level1,
 		StartScreen,
 		Tutorials,
 	],
 	physics: {
 		default: 'arcade',
 		arcade: {
-			debug: true,
+			debug: false,
 			gravity: { y: 500 },
 		},
 	},

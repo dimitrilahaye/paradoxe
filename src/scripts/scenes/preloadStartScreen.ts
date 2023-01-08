@@ -1,4 +1,4 @@
-import { SceneKey } from './index';
+import { SceneKey } from '../types';
 export default class PreloadStartScreen extends Phaser.Scene {
 	constructor() {
 		super({ key: SceneKey.PreloadStartScreen });

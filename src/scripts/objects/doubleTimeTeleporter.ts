@@ -17,17 +17,27 @@ export default class DoubleTimeTeleporter extends Phaser.Physics.Arcade.Sprite {
     
 	create() {
     	this.scene.events.on('DoubleSwitcher::activate', (group: number) => {
-    		if (this.alive && this.group === group) {
-    			this.alive = false;
-    			this.setTexture('tp_red_close');
-    			this.collidersGroup.forEach((collider) => this.scene.physics.world.removeCollider(collider));
-    		}
+    		this.switch(group);
     	});
 		this.scene.events.on('Store::fx', (isOn) => {
 			this.hasFx = isOn;
 		});
 	}
 	
+	private switch(group: number) {
+		if (this.group === group) {
+			if (this.alive) {
+				this.alive = false;
+				this.setTexture('tp_red_close');
+				this.collidersGroup.forEach((collider) => this.scene.physics.world.removeCollider(collider));
+			} else {
+				this.alive = true;
+				this.setTexture('tp_red');
+				this.scene.events.emit('DoubleTimeTeleporter::isAlive', this);
+			}
+		}
+	}
+
 	// update() {
 	// }
 	

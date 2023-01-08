@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-this-alias */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as scenes from '../scenes';
+import * as scenes from '../types';
 
 export type Translations = {
 	[scene: string]: {

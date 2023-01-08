@@ -31,5 +31,6 @@ export default class ExitButton extends Phaser.Physics.Arcade.Sprite {
 		if (hasFx) {
 			this.scene.sound.play('switcher');
 		}
+		this.scene.events.emit('ExitButton::exit');
 	}
 }

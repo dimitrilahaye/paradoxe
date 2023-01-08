@@ -1,6 +1,5 @@
-import { LayerName } from './../objects/index';
+import { LayerName, SceneKey } from '../types';
 import BaseLevel from './baseLevel';
-import { SceneKey } from './index';
 
 export default class Tutorials extends BaseLevel {
 	private endTutorialsMessagePlayed = false;

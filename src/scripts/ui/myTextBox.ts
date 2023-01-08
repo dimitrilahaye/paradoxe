@@ -1,3 +1,4 @@
+import { Depth } from './../types';
 import TextBox from 'phaser3-rex-plugins/templates/ui/textbox/TextBox';
 
 export default class MyTextBox {
@@ -55,7 +56,7 @@ export default class MyTextBox {
 		});
 	
 		this.textBox
-			.setDepth(2)
+			.setDepth(Depth.TEXT_BOX)
 			.setInteractive()
 			.on('pageend', () => {
 				const icon = (ctx.getElement('action') as Phaser.GameObjects.Sprite);

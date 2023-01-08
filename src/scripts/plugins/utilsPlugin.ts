@@ -1,5 +1,4 @@
-import { LayerName } from '../objects';
-import { Coordinates } from '../types';
+import { Coordinates, LayerName } from '../types';
 
 export default class UtilsPlugin extends Phaser.Plugins.ScenePlugin {
 	private tilemap: Phaser.Tilemaps.Tilemap;
