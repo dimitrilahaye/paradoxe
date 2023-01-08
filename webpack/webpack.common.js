@@ -6,19 +6,25 @@ module.exports = {
 	performance: {
 		hints: false,
 		maxEntrypointSize: 702000,
-		maxAssetSize: 702000
+		maxAssetSize: 702000,
 	},
 	entry: ['./src/scripts/game.ts', './webpack/credits.js'],
 	output: {
 		path: path.resolve(__dirname, '../dist'),
 		filename: '[name].bundle.js',
-		chunkFilename: '[name].chunk.js'
+		chunkFilename: '[name].chunk.js',
 	},
 	resolve: {
 		extensions: ['.ts', '.tsx', '.js'],
 	},
 	module: {
-		rules: [{ test: /\.tsx?$|\.jsx?$/, include: path.join(__dirname, '../src'), loader: 'ts-loader' }]
+		rules: [
+			{
+				test: /\.tsx?$|\.jsx?$/,
+				include: path.join(__dirname, '../src'),
+				loader: 'ts-loader',
+			},
+		],
 	},
 	optimization: {
 		splitChunks: {
@@ -27,10 +33,10 @@ module.exports = {
 					test: /[\\/]node_modules[\\/]/,
 					name: 'vendors',
 					chunks: 'all',
-					filename: '[name].bundle.js'
-				}
-			}
-		}
+					filename: '[name].bundle.js',
+				},
+			},
+		},
 	},
 	plugins: [
 		new HtmlWebpackPlugin({ gameName: 'Paradoxe', template: 'src/index.html' }),
@@ -38,8 +44,8 @@ module.exports = {
 			patterns: [
 				{ from: 'src/assets', to: 'assets' },
 				{ from: 'pwa', to: '' },
-				{ from: 'src/favicon.ico', to: '' }
+				{ from: 'src/favicon.ico', to: '' },
 			],
-		})
-	]
+		}),
+	],
 };
