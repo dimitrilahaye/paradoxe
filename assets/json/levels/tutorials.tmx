@@ -1407,8 +1407,8 @@
   </data>
  </layer>
  <objectgroup id="17" name="player">
-  <object id="13" name="end" x="2318" y="268"/>
-  <object id="70" name="start" x="47.5" y="268"/>
+  <object id="13" name="end" x="2321" y="269"/>
+  <object id="70" name="start" x="48.5" y="267"/>
  </objectgroup>
  <objectgroup id="32" name="platform_colliders">
   <object id="63" name="platform_colliders" x="1704" y="186"/>
@@ -1423,11 +1423,11 @@
   </object>
  </objectgroup>
  <objectgroup id="11" name="doors">
-  <object id="3" name="start" x="48.75" y="268"/>
-  <object id="12" name="end" x="2318" y="267.5"/>
+  <object id="3" name="start" x="49.75" y="267"/>
+  <object id="12" name="end" x="2321" y="268.5"/>
  </objectgroup>
  <objectgroup id="14" name="dialogs">
-  <object id="37" name="dialog" class="Dialog" x="271.333" y="272">
+  <object id="37" name="dialog" class="Dialog" x="272.333" y="272">
    <properties>
     <property name="num" type="int" value="1"/>
    </properties>
@@ -1469,17 +1469,17 @@
   </object>
  </objectgroup>
  <objectgroup id="29" name="events">
-  <object id="45" name="end_tutorials" x="2317.33" y="266.667"/>
+  <object id="45" name="end_tutorials" x="2320.33" y="267.667"/>
  </objectgroup>
  <objectgroup id="20" name="spatial_teleporters">
-  <object id="10" name="spatial_door" class="SpatialDoor" x="272" y="271">
+  <object id="10" name="spatial_door" class="SpatialDoor" x="273" y="271">
    <properties>
     <property name="group" type="int" value="1"/>
     <property name="num" type="int" value="0"/>
     <property name="sprite" propertytype="DoorsSprite" value="door_tp_green"/>
    </properties>
   </object>
-  <object id="11" name="spatial_door" class="SpatialDoor" x="274" y="175">
+  <object id="11" name="spatial_door" class="SpatialDoor" x="272" y="176">
    <properties>
     <property name="group" type="int" value="1"/>
     <property name="num" type="int" value="1"/>
@@ -1498,28 +1498,28 @@
     <property name="num" type="int" value="1"/>
    </properties>
   </object>
-  <object id="31" name="spatial_door" class="SpatialDoor" x="1840" y="269.667">
+  <object id="31" name="spatial_door" class="SpatialDoor" x="1840" y="271.667">
    <properties>
     <property name="group" type="int" value="2"/>
     <property name="num" type="int" value="0"/>
     <property name="sprite" propertytype="DoorsSprite" value="door_tp_red"/>
    </properties>
   </object>
-  <object id="32" name="spatial_door" class="SpatialDoor" x="1775.33" y="174.667">
+  <object id="32" name="spatial_door" class="SpatialDoor" x="1776.33" y="174.667">
    <properties>
     <property name="group" type="int" value="2"/>
     <property name="num" type="int" value="1"/>
     <property name="sprite" propertytype="DoorsSprite" value="door_tp_red"/>
    </properties>
   </object>
-  <object id="33" name="spatial_door" class="SpatialDoor" x="2129.33" y="273.333">
+  <object id="33" name="spatial_door" class="SpatialDoor" x="2128.33" y="271.333">
    <properties>
     <property name="group" type="int" value="3"/>
     <property name="num" type="int" value="0"/>
     <property name="sprite" propertytype="DoorsSprite" value="door_tp_full_green"/>
    </properties>
   </object>
-  <object id="34" name="spatial_door" class="SpatialDoor" x="2159.67" y="174">
+  <object id="34" name="spatial_door" class="SpatialDoor" x="2160.67" y="176">
    <properties>
     <property name="group" type="int" value="3"/>
     <property name="num" type="int" value="1"/>
