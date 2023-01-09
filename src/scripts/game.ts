@@ -9,10 +9,12 @@ import PreloadStartScreen from './scenes/startScreen/preload';
 import StartScreen from './scenes/startScreen/scene';
 import PreloadTutorials from './scenes/tutorials/preload';
 import Tutorials from './scenes/tutorials/scene';
-import PreloadLevel1 from './scenes/level2/preload';
-import Level1 from './scenes/level2/scene';
-import PreloadLevel2 from './scenes/level1/preload';
-import Level2 from './scenes/level1/scene';
+import PreloadLevel1 from './scenes/level1/preload';
+import Level1 from './scenes/level1/scene';
+import PreloadLevel2 from './scenes/level2/preload';
+import Level2 from './scenes/level2/scene';
+import PreloadLevel3 from './scenes/level3/preload';
+import Level3 from './scenes/level3/scene';
 
 const DEFAULT_WIDTH = 608;
 const DEFAULT_HEIGHT = 352;
@@ -23,8 +25,10 @@ const config: Phaser.Types.Core.GameConfig = {
 	antialias: false,
 	scale: {
 		parent: 'phaser-game',
-		mode: Phaser.Scale.NONE,
-		autoCenter: Phaser.Scale.CENTER_BOTH,
+		mode: Phaser.Scale.FIT,
+		autoCenter: Phaser.Scale.Center.CENTER_VERTICALLY,
+		// mode: Phaser.Scale.NONE,
+		// autoCenter: Phaser.Scale.Center.CENTER_BOTH,
 		width: DEFAULT_WIDTH,
 		height: DEFAULT_HEIGHT,
 	},
@@ -37,6 +41,8 @@ const config: Phaser.Types.Core.GameConfig = {
 		Level1,
 		PreloadLevel2,
 		Level2,
+		PreloadLevel3,
+		Level3,
 	],
 	physics: {
 		default: 'arcade',

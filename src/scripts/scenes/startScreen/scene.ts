@@ -138,6 +138,7 @@ export default abstract class Scene extends Phaser.Scene {
 		this.events.off('SpatialTeleporter::activate');
 		this.events.off('MultiSwitcher::activate');
 		this.events.off('MultiTimeTeleporter::setToOpen');
+		this.events.off('BaseLevel::End');
 		this.events.off('TutorialsGame::go');
 		this.events.off('StartNewGame::go');
 		this.events.off('ContinueGame::go');

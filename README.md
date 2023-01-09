@@ -10,14 +10,19 @@ To cross each room of this place, you will have to face travels in time and spac
 
 ## MPG (Minimum Playable Game)
 - [ ] **WIP:** :construction: Re-do levels
+  - [ ] Re-do story dialogs
 - [ ] "Tutorial option" becomes "Dialogs option"
+- [ ] Real classical start screen
+  - [ ] add level selection
+- [ ] Full screen mode
+- [ ] Options in game on a specific screen
+- [ ] Real modals instead of window.alert
 - [ ] Alert signal during paradoxs phases
-- [ ] level selection
-  - [ ] selection screen
-  - [ ] success
+- [ ] Specific score for tutorials
 - [ ] :bug: Bugs fixes
   - [ ] Translations not working on start screen at the opening of the game
   - [ ] Music does not quite if clicks too fast
+  - [ ] We can shoot through portals if we are near enough
 - [ ] Add game in itchi.io
 - [X] Add tutorial room
 - [X] TODOs

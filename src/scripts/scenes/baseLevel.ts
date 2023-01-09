@@ -162,6 +162,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		this.events.off('PastPlayer::shotBullet');
 		this.events.off('RedSpatialTeleporter::activate');
 		this.events.off('SimpleSwitcher::activate');
+		this.events.off('BaseLevel::End');
 		this.events.off('SimpleTimeTeleporter::activate');
 		this.events.off('SimpleTimeTeleporter::isOpen');
 		this.events.off('SimpleTimeTeleporter::::isClosed');
@@ -173,8 +174,8 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		this.events.off('Store::tutorials');
 		this.events.off('Store::fx');
 		this.events.off('ExitButton::exit');
-		this.events.off('MyTextBox::complete');
 		this.events.off('ResetButton::reset');
+		this.events.off('MyTextBox::complete');
 		this.events.off('DoubleSwitcher::activate');
 		this.events.off('StartScreen::switchMusic');
 		this.events.off('StartScreen::switchFx');
@@ -218,6 +219,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	// generic levels
 	private listenToExitButtonEvents() {
 		this.events.on('ExitButton::exit', () => {
+			this.store.set('score', this.currentScore);
 			this.music.stop();
 			this.scene.start(SceneKey.StartScreen);
 		});
@@ -319,10 +321,10 @@ export default abstract class BaseLevel extends Phaser.Scene {
 	}
 	
 	private initMultiTimeTeleportersOpposites() {
-		this.utils.iterateOnGroup(this.multiTimeTeleportersGroup, (givenTp) => {
-			this.utils.iterateOnGroup(this.multiTimeTeleportersGroup, (opposite) => {
-				if ((opposite as MultiTimeTeleporter).group === givenTp.group
-					&& (opposite as MultiTimeTeleporter).num !== givenTp.num) {
+		this.utils.iterateOnGroup(this.multiTimeTeleportersGroup, (givenTp: MultiTimeTeleporter) => {
+			this.utils.iterateOnGroup(this.multiTimeTeleportersGroup, (opposite: MultiTimeTeleporter) => {
+				if (opposite.group === givenTp.group
+					&& opposite.num !== givenTp.num) {
 					givenTp.addOpposites(opposite);
 				}
 			});
@@ -518,6 +520,7 @@ export default abstract class BaseLevel extends Phaser.Scene {
 						}
 					}
 				} else {
+					this.events.emit('BaseLevel::End');
 					if (this.hasFx) {
 						this.sound.play('end_level');
 					}

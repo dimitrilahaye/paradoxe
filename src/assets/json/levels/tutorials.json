@@ -155,8 +155,8 @@
                  "rotation":0,
                  "visible":true,
                  "width":0,
-                 "x":2318,
-                 "y":268
+                 "x":2321,
+                 "y":269
                 }, 
                 {
                  "class":"",
@@ -166,8 +166,8 @@
                  "rotation":0,
                  "visible":true,
                  "width":0,
-                 "x":47.5,
-                 "y":268
+                 "x":48.5,
+                 "y":267
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -199,8 +199,8 @@
                  "rotation":0,
                  "visible":true,
                  "width":0,
-                 "x":1959.33333333333,
-                 "y":184.666666666667
+                 "x":1959.33,
+                 "y":184.667
                 }, 
                 {
                  "class":"",
@@ -233,7 +233,7 @@
                  "visible":true,
                  "width":0,
                  "x":547,
-                 "y":280.666666666667
+                 "y":280.667
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -285,8 +285,8 @@
                  "rotation":0,
                  "visible":true,
                  "width":0,
-                 "x":48.75,
-                 "y":268
+                 "x":49.75,
+                 "y":267
                 }, 
                 {
                  "class":"",
@@ -296,8 +296,8 @@
                  "rotation":0,
                  "visible":true,
                  "width":0,
-                 "x":2318,
-                 "y":267.5
+                 "x":2321,
+                 "y":268.5
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -324,7 +324,7 @@
                  "rotation":0,
                  "visible":true,
                  "width":0,
-                 "x":271.333333333333,
+                 "x":272.333,
                  "y":272
                 }, 
                 {
@@ -341,7 +341,7 @@
                  "rotation":0,
                  "visible":true,
                  "width":0,
-                 "x":655.333333333333,
+                 "x":655.333,
                  "y":176
                 }, 
                 {
@@ -359,7 +359,7 @@
                  "visible":true,
                  "width":0,
                  "x":850,
-                 "y":176.666666666667
+                 "y":176.667
                 }, 
                 {
                  "class":"Dialog",
@@ -375,8 +375,8 @@
                  "rotation":0,
                  "visible":true,
                  "width":0,
-                 "x":1199.33333333333,
-                 "y":175.333333333333
+                 "x":1199.33,
+                 "y":175.333
                 }, 
                 {
                  "class":"Dialog",
@@ -392,8 +392,8 @@
                  "rotation":0,
                  "visible":true,
                  "width":0,
-                 "x":1776.66666666667,
-                 "y":272.333333333333
+                 "x":1776.67,
+                 "y":272.333
                 }, 
                 {
                  "class":"Dialog",
@@ -410,7 +410,7 @@
                  "visible":true,
                  "width":0,
                  "x":88,
-                 "y":272.666666666667
+                 "y":272.667
                 }, 
                 {
                  "class":"Dialog",
@@ -426,7 +426,7 @@
                  "rotation":0,
                  "visible":true,
                  "width":0,
-                 "x":720.666666666667,
+                 "x":720.667,
                  "y":176
                 }, 
                 {
@@ -443,8 +443,8 @@
                  "rotation":0,
                  "visible":true,
                  "width":0,
-                 "x":1136.66666666667,
-                 "y":175.333333333333
+                 "x":1136.67,
+                 "y":175.333
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -465,8 +465,8 @@
                  "rotation":0,
                  "visible":true,
                  "width":0,
-                 "x":2317.33333333333,
-                 "y":266.666666666667
+                 "x":2320.33,
+                 "y":267.667
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -504,7 +504,7 @@
                  "rotation":0,
                  "visible":true,
                  "width":0,
-                 "x":272,
+                 "x":273,
                  "y":271
                 }, 
                 {
@@ -532,8 +532,8 @@
                  "rotation":0,
                  "visible":true,
                  "width":0,
-                 "x":274,
-                 "y":175
+                 "x":272,
+                 "y":176
                 }, 
                 {
                  "class":"SpatialRed",
@@ -605,7 +605,7 @@
                  "visible":true,
                  "width":0,
                  "x":1840,
-                 "y":269.666666666667
+                 "y":271.667
                 }, 
                 {
                  "class":"SpatialDoor",
@@ -632,8 +632,8 @@
                  "rotation":0,
                  "visible":true,
                  "width":0,
-                 "x":1775.33333333333,
-                 "y":174.666666666667
+                 "x":1776.33,
+                 "y":174.667
                 }, 
                 {
                  "class":"SpatialDoor",
@@ -660,8 +660,8 @@
                  "rotation":0,
                  "visible":true,
                  "width":0,
-                 "x":2129.33333333333,
-                 "y":273.333333333333
+                 "x":2128.33,
+                 "y":271.333
                 }, 
                 {
                  "class":"SpatialDoor",
@@ -688,8 +688,8 @@
                  "rotation":0,
                  "visible":true,
                  "width":0,
-                 "x":2159.66666666667,
-                 "y":174
+                 "x":2160.67,
+                 "y":176
                 }, 
                 {
                  "class":"SpatialDoor",
@@ -744,7 +744,7 @@
                  "rotation":0,
                  "visible":true,
                  "width":0,
-                 "x":1136.33333333333,
+                 "x":1136.33,
                  "y":78
                 }],
          "opacity":1,

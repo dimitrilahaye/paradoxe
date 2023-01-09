@@ -201,20 +201,20 @@
         },
         "level1.tmx": {
             "expandedObjectLayers": [
-                33,
-                20,
-                19,
-                17,
                 14,
                 31,
                 30,
-                11
+                11,
+                33,
+                20,
+                17,
+                19
             ],
-            "scale": 1.5,
-            "selectedLayer": 12,
+            "scale": 4,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": 318.33333333333337,
-                "y": 125.66666666666669
+                "x": 876.875,
+                "y": 209.375
             }
         },
         "level1.tmx#tileset": {
@@ -223,18 +223,18 @@
         },
         "level2.tmx": {
             "expandedObjectLayers": [
-                20,
-                17,
                 14,
                 31,
                 30,
-                11
+                11,
+                20,
+                17
             ],
-            "scale": 0.75,
-            "selectedLayer": 18,
+            "scale": 1,
+            "selectedLayer": 17,
             "viewCenter": {
-                "x": 59.333333333333314,
-                "y": 476.6666666666666
+                "x": 359.5,
+                "y": 215.5
             }
         },
         "level2.tmx#tileset": {
@@ -243,15 +243,19 @@
         },
         "level3.tmx": {
             "expandedObjectLayers": [
-                19,
-                18,
-                17
+                31,
+                30,
+                11,
+                33,
+                20,
+                17,
+                19
             ],
-            "scale": 1,
-            "selectedLayer": 11,
+            "scale": 1.5,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": 333,
-                "y": 463.5
+                "x": 1487.6666666666665,
+                "y": 362.33333333333326
             }
         },
         "level3.tmx#tileset": {
@@ -366,21 +370,21 @@
         },
         "tutorials.tmx": {
             "expandedObjectLayers": [
-                20,
-                32,
-                19,
-                17,
+                29,
                 14,
                 31,
                 30,
-                29,
-                11
+                11,
+                20,
+                32,
+                17,
+                19
             ],
-            "scale": 2,
-            "selectedLayer": 10,
+            "scale": 5.5,
+            "selectedLayer": 17,
             "viewCenter": {
-                "x": 1199.75,
-                "y": 176
+                "x": 1651.5454545454545,
+                "y": 216.45454545454547
             }
         },
         "tutorials.tmx#tileset": {
@@ -398,7 +402,7 @@
     "map.renderOrder": null,
     "map.tileHeight": 32,
     "map.tileWidth": 32,
-    "map.width": 40,
+    "map.width": 19,
     "openFiles": [
         "tutorials.tmx",
         "level1.tmx",
@@ -407,9 +411,9 @@
     "project": "paradoxe.tiled-project",
     "property.type": "TimePortalType",
     "recentFiles": [
-        "tutorials.tmx",
         "level1.tmx",
         "level2.tmx",
+        "tutorials.tmx",
         "game-screen.tmx",
         "level6.tmx",
         "level7.tmx",
