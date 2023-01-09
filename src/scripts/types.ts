@@ -33,7 +33,6 @@ export enum ObjectName {
     DOOR_END = 'end',
     START = 'start',
     END = 'end',
-    DIALOG = 'dialog',
     STAIRS_LINE = 'stairs_line',
     SPATIAL_DOOR = 'spatial_door',
 }

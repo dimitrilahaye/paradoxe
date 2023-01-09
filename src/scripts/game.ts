@@ -15,6 +15,8 @@ import PreloadLevel2 from './scenes/level2/preload';
 import Level2 from './scenes/level2/scene';
 import PreloadLevel3 from './scenes/level3/preload';
 import Level3 from './scenes/level3/scene';
+import PreloadLevel4 from './scenes/level4/preload';
+import Level4 from './scenes/level4/scene';
 
 const DEFAULT_WIDTH = 608;
 const DEFAULT_HEIGHT = 352;
@@ -43,6 +45,8 @@ const config: Phaser.Types.Core.GameConfig = {
 		Level2,
 		PreloadLevel3,
 		Level3,
+		PreloadLevel4,
+		Level4,
 	],
 	physics: {
 		default: 'arcade',
