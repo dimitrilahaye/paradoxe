@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "level2.tmx",
+    "activeFile": "level4.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -265,14 +265,15 @@
         "level4.tmx": {
             "expandedObjectLayers": [
                 14,
+                31,
                 11,
                 17
             ],
-            "scale": 1,
-            "selectedLayer": 15,
+            "scale": 4,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 721.5,
-                "y": 109.5
+                "x": 759.125,
+                "y": 185.375
             }
         },
         "level4.tmx#tileset": {
@@ -405,21 +406,23 @@
     "map.width": 19,
     "openFiles": [
         "tutorials.tmx",
+        "level3.tmx",
         "level1.tmx",
-        "level2.tmx"
+        "level2.tmx",
+        "level4.tmx"
     ],
     "project": "paradoxe.tiled-project",
     "property.type": "TimePortalType",
     "recentFiles": [
+        "tutorials.tmx",
+        "level3.tmx",
         "level1.tmx",
         "level2.tmx",
-        "tutorials.tmx",
+        "level4.tmx",
         "game-screen.tmx",
         "level6.tmx",
         "level7.tmx",
         "level0.tmx",
-        "level3.tmx",
-        "level4.tmx",
         "level5.tmx",
         "level8.tmx",
         "game-screen.json"

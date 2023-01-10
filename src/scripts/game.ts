@@ -5,7 +5,7 @@ import UtilsPlugin from './plugins/utilsPlugin';
 import StorePlugin from './plugins/storePlugin';
 import TranslatePlugin from './plugins/translatePlugin';
 
-import PreloadStartScreen from './scenes/startScreen/preload';
+// import PreloadStartScreen from './scenes/startScreen/preload';
 import StartScreen from './scenes/startScreen/scene';
 import PreloadTutorials from './scenes/tutorials/preload';
 import Tutorials from './scenes/tutorials/scene';
@@ -29,13 +29,11 @@ const config: Phaser.Types.Core.GameConfig = {
 		parent: 'phaser-game',
 		mode: Phaser.Scale.FIT,
 		autoCenter: Phaser.Scale.Center.CENTER_VERTICALLY,
-		// mode: Phaser.Scale.NONE,
-		// autoCenter: Phaser.Scale.Center.CENTER_BOTH,
 		width: DEFAULT_WIDTH,
 		height: DEFAULT_HEIGHT,
 	},
 	scene: [
-		PreloadStartScreen,
+		// PreloadStartScreen,
 		StartScreen,
 		PreloadTutorials,
 		Tutorials,
