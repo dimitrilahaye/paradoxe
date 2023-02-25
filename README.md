@@ -9,7 +9,7 @@ To cross each room of this place, you will have to face travels in time and spac
 # TODO
 
 ## MPG (Minimum Playable Game)
-- [X]Re-do levels
+- [X] Re-do levels
   - [ ] Re-do story dialogs
 - [ ] **WIP:** :construction: Real classical start screen
   - [ ] add level selection

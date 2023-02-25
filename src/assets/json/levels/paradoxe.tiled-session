@@ -201,20 +201,20 @@
         },
         "level1.tmx": {
             "expandedObjectLayers": [
+                19,
+                33,
+                30,
                 14,
                 31,
-                30,
                 11,
-                33,
                 20,
-                17,
-                19
+                17
             ],
             "scale": 4,
             "selectedLayer": 5,
             "viewCenter": {
-                "x": 876.875,
-                "y": 209.375
+                "x": 608,
+                "y": 175.875
             }
         },
         "level1.tmx#tileset": {
@@ -223,9 +223,9 @@
         },
         "level2.tmx": {
             "expandedObjectLayers": [
+                30,
                 14,
                 31,
-                30,
                 11,
                 20,
                 17
@@ -233,8 +233,8 @@
             "scale": 1,
             "selectedLayer": 17,
             "viewCenter": {
-                "x": 359.5,
-                "y": 215.5
+                "x": 304,
+                "y": 224.5
             }
         },
         "level2.tmx#tileset": {
@@ -243,19 +243,19 @@
         },
         "level3.tmx": {
             "expandedObjectLayers": [
-                31,
-                30,
-                11,
+                19,
                 33,
+                30,
+                31,
+                11,
                 20,
-                17,
-                19
+                17
             ],
             "scale": 1.5,
             "selectedLayer": 5,
             "viewCenter": {
-                "x": 875.6666666666666,
-                "y": 533.6666666666666
+                "x": 944,
+                "y": 415.66666666666663
             }
         },
         "level3.tmx#tileset": {
@@ -371,21 +371,21 @@
         },
         "tutorials.tmx": {
             "expandedObjectLayers": [
+                32,
+                19,
                 29,
+                30,
                 14,
                 31,
-                30,
                 11,
                 20,
-                32,
-                17,
-                19
+                17
             ],
             "scale": 1,
             "selectedLayer": 14,
             "viewCenter": {
-                "x": 1401.5,
-                "y": 39.5
+                "x": 1240,
+                "y": 175.5
             }
         },
         "tutorials.tmx#tileset": {

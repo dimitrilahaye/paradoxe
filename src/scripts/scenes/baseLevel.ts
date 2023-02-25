@@ -627,8 +627,12 @@ export default abstract class BaseLevel extends Phaser.Scene {
 		if (this.stairsLayer) {
 			this.stairsLayer.setCollisionByProperty({ collides: true });
 		}
-		this.groundLayer.setCollisionByProperty({ collides: true });
-		this.platformsLayer.setCollisionByProperty({ collides: true });
+		if (this.groundLayer) {
+			this.groundLayer.setCollisionByProperty({ collides: true });
+		}
+		if (this.platformsLayer) {
+			this.platformsLayer.setCollisionByProperty({ collides: true });
+		}
 
 		this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, this.tilemap.heightInPixels);
 		this.physics.world.setBounds(0, 0, this.tilemap.widthInPixels, this.tilemap.heightInPixels);

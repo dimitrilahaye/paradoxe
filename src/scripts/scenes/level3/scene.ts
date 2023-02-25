@@ -3,7 +3,7 @@ import { SceneKey } from '../../types';
 
 export default class Scene extends BaseLevel {
 	constructor() {
-		super(SceneKey.Level3, SceneKey.Level4, 'level3');
+		super(SceneKey.Level3, SceneKey.PreloadLevel4, 'level3');
 	}
 
 	create() {

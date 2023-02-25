@@ -20,17 +20,17 @@ export default class UtilsPlugin extends Phaser.Plugins.ScenePlugin {
     		return Object.keys(properties).every((k) => objectProperties[k] === properties[k]);
     	});
     	if (!objects) {
-    		throw new Error(`Objects with properties ${JSON.stringify(properties)} not found in layer ${layer}`);
+    		return [];
     	}
     	return objects;
 	}
 
-	findObjectByLayerAndName(layer: LayerName, name: string): Phaser.Types.Tilemaps.TiledObject {
+	findObjectByLayerAndName(layer: LayerName, name: string): Phaser.Types.Tilemaps.TiledObject | null {
     	const object = this.tilemap.findObject(layer, (obj) => {
     		return obj.name === name;
     	});
     	if (!object) {
-    		throw new Error(`Object with name ${name} not found in layer ${layer}`);
+    		return null;
     	}
     	return object;
 	}
@@ -40,7 +40,7 @@ export default class UtilsPlugin extends Phaser.Plugins.ScenePlugin {
     		return obj.name === name;
     	});
     	if (!objects) {
-    		throw new Error(`Objects with name ${name} not found in layer ${layer}`);
+    		return [];
     	}
     	return objects;
 	}
@@ -71,7 +71,8 @@ export default class UtilsPlugin extends Phaser.Plugins.ScenePlugin {
     			return Object.keys(data).every((d) => child.getData(d) === data[d]);
     		}) as unknown as T;
     	}
-    	throw new Error(`Object not found with data ${JSON.stringify(data)}`);
+    	
+		return undefined;
 	}
 
 	iterateOnGroup(group: Phaser.GameObjects.Group, callback: (object, index?: number) => void) {
@@ -93,13 +94,13 @@ export default class UtilsPlugin extends Phaser.Plugins.ScenePlugin {
     	return RectangleToRectangle(obj1.getBounds(), obj2.getBounds());
 	}
 
-	findObjectByLayerAndProperties(layer: LayerName, properties: { [key: string]: any }): Phaser.Types.Tilemaps.TiledObject {
+	findObjectByLayerAndProperties(layer: LayerName, properties: { [key: string]: any }): Phaser.Types.Tilemaps.TiledObject | null {
     	const object = this.tilemap.findObject(layer, (obj) => {
     		const objectProperties = this.getPropertiesAsObject(obj as unknown as Phaser.Types.Tilemaps.TiledObject);
     		return Object.keys(properties).every((k) => objectProperties[k] === properties[k]);
     	});
     	if (!object) {
-    		throw new Error(`Object with properties ${JSON.stringify(properties)} not found in layer ${layer}`);
+    		return null;
     	}
     	return object;
 	}
